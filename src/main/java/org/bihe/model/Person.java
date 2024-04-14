@@ -39,7 +39,8 @@ public class Person implements Serializable
 		this.money = money;
 	}
 
-	// =============================Methods===============================
+
+    // =============================Methods===============================
 
 	public int newLocation(int change)
 	{
