@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.bihe.DAO.PersonDAO;
 import org.bihe.ui.GUIManager;
+import org.bihe.ui.actionPanel.PlayerPanel;
 
 public class Person implements Serializable
 {
