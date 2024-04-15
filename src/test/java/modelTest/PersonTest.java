@@ -55,6 +55,33 @@ public class PersonTest {
         person.setMoney(500);
 
         assertEquals(500, person.getMoney());
+
+        ArrayList<Estate> estates = new ArrayList<>();
+        estates.add(new ConcreteEstate("Estate1", 1, 200, 20, 100, 120));
+        estates.add(new ConcreteEstate("Estate2", 2, 300, 30, 150, 180));
+
+        person.setEstates(estates);
+        assertEquals(estates, person.getEstates());
+
+        person.setHaveJailCard(true);
+        assertTrue(person.HaveJailCard());
+
+        person.setYourTurn(true);
+        assertTrue(person.isYourTurn());
+
+        // Test methods
+        assertEquals(10, person.newLocation(5)); // Testing newLocation method
+        assertEquals(510, person.newMoney(10)); // Testing newMoney method
+        assertEquals(0, person.getJail()); // Testing getJail method
+
+        person.goToJail();
+        assertEquals(3, person.getJail());
+
+        person.oneRoundInJail();
+        assertEquals(2, person.getJail());
+
+        person.resetPair();
+        assertFalse(person.isThreePair());
     }
 
 
