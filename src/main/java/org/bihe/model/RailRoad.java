@@ -61,6 +61,8 @@ public class RailRoad extends Estate implements Rent
 		int count = 0;
 		int rent;
 		HashMap<Integer, Estate> estates = EstateDAO.getEstateDAO().getEstates();
+		System.out.println(super.getOwner());
+		System.out.println(estates.get(5).getOwner());
 		if (estates.get(5).getOwner().equals(super.getOwner()))
 			count++;
 		if (estates.get(15).getOwner().equals(super.getOwner()))
