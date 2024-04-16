@@ -52,6 +52,21 @@ public class PersonDAOTest {
         assert testPerson == "testUser";
     }
 
+    @Test
+    public void testGetThePerson(){
+        personDAO.setUserThatSignIn("testUser");
+        Person testPerson = personDAO.getThePerson();
+        assert testPerson.getUserName().equals("testUser");
+    }
+
+    @Test
+    public void testGetPersons(){
+        testPersons = personDAO.getPersons();
+        assert testPersons.containsKey("testUser") == true;
+
+    }
+
+
 
 
 
