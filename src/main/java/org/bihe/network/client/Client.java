@@ -23,8 +23,18 @@ public class Client
 	private int clientNo;
 	private int numberOfPlayers;
 
+	public void setObjOut(ObjectOutputStream objOut){
+		this.objOut = objOut;
+	}
+
 	public static Client getClient()
 	{
+		if (instance == null)
+			instance = new Client();
+		return instance;
+	}
+
+	public Client getClientInstance(){
 		if (instance == null)
 			instance = new Client();
 		return instance;

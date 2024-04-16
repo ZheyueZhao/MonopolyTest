@@ -17,12 +17,20 @@ public class StreetActions
 	private HashMap<Integer, Estate> estates;
 	private Person person;
 	private static boolean buy;
+	private DisplayMessage displayMessage = new DisplayMessage();
+	private Client client;
+
+	public void setClient(Client client){
+		this.client = client;
+	}
+	public void setDisplayMessage(DisplayMessage displayMessage) {
+		this.displayMessage = displayMessage;
+	}
 
 	public StreetActions()
 	{
 		
 	}
-
 	public void action()
 	{
 		estates = EstateDAO.getEstateDAO().getEstates();
@@ -43,7 +51,7 @@ public class StreetActions
 			{
 				if (person.getMoney() < s.getPrice())
 				{
-					JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
+					displayMessage.getValueFromDialog("You don't have enough money to buy this Street");
 				} else
 				{
 					GUIManager.getBuyStreetDialog().setVisible(true);
@@ -74,7 +82,8 @@ public class StreetActions
 			PersonDAO.getPersonDAO().changePerson(person);
 
 			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());
-			Client.getClient().sendObject(data);
+			client = client.getClientInstance();
+			client.sendObject(data);
 		}
 		if (person.getLocation() == 5 || person.getLocation() == 15 || person.getLocation() == 25
 				|| person.getLocation() == 35)
