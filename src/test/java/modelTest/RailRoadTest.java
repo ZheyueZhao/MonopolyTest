@@ -24,6 +24,15 @@ public class RailRoadTest {
         estate = estateDao.getOneEstate(5);
         estate.setOwner("Owner");
         estateDao.changeEstate(estate);
+        estate = estateDao.getOneEstate(15);
+        estate.setOwner("Owner");
+        estateDao.changeEstate(estate);
+        estate = estateDao.getOneEstate(25);
+        estate.setOwner("Owner");
+        estateDao.changeEstate(estate);
+        estate = estateDao.getOneEstate(35);
+        estate.setOwner("Owner");
+        estateDao.changeEstate(estate);
     }
 
     @Test
@@ -48,13 +57,13 @@ public class RailRoadTest {
         railRoad.setOwner("Owner");
         estates.put(5, railRoad);
         //estates.put(15, new ConcreteEstate("Estate2", 15, 150, 15, 75, 90));
-       // estates.put(25, new ConcreteEstate("Estate3", 25, 200, 20, 100, 120));
+        // estates.put(25, new ConcreteEstate("Estate3", 25, 200, 20, 100, 120));
         //estates.put(35, new ConcreteEstate("Estate4", 35, 250, 25, 125, 150));
         when(estateDAO.getEstates()).thenReturn(estates);
         // Set mocked EstateDAO to the RailRoad class
         System.out.println(estates.get(5).getOwner());
         // Test rent calculation with different number of owned railroads
-        assertEquals(25, railRoad.rent()); // No owned railroads
+        assertEquals(200, railRoad.rent()); // No owned railroads
 
 
     }
