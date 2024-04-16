@@ -62,12 +62,20 @@ public class EstateDAOTest {
     @Order(3)
     public void testGetOneEstate() {
         int index = rand.nextInt(estateKeys.length);
-        Estate result = estateDao.getOneEstate(index);
+        Estate result = estateDao.getOneEstate(estateKeys[index]);
         assertNotNull(result);
     }
 
     @Test
     @Order(4)
+    public void testGetOneEstate_NotFound() {
+        int index = rand.nextInt(1, estateKeys.length);
+        Estate result = estateDao.getOneEstate(40 + index);
+        assertNull(result);
+    }
+
+    @Test
+    @Order(5)
     public void testGetOneEstateByName() {
         Estate retrieved = estateDao.getOneEstateByName("WaterWork");
         assertNotNull(retrieved);
@@ -75,14 +83,14 @@ public class EstateDAOTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void testGetOneEstateByName_NotFound() {
         Estate retrieved = estateDao.getOneEstateByName("NonExistent");
         assertNull(retrieved);
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void testChangeEstateDAO() {
         HashMap<Integer, Estate> newEstates = new HashMap<>();
         Street street = new Street("NewStreet", 777, 100, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110);
