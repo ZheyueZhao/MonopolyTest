@@ -33,6 +33,9 @@ public class RailRoadTest {
         estate = estateDao.getOneEstate(35);
         estate.setOwner("Owner");
         estateDao.changeEstate(estate);
+        //estates.put(15, new ConcreteEstate("Estate2", 15, 150, 15, 75, 90));
+        // estates.put(25, new ConcreteEstate("Estate3", 25, 200, 20, 100, 120));
+        //estates.put(35, new ConcreteEstate("Estate4", 35, 250, 25, 125, 150));
     }
 
     @Test

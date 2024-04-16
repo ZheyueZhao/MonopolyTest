@@ -22,7 +22,7 @@ public class PersonTest {
     private Person person;
     @BeforeEach
     public void setUp() throws Exception {
-        guiManagerMock = mock(GUIManager.class);
+       // guiManagerMock = mock(GUIManager.class);
         person = new Person("testUser", "password");
         personDao = PersonDAO.getPersonDAO();
         personDao.addPerson(person);
@@ -47,8 +47,8 @@ public class PersonTest {
         person.setLocation(5);
         assertEquals(5, person.getLocation());
 
-        GUIManager guiManagerMock = mock(GUIManager.class);
-        PlayerPanel playerPanelMock = mock(PlayerPanel.class);
+        //GUIManager guiManagerMock = mock(GUIManager.class);
+        //PlayerPanel playerPanelMock = mock(PlayerPanel.class);
 
 
         //when(guiManagerMock.getPlayerPanel()).thenReturn(playerPanelMock);
