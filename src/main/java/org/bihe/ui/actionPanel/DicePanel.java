@@ -198,6 +198,7 @@ public class DicePanel extends JPanel
 						if (jailLabel != null)
 							remove(jailLabel);
 
+						tossDice();
 						int location = p.getLocation();
 						p.setLocation(p.newLocation(a + b));
 						PersonDAO.getPersonDAO().changePerson(p);
