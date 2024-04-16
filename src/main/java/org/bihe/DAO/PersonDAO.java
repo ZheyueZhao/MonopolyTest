@@ -51,6 +51,20 @@ public class PersonDAO implements Serializable
 		return true;
 	}
 
+	public void removePerson(Person person){
+		if (persons == null)
+		{
+			persons = (Map<String, Person>) FileService.readObj(FILE_PATH);
+			if (persons == null)
+			{
+				persons = new HashMap<>();
+			}
+		}
+		if (persons.containsKey(person.getUserName())) {
+			persons.remove(person.getUserName());
+		}
+	}
+
 	/*
 	 * Note: Use to fill persons HashMap from file.
 	 */

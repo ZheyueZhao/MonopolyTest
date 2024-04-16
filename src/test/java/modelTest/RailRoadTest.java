@@ -17,8 +17,24 @@ public class RailRoadTest {
     private Estate estate;
     private EstateDAO estateDao;
 
-    @BeforeEach
-    public void setUp() {
+
+    @Test
+    public void testConstructorAndGetters() {
+        railRoad = new RailRoad("Railroad", 1, 200, 25, 100, 120, 50, 100, 200);
+
+        assertEquals("Railroad", railRoad.getName());
+        assertEquals(1, railRoad.getPanelNo());
+        assertEquals(200, railRoad.getPrice());
+        assertEquals(25, railRoad.getRent());
+        assertEquals(100, railRoad.getMortgage());
+        assertEquals(120, railRoad.getUnMortgage());
+        assertEquals(50, railRoad.getRentForTwo());
+        assertEquals(100, railRoad.getRentForThree());
+        assertEquals(200, railRoad.getRentForfour());
+    }
+
+    @Test
+    public void testRent() {
         railRoad = new RailRoad("Railroad", 1, 200, 25, 100, 120, 50, 100, 200);
         estateDao = EstateDAO.getEstateDAO();
         estate = estateDao.getOneEstate(5);
@@ -33,26 +49,6 @@ public class RailRoadTest {
         estate = estateDao.getOneEstate(35);
         estate.setOwner("Owner");
         estateDao.changeEstate(estate);
-        //estates.put(15, new ConcreteEstate("Estate2", 15, 150, 15, 75, 90));
-        // estates.put(25, new ConcreteEstate("Estate3", 25, 200, 20, 100, 120));
-        //estates.put(35, new ConcreteEstate("Estate4", 35, 250, 25, 125, 150));
-    }
-
-    @Test
-    public void testConstructorAndGetters() {
-        assertEquals("Railroad", railRoad.getName());
-        assertEquals(1, railRoad.getPanelNo());
-        assertEquals(200, railRoad.getPrice());
-        assertEquals(25, railRoad.getRent());
-        assertEquals(100, railRoad.getMortgage());
-        assertEquals(120, railRoad.getUnMortgage());
-        assertEquals(50, railRoad.getRentForTwo());
-        assertEquals(100, railRoad.getRentForThree());
-        assertEquals(200, railRoad.getRentForfour());
-    }
-
-    @Test
-    public void testRent() {
         // Mock EstateDAO
         EstateDAO estateDAO = mock(EstateDAO.class);
         HashMap<Integer, Estate> estates = new HashMap<>();
