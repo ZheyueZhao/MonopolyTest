@@ -2,8 +2,8 @@ package modelTest.DAOTest;
 
 import org.bihe.DAO.PlayerDAO;
 import org.bihe.model.Person;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
+import org.bihe.model.Street;
+import org.junit.jupiter.api.*;
 import org.bihe.DAO.EstateDAO;
 import org.bihe.model.Estate;
 
@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EstateDAOTest {
     private static EstateDAO estateDao;
     private static Map<Integer, Estate> testEstates;
@@ -31,6 +31,7 @@ public class EstateDAOTest {
     }
 
     @Test
+    @Order(1)
     public void testGetEstatesNotEmpty() {
         testEstates = estateDao.getEstates();
         assertFalse(testEstates.isEmpty());
@@ -51,12 +52,14 @@ public class EstateDAOTest {
     }
 
     @Test
+    @Order(2)
     public void testGetEstatesHasCorrectDefaults() {
         testEstates = estateDao.getEstates();
         assert correctDefaults(testEstates);
     }
 
     @Test
+    @Order(3)
     public void testGetOneEstate() {
         int index = rand.nextInt(estateKeys.length);
         Estate result = estateDao.getOneEstate(index);
@@ -64,11 +67,31 @@ public class EstateDAOTest {
     }
 
     @Test
+    @Order(4)
     public void testGetOneEstateByName() {
-        int index = rand.nextInt(estateKeys.length);
-        Estate result = estateDao.getOneEstate(index);
-        Estate nameResult = estateDao.getOneEstateByName(result.getName());
-        assert nameResult == result;
+        Estate retrieved = estateDao.getOneEstateByName("WaterWork");
+        assertNotNull(retrieved);
+        assertEquals("WaterWork", retrieved.getName());
+    }
+
+    @Test
+    @Order(5)
+    public void testGetOneEstateByName_NotFound() {
+        Estate retrieved = estateDao.getOneEstateByName("NonExistent");
+        assertNull(retrieved);
+    }
+
+    @Test
+    @Order(6)
+    public void testChangeEstateDAO() {
+        HashMap<Integer, Estate> newEstates = new HashMap<>();
+        Street street = new Street("NewStreet", 777, 100, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110);
+        newEstates.put(777, street);
+        estateDao.changeEstateDAO(newEstates);
+        Estate retrieved = estateDao.getOneEstate(777);
+        assertNotNull(retrieved);
+        assertEquals("NewStreet", retrieved.getName());
+
     }
 
 
