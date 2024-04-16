@@ -37,6 +37,21 @@ public class PersonDAOTest {
         assert testPersons.containsKey("eve") == true;
     }
 
+    @Test
+    public void testRemovePerson() {
+        assertTrue(personDAO.addPerson(person));
+        personDAO.removePerson(person);
+        testPersons = personDAO.getPersons();
+        assert testPersons.containsKey("eve") == false;
+    }
+
+    @Test
+    public void testSetSignin(){
+        personDAO.setUserThatSignIn("testUser");
+        String testPerson = personDAO.getUserThatSignIn();
+        assert testPerson == "testUser";
+    }
+
 
 
 
