@@ -34,6 +34,10 @@ public class Client
 		return instance;
 	}
 
+	public static String test(){
+
+		return "sup";
+	}
 	public Client getClientInstance(){
 		if (instance == null)
 			instance = new Client();

@@ -6,14 +6,19 @@ import org.bihe.DAO.PersonDAO;
 import org.bihe.DAO.PlayerDAO;
 import org.bihe.model.*;
 import org.bihe.network.client.Client;
+import org.bihe.network.client.testClient;
 import org.bihe.network.server.Server;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import org.mockito.MockedStatic;
+
+
 import java.io.IOException;
 import java.util.Map;
+
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StreetActionTestClass {
@@ -31,14 +36,14 @@ public class StreetActionTestClass {
     public void testPurchaseNoMoney() {
         // Redirect System.out to capture the output
         DisplayMessage displayMessageMock = mock(DisplayMessage.class);
-        clientMock = mock(Client.class);
         person = new Person("testUser", "password");
-
+        Client sampleMock = mock(Client.class);
         personDAO = PersonDAO.getPersonDAO();
         personDAO.addPerson(person);
         personDAO.setUserThatSignIn("testUser");
         personDAO.getPersons();
         person = personDAO.getThePerson();
+        person.setMoney(2);
         person.setLocation(1);
         playerDAO = PlayerDAO.getPlayerDAO();
         playerDAO.getPlayers();
@@ -47,11 +52,18 @@ public class StreetActionTestClass {
         estateDAO.getEstates();
 
         streetActions.setDisplayMessage(displayMessageMock);
-        streetActions.setClient(clientMock);
-        doNothing().when(clientMock).sendObject(any());
-        when(clientMock.getClientInstance()).thenReturn(clientMock);
-        streetActions.action();
-        verify(displayMessageMock, times(1)).getValueFromDialog("You don't have enough money to buy this Street");
+
+
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            mockedClient.when(Client::getClient).thenReturn(sampleMock);
+            doNothing().when(sampleMock).sendObject(any());
+            streetActions.action();
+            verify(displayMessageMock, times(1)).getValueFromDialog("You don't have enough money to buy this Street");
+
+        }
+
+        //when(clientMock.getClientInstance()).thenReturn(clientMock);
+
 
     }
 

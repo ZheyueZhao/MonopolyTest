@@ -82,7 +82,7 @@ public class StreetActions
 			PersonDAO.getPersonDAO().changePerson(person);
 
 			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());
-			client = client.getClientInstance();
+			client = Client.getClient();
 			client.sendObject(data);
 		}
 		if (person.getLocation() == 5 || person.getLocation() == 15 || person.getLocation() == 25
