@@ -67,7 +67,6 @@ public class StreetActions
 				if (!s.getOwner().equals(person.getUserName()))
 				{
 					Person owner = playerDao.getOnePlayer(s.getOwner());
-					int test = s.rent();
 					owner.setMoney(owner.newMoney(s.rent()));
 					person.setMoney(person.newMoney(-1 * s.rent()));
 					playerDao.changeOnePlayer(owner);
