@@ -27,6 +27,7 @@ public class StreetActionTestClass {
     private Estate estate;
     private PersonDAO personDAO;
     private Person person;
+    private Person person2;
     private EstateDAO estateDAO;
     private PlayerDAO playerDAO;
     private Client clientMock;
@@ -91,6 +92,45 @@ public class StreetActionTestClass {
                 JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
                 streetActions.action();
                 assert testEstates.get(1).isOwned();
+            }
+        }
+    }
+
+    @Test
+    @Order(3)
+    public void testPurchaseMoneyAlreadyOwned() {
+        person = new Person("testUser", "password");
+        person2 = new Person("owner","password");
+        Client sampleMock = mock(Client.class);
+        personDAO = PersonDAO.getPersonDAO();
+        personDAO.addPerson(person);
+        personDAO.addPerson(person2);
+        personDAO.setUserThatSignIn("testUser");
+        personDAO.getPersons();
+        person = personDAO.getThePerson();
+        person.setMoney(99999);
+        person2.setMoney(0);
+        person.setLocation(1);
+        playerDAO = PlayerDAO.getPlayerDAO();
+        playerDAO.getPlayers();
+        playerDAO.addPlayer(person);
+        playerDAO.addPlayer(person2);
+        personDAO.changePerson(person);
+        estateDAO = EstateDAO.getEstateDAO();
+        estate = estateDAO.getOneEstate(1);
+        estate.setOwned(true);
+        estate.setOwner("owner");
+        Map<Integer, Estate> testEstates = estateDAO.getEstates();
+
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+                doNothing().when(sampleMock).sendObject(any());
+
+                JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
+                streetActions.action();
+                assert person2.getMoney() == 2;
             }
         }
     }
