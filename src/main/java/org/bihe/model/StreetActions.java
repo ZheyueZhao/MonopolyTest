@@ -17,12 +17,8 @@ public class StreetActions
 	private HashMap<Integer, Estate> estates;
 	private Person person;
 	private static boolean buy;
-	private DisplayMessage displayMessage = new DisplayMessage();
 	private Client client;
 
-	public void setDisplayMessage(DisplayMessage displayMessage) {
-		this.displayMessage = displayMessage;
-	}
 
 	public StreetActions()
 	{
@@ -49,7 +45,7 @@ public class StreetActions
 			{
 				if (person.getMoney() < s.getPrice())
 				{
-					displayMessage.getValueFromDialog("You don't have enough money to buy this Street");
+					JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
 				} else
 				{
 					GUIManager.getBuyStreetDialog().setVisible(true);

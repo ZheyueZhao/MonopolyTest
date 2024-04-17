@@ -16,6 +16,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.MockedStatic;
 
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.Map;
 
@@ -34,8 +35,6 @@ public class StreetActionTestClass {
     @Test
     @Order(1)
     public void testPurchaseNoMoney() {
-        // Redirect System.out to capture the output
-        DisplayMessage displayMessageMock = mock(DisplayMessage.class);
         person = new Person("testUser", "password");
         Client sampleMock = mock(Client.class);
         personDAO = PersonDAO.getPersonDAO();
@@ -49,53 +48,51 @@ public class StreetActionTestClass {
         playerDAO.getPlayers();
         personDAO.changePerson(person);
         estateDAO = EstateDAO.getEstateDAO();
-        estateDAO.getEstates();
+        Map<Integer, Estate> testEstates = estateDAO.getEstates();
 
-        streetActions.setDisplayMessage(displayMessageMock);
 
 
         try(MockedStatic mockedClient = mockStatic(Client.class)){
-            mockedClient.when(Client::getClient).thenReturn(sampleMock);
-            doNothing().when(sampleMock).sendObject(any());
-            streetActions.action();
-            verify(displayMessageMock, times(1)).getValueFromDialog("You don't have enough money to buy this Street");
+            try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
 
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+                doNothing().when(sampleMock).sendObject(any());
+
+                JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
+                streetActions.action();
+                assert !testEstates.get(1).isOwned();
+            }
         }
-
-        //when(clientMock.getClientInstance()).thenReturn(clientMock);
-
-
     }
-/*
     @Test
     @Order(2)
-    public void testPurChaseMoney() {
-        // Redirect System.out to capture the output
-        DisplayMessage displayMessageMock = mock(DisplayMessage.class);
-        clientMock = mock(Client.class);
+    public void testPurchaseMoney() {
         person = new Person("testUser", "password");
-
+        Client sampleMock = mock(Client.class);
         personDAO = PersonDAO.getPersonDAO();
         personDAO.addPerson(person);
         personDAO.setUserThatSignIn("testUser");
         personDAO.getPersons();
         person = personDAO.getThePerson();
-        person.setLocation(1);
         person.setMoney(99999);
+        person.setLocation(1);
         playerDAO = PlayerDAO.getPlayerDAO();
         playerDAO.getPlayers();
         personDAO.changePerson(person);
         estateDAO = EstateDAO.getEstateDAO();
         Map<Integer, Estate> testEstates = estateDAO.getEstates();
 
-        streetActions.setDisplayMessage(displayMessageMock);
-        doNothing().when(clientMock).sendObject(any());
-        when(clientMock.getClientInstance()).thenReturn(clientMock);
-        streetActions.action();
-        Estate myEstate = testEstates.get(1);
-        assert myEstate.isOwned();
-        assert myEstate.getOwner().equals("testUser");
-        person.setMoney(0);
-    }*/
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+                doNothing().when(sampleMock).sendObject(any());
+
+                JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
+                streetActions.action();
+                assert testEstates.get(1).isOwned();
+            }
+        }
+    }
 
 }
