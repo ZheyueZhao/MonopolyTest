@@ -10,8 +10,11 @@ import org.bihe.model.*;
 import org.bihe.network.client.Client;
 import org.bihe.network.client.testClient;
 import org.bihe.network.server.Server;
+import org.bihe.ui.chancesAndCommunityChset.Chance;
+import org.bihe.ui.chancesAndCommunityChset.CommunityChest;
 import org.junit.jupiter.api.*;
 
+import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 
 
@@ -290,6 +293,54 @@ public class StreetActionTestClass {
                 streetActions.action();
                 assert person2.getMoney() == 25;
                 assert person.getMoney() == 99974;
+            }
+        }
+    }
+
+    @Test
+    @Order(10)
+    public void testPurchaseNoMoneyChance() {
+        Client sampleMock = mock(Client.class);
+
+        person.setMoney(2);
+        person.setLocation(7);
+        personDAO.changePerson(person);
+        Map<Integer, Estate> testEstates = estateDAO.getEstates();
+
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            try(MockedConstruction<Chance> mockedChance = mockConstruction(Chance.class)){
+                //Chance chanceMock = new Chance();
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+
+                doNothing().when(sampleMock).sendObject(any());
+
+                streetActions.action();
+                Chance chanceMock = mockedChance.constructed().get(0);
+                verify(chanceMock).chance();
+            }
+        }
+    }
+
+    @Test
+    @Order(11)
+    public void testPurchaseNoMoneyCommunity() {
+        Client sampleMock = mock(Client.class);
+
+        person.setMoney(2);
+        person.setLocation(17);
+        personDAO.changePerson(person);
+        Map<Integer, Estate> testEstates = estateDAO.getEstates();
+
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            try(MockedConstruction<CommunityChest> mockedChance = mockConstruction(CommunityChest.class)){
+                //Chance chanceMock = new Chance();
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+
+                doNothing().when(sampleMock).sendObject(any());
+
+                streetActions.action();
+                CommunityChest communityChestMock = mockedChance.constructed().get(0);
+                verify(communityChestMock).communityChest();
             }
         }
     }
