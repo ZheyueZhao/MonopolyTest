@@ -20,9 +20,6 @@ public class StreetActions
 	private DisplayMessage displayMessage = new DisplayMessage();
 	private Client client;
 
-	public void setClient(Client client){
-		this.client = client;
-	}
 	public void setDisplayMessage(DisplayMessage displayMessage) {
 		this.displayMessage = displayMessage;
 	}
@@ -31,6 +28,7 @@ public class StreetActions
 	{
 		
 	}
+
 	public void action()
 	{
 		estates = EstateDAO.getEstateDAO().getEstates();
@@ -82,8 +80,7 @@ public class StreetActions
 			PersonDAO.getPersonDAO().changePerson(person);
 
 			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());
-			client = Client.getClient();
-			client.sendObject(data);
+			Client.getClient().sendObject(data);
 		}
 		if (person.getLocation() == 5 || person.getLocation() == 15 || person.getLocation() == 25
 				|| person.getLocation() == 35)

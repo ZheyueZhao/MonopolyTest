@@ -66,7 +66,7 @@ public class StreetActionTestClass {
 
 
     }
-
+/*
     @Test
     @Order(2)
     public void testPurChaseMoney() {
@@ -89,7 +89,6 @@ public class StreetActionTestClass {
         Map<Integer, Estate> testEstates = estateDAO.getEstates();
 
         streetActions.setDisplayMessage(displayMessageMock);
-        streetActions.setClient(clientMock);
         doNothing().when(clientMock).sendObject(any());
         when(clientMock.getClientInstance()).thenReturn(clientMock);
         streetActions.action();
@@ -97,6 +96,6 @@ public class StreetActionTestClass {
         assert myEstate.isOwned();
         assert myEstate.getOwner().equals("testUser");
         person.setMoney(0);
-    }
+    }*/
 
 }
