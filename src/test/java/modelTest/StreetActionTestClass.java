@@ -1,4 +1,5 @@
 package modelTest;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -9,6 +10,7 @@ import org.bihe.DAO.PlayerDAO;
 import org.bihe.model.*;
 import org.bihe.network.client.Client;
 import org.bihe.network.server.Server;
+import org.bihe.ui.GamePanel;
 import org.bihe.ui.chancesAndCommunityChset.Chance;
 import org.bihe.ui.chancesAndCommunityChset.CommunityChest;
 import org.junit.jupiter.api.*;
@@ -395,7 +397,7 @@ public class StreetActionTestClass {
     }
 
     @Test
-    @Order(12)
+    @Order(13)
     public void testPurchaseLossLessMoney() {
         Client sampleMock = mock(Client.class);
 
@@ -421,4 +423,70 @@ public class StreetActionTestClass {
         }
     }
 
+    @Test
+    @Order(13)
+    public void testJailCard() {
+        Client sampleMock = mock(Client.class);
+        person.setHaveJailCard(true);
+
+        person.setMoney(2);
+        person.setLocation(30);
+        personDAO.changePerson(person);
+        Map<Integer, Estate> testEstates = estateDAO.getEstates();
+
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+                doNothing().when(sampleMock).sendObject(any());
+                JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
+                streetActions.action();
+                assert person.isThreePair() == false;
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
+
+            }
+        }
+    }
+
+    @Test
+    @Order(14)
+    public void testNoJailCard() {
+        Client sampleMock = mock(Client.class);
+        person.setHaveJailCard(false);
+
+        person.setMoney(2);
+        person.setLocation(30);
+        personDAO.changePerson(person);
+        Map<Integer, Estate> testEstates = estateDAO.getEstates();
+
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            try(MockedConstruction<GamePanel> mockedGamePanel = mockConstruction(GamePanel.class)){
+                try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+                    mockedClient.when(Client::getClient).thenReturn(sampleMock);
+
+                    doNothing().when(sampleMock).sendObject(any());
+                    streetActions.action();
+                    GamePanel gamePanelMock = mockedGamePanel.constructed().get(0);
+                    verify(gamePanelMock).movePieceOnePlace(0, 0);
+                    mockedClient.verify(Client::getClient);
+                    verify(sampleMock).sendObject(any());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testIsBuy() {
+        boolean expected = true;
+        StreetActions.setBuy(expected);
+        boolean actual = StreetActions.isBuy();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testSetBuy() {
+        boolean expected = true;
+        StreetActions.setBuy(expected);
+        assertEquals(expected, StreetActions.isBuy());
+    }
 }
