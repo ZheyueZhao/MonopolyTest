@@ -1,7 +1,5 @@
 package modelTest.DAOTest;
 
-
-
 import org.bihe.DAO.EstateDAO;
 import org.bihe.DAO.PersonDAO;
 import org.bihe.DAO.PlayerDAO;
@@ -27,12 +25,10 @@ public class PersonDAOTest {
 
     @BeforeEach
     public void setUp() {
-
         personDAO = PersonDAO.getPersonDAO();
         personDAO.getPersons();
         testPersons = new HashMap<>();
         person = new Person("eve", "980428");
-
     }
 
     @Test
@@ -47,6 +43,11 @@ public class PersonDAOTest {
         assertTrue(personDAO.addPerson(person));
         testPersons = personDAO.getPersons();
         assert testPersons.containsKey("eve") == true;
+    }
+
+    @Test
+    public void testAddPersonOnExistingPerson() {
+        assertFalse(personDAO.addPerson(person));
     }
 
     @Test
@@ -73,9 +74,17 @@ public class PersonDAOTest {
 
     @Test
     public void testCheckForPersons(){
-
         assert personDAO.checkForPerson("testUser","password");
+    }
 
+    @Test
+    public void testCheckForPersonOnBadUsername() {
+        assertFalse(personDAO.checkForPerson("fakeUser123", "password"));
+    }
+
+    @Test
+    public void testCheckForPersonOnBadPassword() {
+        assertFalse(personDAO.checkForPerson("testUser", "badPassword"));
     }
 
     @Test
@@ -89,8 +98,5 @@ public class PersonDAOTest {
         assert newPerson.getPassword().equals("12345");
     }
 
-
-
-
-
 }
+
