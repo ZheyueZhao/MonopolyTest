@@ -90,7 +90,7 @@ public class EstateDAOTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void testChangeEstateDAO() {
         HashMap<Integer, Estate> newEstates = new HashMap<>();
         Street street = new Street("NewStreet", 777, 100, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110);
@@ -99,8 +99,16 @@ public class EstateDAOTest {
         Estate retrieved = estateDao.getOneEstate(777);
         assertNotNull(retrieved);
         assertEquals("NewStreet", retrieved.getName());
-
     }
 
+    @Test
+    @Order(7)
+    public void testChangeEstate() {
+        Street estate = new Street("NewStreet", 3, 100, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110);
+        estateDao.changeEstate(estate);
+        Estate retrieved = estateDao.getOneEstate(3);
+        assertNotNull(retrieved);
+        assertEquals("NewStreet", retrieved.getName());
+    }
 
 }
