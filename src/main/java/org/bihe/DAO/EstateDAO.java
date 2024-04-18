@@ -30,6 +30,10 @@ public class EstateDAO
 		return instance;
 	}
 
+	public static void reset() {
+		instance = null;
+	}
+
 	public void changeEstate(Estate estate)
 	{
 		estates.replace(estate.getPanelNo(), estate);

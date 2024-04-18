@@ -26,6 +26,11 @@ public class EstateDAOTest {
     private Random rand = new Random();
 
     @BeforeEach
+    public void start() {
+        EstateDAO.reset();
+    }
+
+    @BeforeEach
     public void setUp() {
         estateDao = EstateDAO.getEstateDAO();
     }
