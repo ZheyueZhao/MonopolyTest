@@ -8,7 +8,6 @@ import org.bihe.DAO.PersonDAO;
 import org.bihe.DAO.PlayerDAO;
 import org.bihe.model.*;
 import org.bihe.network.client.Client;
-import org.bihe.network.client.testClient;
 import org.bihe.network.server.Server;
 import org.bihe.ui.chancesAndCommunityChset.Chance;
 import org.bihe.ui.chancesAndCommunityChset.CommunityChest;
@@ -75,6 +74,8 @@ public class StreetActionTestClass {
                 streetActions.action();
                 assert !testEstates.get(1).isOwned();
                 assert !person.getEstates().contains(1);
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -96,6 +97,8 @@ public class StreetActionTestClass {
 
                 streetActions.action();
                 assert testEstates.get(1).isOwned();
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -128,6 +131,8 @@ public class StreetActionTestClass {
                 streetActions.action();
                 assert person2.getMoney() == 2;
                 assert person.getMoney() == 99997;
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -154,6 +159,8 @@ public class StreetActionTestClass {
                 streetActions.action();
                 assert !testEstates.get(5).isOwned();
                 assert !person.getEstates().contains(5);
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -177,6 +184,8 @@ public class StreetActionTestClass {
                 streetActions.action();
                 assert testEstates.get(5).isOwned();
                 assert testEstates.get(5).getOwner().equals(person.getUserName());
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -211,6 +220,8 @@ public class StreetActionTestClass {
                 streetActions.action();
                 assert person2.getMoney() == 25;
                 assert person.getMoney() == 99974;
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -237,6 +248,8 @@ public class StreetActionTestClass {
                 streetActions.action();
                 assert !testEstates.get(12).isOwned();
                 assert !person.getEstates().contains(12);
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -259,6 +272,8 @@ public class StreetActionTestClass {
                 streetActions.action();
                 assert testEstates.get(12).isOwned();
                 assert testEstates.get(12).getOwner().equals(person.getUserName());
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -293,6 +308,8 @@ public class StreetActionTestClass {
                 streetActions.action();
                 assert person2.getMoney() == 25;
                 assert person.getMoney() == 99974;
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -317,6 +334,8 @@ public class StreetActionTestClass {
                 streetActions.action();
                 Chance chanceMock = mockedChance.constructed().get(0);
                 verify(chanceMock).chance();
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
@@ -332,15 +351,72 @@ public class StreetActionTestClass {
         Map<Integer, Estate> testEstates = estateDAO.getEstates();
 
         try(MockedStatic mockedClient = mockStatic(Client.class)){
-            try(MockedConstruction<CommunityChest> mockedChance = mockConstruction(CommunityChest.class)){
+            try(MockedConstruction<CommunityChest> mockedCommunityChest = mockConstruction(CommunityChest.class)){
                 //Chance chanceMock = new Chance();
                 mockedClient.when(Client::getClient).thenReturn(sampleMock);
 
                 doNothing().when(sampleMock).sendObject(any());
 
                 streetActions.action();
-                CommunityChest communityChestMock = mockedChance.constructed().get(0);
+                CommunityChest communityChestMock = mockedCommunityChest.constructed().get(0);
                 verify(communityChestMock).communityChest();
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
+            }
+        }
+    }
+
+    @Test
+    @Order(12)
+    public void testPurchaseLossMoney() {
+        Client sampleMock = mock(Client.class);
+
+        person.setMoney(1000);
+        person.setLocation(4);
+        personDAO.changePerson(person);
+        Map<Integer, Estate> testEstates = estateDAO.getEstates();
+
+
+
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            try(MockedConstruction<Data> mockedData = mockConstruction(Data.class)) {
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+                doNothing().when(sampleMock).sendObject(any());
+
+                streetActions.action();
+
+
+                assert mockedData.constructed().size() == 1;
+                assert person.getMoney() == 800;
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
+            }
+        }
+    }
+
+    @Test
+    @Order(12)
+    public void testPurchaseLossLessMoney() {
+        Client sampleMock = mock(Client.class);
+
+        person.setMoney(1000);
+        person.setLocation(38);
+        personDAO.changePerson(person);
+        Map<Integer, Estate> testEstates = estateDAO.getEstates();
+
+
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            try(MockedConstruction<Data> mockedData = mockConstruction(Data.class)) {
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+                doNothing().when(sampleMock).sendObject(any());
+
+                streetActions.action();
+
+
+                assert mockedData.constructed().size() == 1;
+                assert person.getMoney() == 900;
+                mockedClient.verify(Client::getClient);
+                verify(sampleMock).sendObject(any());
             }
         }
     }
