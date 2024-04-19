@@ -30,11 +30,6 @@ public class Client
 		return instance;
 	}
 
-	public static String test(){
-
-		return "sup";
-	}
-
 	private Client()
 	{
 	}
