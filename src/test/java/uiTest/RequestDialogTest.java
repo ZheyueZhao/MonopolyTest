@@ -3,35 +3,24 @@ package uiTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import javax.swing.*;
 
 import org.bihe.model.Estate;
 import org.bihe.network.client.Client;
 import org.bihe.ui.GUIManager;
-import org.bihe.ui.chancesAndCommunityChset.Chance;
 import org.junit.jupiter.api.*;
 
 import org.bihe.model.Request;
 import org.bihe.ui.RequestDialog;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.ArgumentCaptor;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 class ConcreteEstateUI extends Estate {
     public ConcreteEstateUI(String name, int panelNo, int price, int rent, int mortgage, int unMortgage) {
         super(name, panelNo, price, rent, mortgage, unMortgage);
     }
-    // Implement constructors and methods of ConcreteEstate
 }
 
 public class RequestDialogTest {
@@ -45,12 +34,7 @@ public class RequestDialogTest {
     @BeforeEach
     public void setUp() {
         requestDialog = new RequestDialog();
-
         request = mock(Request.class);
-        //Estate estate = new ConcreteEstate("Test Estate", 1, 200, 20, 100, 120);
-        //Estate estate2 = new ConcreteEstate("Test Estate2", 2, 200, 20, 100, 120);
-        //giveEstates.add(estate);
-        //recieveEstates.add(estate2);
 
     }
 
