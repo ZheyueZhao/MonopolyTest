@@ -22,7 +22,6 @@ public class BuyStreetDialogTest {
         ButtonField.setAccessible(true);
         JButton yesButton = (JButton) ButtonField.get(buyStreetDialogTest);
         ButtonField.set(buyStreetDialogTest, yesButton);
-
         yesButton.doClick();
 
         assert StreetActions.isBuy() == true;

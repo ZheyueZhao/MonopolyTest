@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 public class PieceWorkerTest {
     private Piece piece;
@@ -23,16 +24,21 @@ public class PieceWorkerTest {
         int panelNumber = 0;
         boolean move = true;
         piece = new Piece(image, pieceNumber, panelNumber, move);
-
+        component = mock(Component.class);
     }
 
     @Test
     public void testSetAndGetImage() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        piece.setMove(true);
+        when(component.getWidth()).thenReturn(3);
         PieceWorker pieceWorkerTest = new PieceWorker(component, piece,2,true);
         Class<?> pieceWorkerTestClass = pieceWorkerTest.getClass();
         Method southMoveMethod = pieceWorkerTestClass.getDeclaredMethod("southMove");
         southMoveMethod.setAccessible(true);
         southMoveMethod.invoke(pieceWorkerTest);
+
+        assert piece.getX() == -3;
+        verify(component, times(3)).repaint();
 
 
     }
