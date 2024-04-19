@@ -64,8 +64,6 @@ public class StreetActionTestClass {
         personDAO.changePerson(person);
         Map<Integer, Estate> testEstates = estateDAO.getEstates();
 
-
-
         try(MockedStatic mockedClient = mockStatic(Client.class)){
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
 
