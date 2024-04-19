@@ -1,9 +1,6 @@
 package uiTest;
 import org.bihe.network.client.Client;
-import org.bihe.ui.GUIManager;
-import org.bihe.ui.GamePanel;
-import org.bihe.ui.Piece;
-import org.bihe.ui.PieceWorker;
+import org.bihe.ui.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +9,7 @@ import org.mockito.MockedStatic;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -364,5 +362,33 @@ public class PieceWorkerTest {
 
             mockedGUIManager.verify(GUIManager::getGamePanel);
         }
+    }
+
+    @Test
+    public void testGetCount() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+        PieceWorker pieceWorkerTest = new PieceWorker(component, piece,2,true);
+        assert pieceWorkerTest.getCount() == 2;
+    }
+
+    @Test
+    public void testGetPiece() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+        PieceWorker pieceWorkerTest = new PieceWorker(component, piece,2,true);
+        assert pieceWorkerTest.getPiece() == piece;
+    }
+
+    @Test
+    public void testSetPiece() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        PieceWorker pieceWorkerTest = new PieceWorker(component, piece,2,true);
+        Image image = new BufferedImage(5, 5, BufferedImage.TYPE_INT_ARGB);
+        int pieceNumber = 2;
+        int panelNumber = 1;
+        boolean move = false;
+        Piece piece2 = new Piece(image, pieceNumber, panelNumber, move);
+
+        pieceWorkerTest.setPiece(piece2);
+        assert pieceWorkerTest.getPiece() != piece;
+        assert pieceWorkerTest.getPiece() == piece2;
     }
 }
