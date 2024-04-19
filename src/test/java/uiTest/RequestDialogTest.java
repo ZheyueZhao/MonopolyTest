@@ -81,6 +81,7 @@ public class RequestDialogTest {
             JButton yesButton = (JButton) ButtonField.get(requestDialogTest);
             ButtonField.set(requestDialogTest, yesButton);
             yesButton.doClick();
+
             assertEquals("testUser", testRequest.getReceiver());
             assertEquals("owner",testRequest.getSender());
             assertEquals(1,testRequest.getResponse());

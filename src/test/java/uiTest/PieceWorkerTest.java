@@ -28,7 +28,7 @@ public class PieceWorkerTest {
     }
 
     @Test
-    public void testSetAndGetImage() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void testSouthMove() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         piece.setMove(true);
         when(component.getWidth()).thenReturn(3);
         PieceWorker pieceWorkerTest = new PieceWorker(component, piece,2,true);
@@ -38,6 +38,23 @@ public class PieceWorkerTest {
         southMoveMethod.invoke(pieceWorkerTest);
 
         assert piece.getX() == -3;
+        verify(component, times(3)).repaint();
+
+
+    }
+
+    @Test
+    public void testSouthNoMove() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        piece.setMove(false);
+        piece.setX(3);
+        piece.setPanelNumber(3);
+        PieceWorker pieceWorkerTest = new PieceWorker(component, piece,2,true);
+        Class<?> pieceWorkerTestClass = pieceWorkerTest.getClass();
+        Method southMoveMethod = pieceWorkerTestClass.getDeclaredMethod("southMove");
+        southMoveMethod.setAccessible(true);
+        southMoveMethod.invoke(pieceWorkerTest);
+
+        assert piece.getX() == 0;
         verify(component, times(3)).repaint();
 
 
