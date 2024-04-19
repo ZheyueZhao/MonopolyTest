@@ -51,6 +51,7 @@ public class RequestDialogTest {
         //Estate estate2 = new ConcreteEstate("Test Estate2", 2, 200, 20, 100, 120);
         //giveEstates.add(estate);
         //recieveEstates.add(estate2);
+
     }
 
     @Test
@@ -77,16 +78,65 @@ public class RequestDialogTest {
     }
 
     @Test
-    public void setRequest2() {
+    public void setYesAction() {
         Estate estate = new ConcreteEstateUI("Test Estate", 1, 200, 20, 100, 120);
         Estate estate2 = new ConcreteEstateUI("Test Estate2", 2, 200, 20, 100, 120);
         giveEstates.add(estate);
         recieveEstates.add(estate2);
         testRequest = new Request(giveEstates,recieveEstates,0,0,"testUser","owner");
-        requestDialog.setRequest(request);
 
-        GUIManager.getRequestDialog().setVisible(true);
+        Client sampleMock = mock(Client.class);
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            mockedClient.when(Client::getClient).thenReturn(sampleMock);
+            doNothing().when(sampleMock).sendObject(any());
+            RequestDialog requestDialogTest = GUIManager.getRequestDialog();
+            requestDialogTest.setRequest(testRequest);
 
+            Field ButtonField = RequestDialog.class.getDeclaredField("yesButton");
+            ButtonField.setAccessible(true);
+            JButton yesButton = (JButton) ButtonField.get(requestDialogTest);
+            ButtonField.set(requestDialogTest, yesButton);
+            yesButton.doClick();
+            assertEquals("testUser", testRequest.getReceiver());
+            assertEquals("owner",testRequest.getSender());
+            assertEquals(1,testRequest.getResponse());
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void setNoAction() {
+        Estate estate = new ConcreteEstateUI("Test Estate", 1, 200, 20, 100, 120);
+        Estate estate2 = new ConcreteEstateUI("Test Estate2", 2, 200, 20, 100, 120);
+        giveEstates.add(estate);
+        recieveEstates.add(estate2);
+        testRequest = new Request(giveEstates,recieveEstates,0,0,"testUser","owner");
+
+        Client sampleMock = mock(Client.class);
+        try(MockedStatic mockedClient = mockStatic(Client.class)){
+            mockedClient.when(Client::getClient).thenReturn(sampleMock);
+            doNothing().when(sampleMock).sendObject(any());
+            RequestDialog requestDialogTest = GUIManager.getRequestDialog();
+            requestDialogTest.setRequest(testRequest);
+
+            Field ButtonField = RequestDialog.class.getDeclaredField("noButton");
+            ButtonField.setAccessible(true);
+            JButton yesButton = (JButton) ButtonField.get(requestDialogTest);
+            ButtonField.set(requestDialogTest, yesButton);
+            yesButton.doClick();
+            assertEquals("testUser", testRequest.getReceiver());
+            assertEquals("owner",testRequest.getSender());
+            assertEquals(-1,testRequest.getResponse());
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

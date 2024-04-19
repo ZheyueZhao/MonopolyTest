@@ -23,10 +23,6 @@ public class Client
 	private int clientNo;
 	private int numberOfPlayers;
 
-	public void setObjOut(ObjectOutputStream objOut){
-		this.objOut = objOut;
-	}
-
 	public static Client getClient()
 	{
 		if (instance == null)
@@ -37,11 +33,6 @@ public class Client
 	public static String test(){
 
 		return "sup";
-	}
-	public Client getClientInstance(){
-		if (instance == null)
-			instance = new Client();
-		return instance;
 	}
 
 	private Client()
