@@ -34,12 +34,17 @@ public class Client
 	{
 	}
 
+	public Socket getSocket(String ip, int port) throws IOException {
+		return new Socket(ip, port);
+	}
+
 	public void runClient(int port, String ip)
 	{
 		{
 			try
 			{
-				Socket s = new Socket(ip, port);
+				// Socket s = new Socket(ip, port);
+				Socket s = getSocket(ip, port);
 				objIn = new ObjectInputStream(s.getInputStream());
 				objOut = new ObjectOutputStream(s.getOutputStream());
 				sendObject(PersonDAO.getPersonDAO().getThePerson());
