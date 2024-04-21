@@ -37,13 +37,18 @@ public class Server
 
 	}
 
+	public ServerSocket getSocket(int port) throws IOException {
+		return new ServerSocket(port);
+	}
+
 	public void runServer(int port, int numberOfPlayers)
 	{
 
 		try
 		{
 			@SuppressWarnings("resource")
-			ServerSocket ss = new ServerSocket(port);
+			// ServerSocket ss = new ServerSocket(port);
+			ServerSocket ss = getSocket(port);
 			
 			for (int i = 0; i < numberOfPlayers; i++)
 			{
