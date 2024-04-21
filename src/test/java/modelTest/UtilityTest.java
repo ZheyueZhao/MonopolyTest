@@ -54,6 +54,16 @@ public class UtilityTest {
     }
 
     @Test
+    public void testRent_CountIsOne_Other() {
+        // Mocking owner of ElectricCompany
+        utility.setOwner("TestOwner");
+        estate = estateDAO.getEstates().get(28);
+        estate.setOwner("TestOwner");
+        estateDAO.changeEstate(estate);
+        assertEquals(10, utility.rent());
+    }
+
+    @Test
     public void testRent_CountIsTwo() {
         // Mocking owner of ElectricCompany and WaterWork
         utility.setOwner("TestOwner");
@@ -65,5 +75,12 @@ public class UtilityTest {
         estate.setOwner("TestOwner");
         estateDAO.changeEstate(estate);
         assertEquals(40, utility.rent());
+    }
+
+    @Test
+    public void testOtherConstructorAndRentForTwoModifiers() {
+        Utility newUtil = new Utility("Util", 1, 10, 10, 10, 10);
+        newUtil.setRentForTwo(30);
+        assertEquals(30, newUtil.getRentForTwo());
     }
 }
