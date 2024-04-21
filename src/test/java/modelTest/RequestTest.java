@@ -1,10 +1,8 @@
 package modelTest;
 
-import org.bihe.DAO.EstateDAO;
 import org.bihe.DAO.PersonDAO;
 import org.bihe.DAO.PlayerDAO;
 import org.bihe.model.Estate;
-import org.bihe.model.Person;
 import org.bihe.model.Request;
 import org.bihe.network.client.Client;
 import org.bihe.ui.GUIManager;
@@ -13,43 +11,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import javax.swing.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
-import jdk.jshell.execution.Util;
-import org.bihe.DAO.EstateDAO;
-import org.bihe.DAO.PersonDAO;
-import org.bihe.DAO.PlayerDAO;
-import org.bihe.model.*;
-import org.bihe.network.client.Client;
-import org.bihe.network.server.Server;
-import org.bihe.ui.GamePanel;
-import org.bihe.ui.chancesAndCommunityChset.Chance;
-import org.bihe.ui.chancesAndCommunityChset.CommunityChest;
-import org.junit.jupiter.api.*;
-
-import org.mockito.MockedConstruction;
-import org.mockito.MockedStatic;
 
 
-import javax.swing.*;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 public class RequestTest {
@@ -78,7 +49,7 @@ public class RequestTest {
     }
 
     @Test
-    @Order(1)
+    @Order(2)
     public void testPurchaseNoMoney() {
         response = 0;
         RequestDialog mockRequestDialog = mock(RequestDialog.class);
@@ -90,4 +61,53 @@ public class RequestTest {
 
         }
     }
+
+    @Test
+    @Order(1)
+    public void testGettersAndSetters() {
+        assertEquals(recieveEstates, testRequest.getRecieveEstates());
+        assertEquals(giveEstates, testRequest.getGiveEstates());
+        assertEquals(0, testRequest.getGiveMoney());
+        assertEquals(0, testRequest.getRecieveMoney());
+
+        testRequest.setReceiver("");
+        assertEquals("", testRequest.getReceiver());
+
+        testRequest.setSender("");
+        assertEquals("", testRequest.getSender());
+
+        testRequest.setResponse(0);
+        assertEquals(0, testRequest.getResponse());
+    }
+
+    @Test
+    public void testRequestWith1Response() {
+        testRequest = new Request(giveEstates, recieveEstates, 50, 50, "testUser", "testUser");
+        testRequest.setResponse(1);
+        PersonDAO.getPersonDAO().getPersons();
+        PersonDAO.getPersonDAO().setUserThatSignIn("testUser");
+        PlayerDAO.getPlayerDAO().changePlayerDAO(PersonDAO.getPersonDAO().getPersons());
+
+        Client sampleMock = mock(Client.class);
+
+        try(MockedStatic mockedClient = mockStatic(Client.class)) {
+            mockedClient.when(Client::getClient).thenReturn(sampleMock);
+            doNothing().when(sampleMock).sendObject(any());
+            testRequest.analyseRequest();
+        }
+    }
+
+    @Test
+    public void testRequestWithNegativeOneResponse() {
+        testRequest = new Request(giveEstates, recieveEstates, 50, 50, "testUser", "testUser");
+        testRequest.setResponse(-1);
+        testRequest.analyseRequest();
+    }
+
+    @Test
+    public void testRequestWithOtherResponse() {
+        testRequest.setResponse(-5);
+        assertDoesNotThrow(()->testRequest.analyseRequest());
+    }
+
 }
