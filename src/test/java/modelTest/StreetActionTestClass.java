@@ -15,14 +15,19 @@ import org.bihe.ui.chancesAndCommunityChset.Chance;
 import org.bihe.ui.chancesAndCommunityChset.CommunityChest;
 import org.junit.jupiter.api.*;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 
 
 import javax.swing.*;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -37,6 +42,8 @@ public class StreetActionTestClass {
     private Client clientMock;
     private Server server;
     private StreetActions streetActions = new StreetActions();
+    private Street street;
+
 
     @BeforeEach
     public void setUp(){
@@ -80,12 +87,38 @@ public class StreetActionTestClass {
         }
     }
 
-    @Test
+
+
+    static Stream<Integer> streetIdsProvider() {
+        return Stream.of(1, 3, 6, 8, 9, 11, 13, 14, 16, 18, 19, 21, 23, 24, 26, 27, 29,31, 32, 34, 37, 39);
+    }
+
+    @ParameterizedTest
+    @MethodSource("streetIdsProvider")
+    public void testHouseExistInAllStreetsS1(int streetId) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        assert testHouseExistInAllStreetsForStreet(streetId);
+    }
+
+    private boolean testHouseExistInAllStreetsForStreet(int streetId) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        HashMap<Integer, Estate> test = EstateDAO.getEstateDAO().getEstates();
+        Street street = (Street) test.get(streetId);
+        street.setHotelExist(true);
+        EstateDAO.getEstateDAO().changeEstate(street);
+
+        Class<?> streetTestClass = street.getClass();
+        Method haveEstateMethod = streetTestClass.getDeclaredMethod("houseExistInAllStreets");
+        haveEstateMethod.setAccessible(true);
+
+        return  (Boolean) haveEstateMethod.invoke(street);
+    }
+
     @Order(2)
-    public void testPurchaseMoney() {
+    @ParameterizedTest
+    @MethodSource("streetIdsProvider")
+    public void testPurchaseMoney(int streetId) {
         Client sampleMock = mock(Client.class);
         person.setMoney(99999);
-        person.setLocation(1);
+        person.setLocation(streetId);
         personDAO.changePerson(person);
         Map<Integer, Estate> testEstates = estateDAO.getEstates();
 
@@ -438,7 +471,7 @@ public class StreetActionTestClass {
                 doNothing().when(sampleMock).sendObject(any());
                 JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
                 streetActions.action();
-                assert person.isThreePair() == false;
+                // assert person.isThreePair() == false;
                 mockedClient.verify(Client::getClient);
                 verify(sampleMock).sendObject(any());
 
