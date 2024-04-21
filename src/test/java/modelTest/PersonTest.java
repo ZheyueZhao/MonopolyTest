@@ -80,9 +80,73 @@ public class PersonTest {
         person.oneRoundInJail();
         assertEquals(2, person.getJail());
 
+        person.outOfJail();
+        assertEquals(0, person.getJail());
+
         person.resetPair();
         assertFalse(person.isThreePair());
     }
 
+    @Test
+    public void testOtherPerson() {
+        Person p = new Person("testUser", "password", 39, 100);
+
+        p.setPieceNumber(2);
+        assertEquals(2, p.getPieceNumber());
+
 
     }
+
+    @Test
+    public void testGo() {
+        person = PersonDAO.getPersonDAO().getThePerson();
+
+        int loc = (person.getLocation() + 45) % 40;
+        int mon = person.getMoney() + 200;
+
+        person.setLocation(person.newLocation(45));
+
+        assertEquals(loc, person.getLocation());
+        assertEquals(mon, person.getMoney());
+    }
+
+    @Test
+    public void testBackwards() {
+        int loc = (person.getLocation() - 10) + 40;
+        person.setLocation(person.newLocation(-10));
+        assertEquals(loc, person.getLocation());
+    }
+
+    @Test
+    public void testThreePair() {
+        person.resetPair();
+        person.isThreePair();
+        assertFalse(person.isThreePair());
+        assertTrue(person.isThreePair());
+        assertFalse(person.isThreePair());
+    }
+
+    @Test
+    public void testAddRemoveEstates() {
+        ArrayList<Estate> estates = new ArrayList<>();
+        ConcreteEstate estate = new ConcreteEstate("Estate1", 1, 100, 10, 20, 30);
+        ConcreteEstate other = new ConcreteEstate("Estate2", 2, 40, 20, 10, 30);
+
+        estates.add(estate);
+
+        person.setEstates(person.newEstates_add(estates));
+
+        ArrayList<Estate> ests = person.getEstates();
+        assertEquals(estate, ests.get(0));
+
+        person.setEstates(person.newEstates_remove(estates));
+        ests = person.getEstates();
+        assertTrue(ests.isEmpty());
+
+        person.setEstates(person.newEstates_add(estates));
+        ests = person.getEstates();
+        assertEquals(estate, ests.get(0));
+
+
+    }
+}
