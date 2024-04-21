@@ -149,8 +149,8 @@ public class MakeNewGamePanel extends JPanel
 
 	private SpinnerModel getModel()
 	{
-		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(6),
-				new Integer(1));
+		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(6),
+				Integer.valueOf(1));
 		return spinnerModel;
 	}
 

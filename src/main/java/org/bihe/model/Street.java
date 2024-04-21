@@ -186,7 +186,6 @@ public class Street extends Estate implements Rent
 	{
 		HashMap<Integer, Estate> estates = EstateDAO.getEstateDAO().getEstates();
 		Person p = PersonDAO.getPersonDAO().getThePerson();
-
 		if (haveEstate(1) && haveEstate(3) && !isHotelExist && (super.getPanelNo() == 1 || super.getPanelNo() == 3))
 		{
 			if (estates.get(1).isMortgage() || estates.get(3).isMortgage())
