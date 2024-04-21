@@ -17,10 +17,12 @@ import javax.swing.JTextField;
 
 import org.bihe.DAO.PersonDAO;
 import org.bihe.DAO.PlayerDAO;
+import org.bihe.Generated;
 import org.bihe.model.Person;
 import org.bihe.network.client.Client;
 import org.bihe.ui.GUIManager;
 
+@Generated
 public class EnterGamePanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;

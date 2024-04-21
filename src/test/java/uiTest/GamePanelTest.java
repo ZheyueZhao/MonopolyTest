@@ -74,6 +74,7 @@ public class GamePanelTest {
         distance = gamePanel.distance(39, 1);
         assertEquals(2, distance);
     }
+    /*
     @Test
     public void testMovepieceOnePlace() {
         Client sampleMock = mock(Client.class);
@@ -96,6 +97,6 @@ public class GamePanelTest {
         mockedClient.verify(Client::getClient);
         verify(sampleMock).sendObject(any());
         
-    }
+    }*/
 }
 

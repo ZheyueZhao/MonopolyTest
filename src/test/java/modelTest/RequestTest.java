@@ -90,18 +90,23 @@ public class RequestTest {
 
         Client sampleMock = mock(Client.class);
 
-        try(MockedStatic mockedClient = mockStatic(Client.class)) {
-            mockedClient.when(Client::getClient).thenReturn(sampleMock);
-            doNothing().when(sampleMock).sendObject(any());
-            testRequest.analyseRequest();
+        try(MockedStatic mockedJOptionPane = mockStatic(JOptionPane.class)) {
+            try(MockedStatic mockedClient = mockStatic(Client.class)) {
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+                doNothing().when(sampleMock).sendObject(any());
+                testRequest.analyseRequest();
+            }
         }
     }
 
     @Test
     public void testRequestWithNegativeOneResponse() {
-        testRequest = new Request(giveEstates, recieveEstates, 50, 50, "testUser", "testUser");
-        testRequest.setResponse(-1);
-        testRequest.analyseRequest();
+        try(MockedStatic mockedJOptionPane = mockStatic(JOptionPane.class)) {
+            testRequest = new Request(giveEstates, recieveEstates, 50, 50, "testUser", "testUser");
+            testRequest.setResponse(-1);
+            testRequest.analyseRequest();
+
+        }
     }
 
     @Test
