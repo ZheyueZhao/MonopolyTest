@@ -92,7 +92,7 @@ public class ClientTest {
     // other errors, however it is uncaught and thrown
     @Test
     public void testSendObjectNoExceptionThrownWhenRunning() throws NoSuchFieldException {
-        //assertDoesNotThrow(()->Client.getClient().sendObject(new Person("username", "password")));
+        assertDoesNotThrow(()->Client.getClient().sendObject(new Person("username", "password")));
     }
 
     @Test
@@ -176,8 +176,8 @@ public class ClientTest {
 
             GUIManager.getEstatePanel();
             GUIManager.getPlayerPanel();
-            GUIManager.getGameFrame();
             GUIManager.getMainFrame();
+            GUIManager.getGameFrame();
 
             assertDoesNotThrow(()-> clientSpy.runClient(port, ip));
 
