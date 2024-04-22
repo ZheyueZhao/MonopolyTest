@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	private JPanel[] panels = new JPanel[41];
-	private StreetPanel[] streets = new StreetPanel[41];
+	public JPanel[] panels = new JPanel[41];
+	public StreetPanel[] streets = new StreetPanel[41];
 	private HashMap<Integer, Piece> pieces = new HashMap<>();
 	private Piece tempPiece;
 	private JPanel north = new JPanel();

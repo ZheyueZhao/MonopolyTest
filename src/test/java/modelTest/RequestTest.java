@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
+import javax.swing.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -51,7 +53,7 @@ public class RequestTest {
     public void testPurchaseNoMoney() {
         response = 0;
         RequestDialog mockRequestDialog = mock(RequestDialog.class);
-        try(MockedStatic<GUIManager> mockedGUIManager = mockStatic(GUIManager.class)){
+        try(MockedStatic mockedGUIManager = mockStatic(GUIManager.class)){
                 mockedGUIManager.when(GUIManager::getRequestDialog).thenReturn(mockRequestDialog);
                 testRequest.analyseRequest();
                 mockedGUIManager.verify(GUIManager::getRequestDialog, times(2));
@@ -80,7 +82,7 @@ public class RequestTest {
 
     @Test
     public void testRequestWith1Response() {
-        testRequest = new Request(new ArrayList<Estate>(), new ArrayList<Estate>(), 50, 50, "testUser", "testUser");
+        testRequest = new Request(giveEstates, recieveEstates, 50, 50, "testUser", "testUser");
         testRequest.setResponse(1);
         PersonDAO.getPersonDAO().getPersons();
         PersonDAO.getPersonDAO().setUserThatSignIn("testUser");
@@ -88,18 +90,23 @@ public class RequestTest {
 
         Client sampleMock = mock(Client.class);
 
-        try(MockedStatic<Client> mockedClient = mockStatic(Client.class)) {
-            mockedClient.when(Client::getClient).thenReturn(sampleMock);
-            doNothing().when(sampleMock).sendObject(any());
-            testRequest.analyseRequest();
+        try(MockedStatic mockedJOptionPane = mockStatic(JOptionPane.class)) {
+            try(MockedStatic mockedClient = mockStatic(Client.class)) {
+                mockedClient.when(Client::getClient).thenReturn(sampleMock);
+                doNothing().when(sampleMock).sendObject(any());
+                testRequest.analyseRequest();
+            }
         }
     }
 
     @Test
     public void testRequestWithNegativeOneResponse() {
-        testRequest = new Request(new ArrayList<Estate>(), new ArrayList<Estate>(), 50, 50, "testUser", "testUser");
-        testRequest.setResponse(-1);
-        testRequest.analyseRequest();
+        try(MockedStatic mockedJOptionPane = mockStatic(JOptionPane.class)) {
+            testRequest = new Request(giveEstates, recieveEstates, 50, 50, "testUser", "testUser");
+            testRequest.setResponse(-1);
+            testRequest.analyseRequest();
+
+        }
     }
 
     @Test

@@ -13,7 +13,7 @@ public class EstateDAO
 	private HashMap<Integer, Estate> estates;
 	private static EstateDAO instance;
 
-	private EstateDAO()
+	public EstateDAO()
 	{
 		estates = new HashMap<>();
 		putStreets();
