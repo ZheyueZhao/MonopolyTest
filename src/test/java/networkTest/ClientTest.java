@@ -174,14 +174,13 @@ public class ClientTest {
             when(clientSpy.getSocket(anyString(), anyInt())).thenReturn(mockSocket.constructed().get(0));
             Socket sock = clientSpy.getSocket(ip, port);
 
+            //there because client throws errors w/o these
             GUIManager.getEstatePanel();
             GUIManager.getPlayerPanel();
             GUIManager.getMainFrame();
             GUIManager.getGameFrame();
 
             assertDoesNotThrow(()-> clientSpy.runClient(port, ip));
-
-
         }
     }
 
