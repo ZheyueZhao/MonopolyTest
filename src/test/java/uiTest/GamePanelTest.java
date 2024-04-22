@@ -29,35 +29,18 @@ import static org.mockito.Mockito.verify;
 public class GamePanelTest {
 
     private GamePanel gamePanel;
-    private static HashMap<Integer, Estate> testEstates;
-    private Estate estate;
-    private PersonDAO personDAO;
-    private Person person;
-    private Person person2;
-    private EstateDAO estateDAO;
-    private PlayerDAO playerDAO;
-    private Client clientMock;
-    private Server server;
-    private StreetActions streetActions = new StreetActions();
     private StreetPanel[] streets = new StreetPanel[41];
     private StreetPanel mockStreetPanel;
     Piece mockPiece;
+
+    public void setUpHelper(){
+
+    }
     @BeforeEach
     public void setUp() {
         gamePanel = spy(GamePanel.class);
-        //gamePanel = new GamePanel();
         gamePanel.setPreferredSize(new Dimension(800, 600)); // Set preferred size for testing
         gamePanel.setLayout(new GridLayout());
-        // guiManagerMock = mock(GUIManager.class);
-        person = new Person("testUser", "password");
-        personDAO = PersonDAO.getPersonDAO();
-        personDAO.addPerson(person);
-        personDAO.setUserThatSignIn("testUser");
-        personDAO.getPersons();
-        person = personDAO.getThePerson();
-        playerDAO = PlayerDAO.getPlayerDAO();
-        playerDAO.getPlayers();
-        estateDAO = EstateDAO.getEstateDAO();
         mockStreetPanel = mock(StreetPanel.class);
     }
     @Test
@@ -106,8 +89,6 @@ public class GamePanelTest {
         HashMap<Integer, Piece> pieces = new HashMap<>();
         HashMap<Integer,Piece> piecesMap = (HashMap<Integer, Piece>) piecesField.get(gamePanel);
         piecesMap.put(1,mockPiece);
-        //Piece mockPiece = new Piece(mock(Image.class),0,0,false);
-        //when(gamePanel.makePiece(anyInt(), anyInt())).thenReturn(null);
         gamePanel.panels[1].setSize(new Dimension(100, 100));
         streets[1] = mockStreetPanel;
         gamePanel.streets = streets;
@@ -134,6 +115,17 @@ public class GamePanelTest {
             gamePanel.movePieceOnePlace(panelNumber, 0);
             assert mockedPieceWorker.constructed().size() == 2;
         }
+    }
+
+    @Test
+    public void testImageSetUp() throws NoSuchFieldException, IllegalAccessException {
+        gamePanel = spy(GamePanel.class);
+        for(int i=0;i<40;i++){
+            gamePanel.panels[i].setSize(new Dimension(100, 100));
+        }
+        assertDoesNotThrow(() -> {
+            gamePanel.addImageToPanels();
+        });
     }
 
 }
