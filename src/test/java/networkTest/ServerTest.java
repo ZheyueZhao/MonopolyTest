@@ -41,5 +41,4 @@ public class ServerTest {
             assertDoesNotThrow(()-> serverSpy.runServer(port, 1));
         }
     }
-
 }
