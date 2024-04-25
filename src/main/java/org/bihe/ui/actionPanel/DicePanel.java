@@ -214,7 +214,7 @@ public class DicePanel extends JPanel
 						StreetActions s = new StreetActions();
 						s.action();
 					}
-					//setDiceEnable(false);
+					setDiceEnable(false);
 				} else if(isYourTurn)
 				{
 					tossDice();
