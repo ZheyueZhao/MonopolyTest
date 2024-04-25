@@ -3,6 +3,7 @@ package resources;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.JOptionPane;
@@ -15,14 +16,8 @@ public class Resources
 	}
 	public static File getFile(String name)
 	{
-		try
-		{
-			File f = new File(Resources.class.getResource(name).toURI());
+			File f = new File("src/main/java/resources/" + name);
 			return f;
-		} catch (URISyntaxException e)
-		{
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			return null;
-		}
+
 	}
 }

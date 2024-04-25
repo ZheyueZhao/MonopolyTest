@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import org.bihe.DAO.EstateDAO;
 import org.bihe.DAO.PersonDAO;
 import org.bihe.DAO.PlayerDAO;
+import org.bihe.Generated;
 import org.bihe.model.Data;
 import org.bihe.model.Estate;
 import org.bihe.model.Person;
@@ -20,6 +21,7 @@ import org.bihe.ui.GUIManager;
 import org.bihe.ui.GamePanel;
 import org.bihe.ui.actionPanel.DicePanel;
 
+@Generated
 public class Chance
 {
 	private int location;
