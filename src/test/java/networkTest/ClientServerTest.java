@@ -30,6 +30,8 @@ public class ClientServerTest {
     }
 
     @Test
+    //sometimes will not pass when the entire suite is running, due to deep dependencies on other classes - mainly the
+    // DAOs and GUI
     public void testGameStartClientServerInteractionDoesNotFail() {
         PersonDAO.getPersonDAO().setUserThatSignIn("username");
         Person p = PersonDAO.getPersonDAO().getThePerson();
