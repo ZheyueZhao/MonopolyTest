@@ -7,19 +7,12 @@ import org.bihe.model.Data;
 import org.bihe.model.Person;
 import org.bihe.network.client.Client;
 import org.bihe.network.server.Server;
-import org.bihe.ui.GUIManager;
-import org.bihe.ui.GamePanel;
-import org.bihe.ui.Piece;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class ServerThreadedServerTest {
+public class ClientServerTest {
     private int port = 3000;
 
     @BeforeEach
