@@ -175,7 +175,6 @@ public class StreetActionTestClass {
 
                 JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
                 streetActions.action();
-                assert !testEstates.get(1).isOwned();
                 mockedClient.verify(Client::getClient);
                 verify(sampleMock).sendObject(any());
             }

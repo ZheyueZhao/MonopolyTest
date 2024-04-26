@@ -27,7 +27,7 @@ public class CommunityChest
 
 	}
 
-	private int makeRandom()
+	public int makeRandom()
 	{
 		int a = (int) (Math.random() * 100);
 		while (a > 15 || a == 0)

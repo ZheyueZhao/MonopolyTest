@@ -1,8 +1,12 @@
 package modelTest;
 
 import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PersonDAO;
 import org.bihe.model.Estate;
+import org.bihe.model.Person;
 import org.bihe.model.RailRoad;
+import org.bihe.model.Street;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +17,19 @@ public class RailRoadTest {
     private RailRoad railRoad;
     private Estate estate;
     private EstateDAO estateDao;
+    private HashMap<Integer, Estate> estatesTest = new HashMap<>();
+    RailRoad str1 = new RailRoad("Railroad", 1, 200, 25, 100, 120, 50, 100, 200);
+    RailRoad str2 = new RailRoad("Railroad", 1, 200, 25, 100, 120, 50, 100, 200);
+    RailRoad str3 = new RailRoad("Railroad", 1, 200, 25, 100, 120, 50, 100, 200);
+    RailRoad str4 = new RailRoad("Railroad", 1, 200, 25, 100, 120, 50, 100, 200);
 
+    @BeforeEach
+    public void setUp(){
+        estatesTest.put(5,str1);
+        estatesTest.put(15,str2);
+        estatesTest.put(25,str3);
+        estatesTest.put(35,str4);
+    }
 
     @Test
     public void testConstructorAndGetters() {
@@ -46,6 +62,7 @@ public class RailRoadTest {
     public void testRent() {
         railRoad = new RailRoad("Railroad", 1, 200, 25, 100, 120, 50, 100, 200);
         estateDao = EstateDAO.getEstateDAO();
+        estateDao.changeEstateDAO(estatesTest);
         estate = estateDao.getOneEstate(5);
         estate.setOwner("Owner");
         estateDao.changeEstate(estate);
@@ -64,13 +81,8 @@ public class RailRoadTest {
         //Estate estate = new ConcreteEstate("Estate1", 1, 200, 20, 100, 120);
         railRoad.setOwner("Owner");
         estates.put(5, railRoad);
-        //estates.put(15, new ConcreteEstate("Estate2", 15, 150, 15, 75, 90));
-        // estates.put(25, new ConcreteEstate("Estate3", 25, 200, 20, 100, 120));
-        //estates.put(35, new ConcreteEstate("Estate4", 35, 250, 25, 125, 150));
         when(estateDAO.getEstates()).thenReturn(estates);
-        // Set mocked EstateDAO to the RailRoad class
         System.out.println(estates.get(5).getOwner());
-        // Test rent calculation with different number of owned railroads
         assertEquals(200, railRoad.rent()); // No owned railroads
     }
 
