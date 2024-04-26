@@ -21,7 +21,6 @@ import org.bihe.ui.GUIManager;
 import org.bihe.ui.GamePanel;
 import org.bihe.ui.actionPanel.DicePanel;
 
-@Generated
 public class Chance
 {
 	private int location;
