@@ -37,6 +37,10 @@ public class Server
 
 	}
 
+	//this method was created in order for testing to work -
+	// needed to mock the socket, but couldn't do so with instantiation
+	// within the runServer method
+	//Line 54 was exchanged with line 55 (just moved the instantiation to a function) for testing
 	public ServerSocket getSocket(int port) throws IOException {
 		return new ServerSocket(port);
 	}

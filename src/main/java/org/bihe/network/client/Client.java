@@ -34,6 +34,11 @@ public class Client
 	{
 	}
 
+
+	//this method was created in order for testing to work -
+	// needed to mock the socket, but couldn't do so with instantiation
+	// within the runClient method
+	//Line 51 was exchanged with line 52 (just moved the instantiation to a function) for testing
 	public Socket getSocket(String ip, int port) throws IOException {
 		return new Socket(ip, port);
 	}
@@ -43,7 +48,7 @@ public class Client
 		{
 			try
 			{
-				// Socket s = new Socket(ip, port);
+				// Socket s = new Socket(ip, port); //This line was commented off and the line below takes its place
 				Socket s = getSocket(ip, port);
 				objIn = new ObjectInputStream(s.getInputStream());
 				objOut = new ObjectOutputStream(s.getOutputStream());
