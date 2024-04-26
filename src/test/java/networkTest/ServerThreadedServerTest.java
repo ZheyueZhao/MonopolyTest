@@ -65,7 +65,6 @@ public class ServerThreadedServerTest {
         th.start();
         Client.getClient().runClient(3000, "localhost");
         Client.getClient().sendObject(new Exit("username"));
-        Server.getServer().;
     }
 
     private class TestingServer implements Runnable {
