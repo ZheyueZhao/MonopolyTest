@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 
 public class ServerTest {
     public Server serverSpy;
-    public int port = 3000;
+    public int port = 3002;
 
     @Test
     public void testGetServerWhenInstanceNull() {
