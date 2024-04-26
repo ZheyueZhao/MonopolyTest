@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import javax.swing.*;
 import java.net.BindException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -38,7 +39,7 @@ public class ServerTest {
         ServerSocket ss = new ServerSocket(port);
 
         try(MockedConstruction<ServerSocket> mockSocket = Mockito.mockConstruction(ServerSocket.class, (mock, context)-> {
-            when(mock.accept()).thenReturn(Client.getClient().getSocket("localhost", port));
+            when(mock.accept()).thenReturn(new Socket("localhost", port));
         })) {
             serverSpy = spy(Server.getServer());
             when(serverSpy.getSocket(anyInt())).thenReturn(mockSocket.constructed().get(0));

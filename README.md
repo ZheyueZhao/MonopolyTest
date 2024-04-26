@@ -20,7 +20,7 @@ The gradle file
 ![img.png](images/img.png)
 2. To produce the Jacoco report, run the jacocoTestReport from the ```build.gradle``` file, and run the ```index.html``` file found in ```build/reports/jacoco/test/html/index.html```. This will also run all tests.
 ![img.png](images/img2.png)
-![img.png](img.png)
+
 ### [If applicable] Screenshots of the running tests and the achieved results.
 ![img.png](images/img3.png)
 ![img.png](images/img4.png)
