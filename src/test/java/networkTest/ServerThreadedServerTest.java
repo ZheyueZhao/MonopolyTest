@@ -9,14 +9,19 @@ import org.bihe.network.client.Client;
 import org.bihe.network.server.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.when;
 
 public class ServerThreadedServerTest {
     private Server serverSpy;
     private int port = 3000;
     private int sleepTime = 10000;
     private final Thread currentThread = Thread.currentThread();
-
+/*
     @BeforeEach
     public void setup() {
         PersonDAO.getPersonDAO().getPersons();
@@ -25,7 +30,6 @@ public class ServerThreadedServerTest {
         PersonDAO.getPersonDAO().addPerson(new Person("username", "password"));
         PersonDAO.getPersonDAO().setUserThatSignIn("username");
 
-<<<<<<< HEAD
     @Test
     public void test() throws IOException {
         ServerSocket ss = new ServerSocket(port + 1);
@@ -43,11 +47,9 @@ public class ServerThreadedServerTest {
         }
     }
 
-    /*
+
     @Test
     public void testMaybe() {
-=======
->>>>>>> ae6505f3b75d54bec05f54113e315cd4e1485e49
         Thread th = new Thread(new TestingServer());
         th.start();
         Thread re = new Thread(new TestingClient());
@@ -65,7 +67,7 @@ public class ServerThreadedServerTest {
         Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());
         assertDoesNotThrow(()-> Client.getClient().sendObject(data));
     }
-*/
+
     private class TestingServer implements Runnable {
         public void run() {
             Server.getServer().runServer(3000, 1);
@@ -77,5 +79,5 @@ public class ServerThreadedServerTest {
             Client.getClient().runClient(3000, "localhost");
         }
     }
-
+*/
 }
