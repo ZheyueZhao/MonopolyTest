@@ -7,15 +7,20 @@ import org.bihe.model.Data;
 import org.bihe.model.Person;
 import org.bihe.network.client.Client;
 import org.bihe.network.server.Server;
+import org.bihe.ui.GUIManager;
+import org.bihe.ui.GamePanel;
+import org.bihe.ui.Piece;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ServerThreadedServerTest {
-    private Server serverSpy;
     private int port = 3000;
-    private int sleepTime = 10000;
-    private final Thread currentThread = Thread.currentThread();
 
     @BeforeEach
     public void setup() {
@@ -35,11 +40,14 @@ public class ServerThreadedServerTest {
     public void testGameStartClientServerInteractionDoesNotFail() {
         PersonDAO.getPersonDAO().setUserThatSignIn("username");
         Person p = PersonDAO.getPersonDAO().getThePerson();
-        Server.getServer().sendClintNo();
-        Server.getServer().sendObjectToAll(1);
+
+        assertDoesNotThrow(()-> Server.getServer().sendClintNo());
+        assertDoesNotThrow(()-> Server.getServer().sendObjectToAll(1));
+
         PersonDAO.getPersonDAO().changePerson(p);
         PlayerDAO.getPlayerDAO().changeOnePlayer(p);
-        Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());
+        Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates(), 1, 1, 2);
+
         assertDoesNotThrow(()-> Client.getClient().sendObject(data));
     }
 

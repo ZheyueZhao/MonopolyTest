@@ -68,8 +68,6 @@ public class ClientTest {
         out = new ByteArrayOutputStream();
         in = new ByteArrayInputStream(buf);
 
-
-
         try(MockedConstruction<Socket> mockSocket = Mockito.mockConstruction(Socket.class, (mock, context)-> {
             when(mock.getOutputStream()).thenReturn(out);
             when(mock.getInputStream()).thenReturn(in);
@@ -92,7 +90,7 @@ public class ClientTest {
     // other errors, however it is uncaught and thrown
     @Test
     public void testSendObjectNoExceptionThrownWhenRunning() throws NoSuchFieldException {
-        // assertDoesNotThrow(()->Client.getClient().sendObject(new Person("username", "password")));
+        assertDoesNotThrow(()->Client.getClient().sendObject(new Person("username", "password")));
     }
 
     @Test
