@@ -10,15 +10,16 @@ import org.bihe.model.Request;
 import org.bihe.network.client.Client;
 import org.bihe.ui.GUIManager;
 import org.bihe.ui.GameFrame;
-import org.bihe.ui.Piece;
 import org.bihe.ui.actionPanel.EstatesPanel;
 import org.bihe.ui.actionPanel.PlayerPanel;
+import org.bihe.ui.mainFrame.MainFrame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -150,36 +151,47 @@ public class ClientTest {
 
         socketMock = mock(Socket.class);
 
+        try(MockedStatic mockedGUIManager = Mockito.mockStatic(GUIManager.class)) {
+            EstatesPanel p = mock(EstatesPanel.class);
+            PlayerPanel p2 = mock(PlayerPanel.class);
+            MainFrame m = mock(MainFrame.class);
+            GameFrame f = mock(GameFrame.class);
+            mockedGUIManager.when(GUIManager::getEstatePanel).thenReturn(p);
+            mockedGUIManager.when(GUIManager::getPlayerPanel).thenReturn(p2);
+            mockedGUIManager.when(GUIManager::getMainFrame).thenReturn(m);
+            mockedGUIManager.when(GUIManager::getGameFrame).thenReturn(f);
 
-        try(MockedConstruction<Socket> mockSocket = Mockito.mockConstruction(Socket.class, (mock, context)-> {
-            when(mock.getOutputStream()).thenReturn(out);
-            when(mock.getInputStream()).thenReturn(in);
-        })) {
-            HashMap<String, Person> people = new HashMap<String, Person>();
-            PlayerDAO.getPlayerDAO().getPlayers();
-            EstateDAO.getEstateDAO().getEstates();
+            try(MockedConstruction<Socket> mockSocket = Mockito.mockConstruction(Socket.class, (mock, context)-> {
+                when(mock.getOutputStream()).thenReturn(out);
+                when(mock.getInputStream()).thenReturn(in);
+            })) {
+                HashMap<String, Person> people = new HashMap<String, Person>();
+                PlayerDAO.getPlayerDAO().getPlayers();
+                EstateDAO.getEstateDAO().getEstates();
 
-            people.put("test", PersonDAO.getPersonDAO().getThePerson());
-            Data dat = new Data(people, EstateDAO.getEstateDAO().getEstates(), 0, 1, 2);
-            outp.writeObject(dat);
-            outp.flush();
+                people.put("test", PersonDAO.getPersonDAO().getThePerson());
+                Data dat = new Data(people, EstateDAO.getEstateDAO().getEstates(), 0, 1, 2);
+                outp.writeObject(dat);
+                outp.flush();
 
-            buf = bos.toByteArray();
-            out = new ByteArrayOutputStream();
-            in = new ByteArrayInputStream(buf);
+                buf = bos.toByteArray();
+                out = new ByteArrayOutputStream();
+                in = new ByteArrayInputStream(buf);
 
-            clientSpy = spy(Client.getClient());
-            when(clientSpy.getSocket(anyString(), anyInt())).thenReturn(mockSocket.constructed().get(0));
-            Socket sock = clientSpy.getSocket(ip, port);
+                clientSpy = spy(Client.getClient());
+                when(clientSpy.getSocket(anyString(), anyInt())).thenReturn(mockSocket.constructed().get(0));
+                Socket sock = clientSpy.getSocket(ip, port);
 
-            //there because client throws errors w/o these
-            GUIManager.getEstatePanel();
-            GUIManager.getPlayerPanel();
-            GUIManager.getMainFrame();
-            GUIManager.getGameFrame();
+                //there because client throws errors w/o these
+                GUIManager.getEstatePanel();
+                GUIManager.getPlayerPanel();
+                GUIManager.getMainFrame();
+                GUIManager.getGameFrame();
 
-            assertDoesNotThrow(()-> clientSpy.runClient(port, ip));
+                assertDoesNotThrow(()-> clientSpy.runClient(port, ip));
+            }
         }
+
     }
 
     @Test
@@ -199,29 +211,39 @@ public class ClientTest {
 
         socketMock = mock(Socket.class);
 
+        try(MockedStatic mockedGUIManager = Mockito.mockStatic(GUIManager.class)) {
+            EstatesPanel p = mock(EstatesPanel.class);
+            PlayerPanel p2 = mock(PlayerPanel.class);
+            MainFrame m = mock(MainFrame.class);
+            GameFrame f = mock(GameFrame.class);
+            mockedGUIManager.when(GUIManager::getEstatePanel).thenReturn(p);
+            mockedGUIManager.when(GUIManager::getPlayerPanel).thenReturn(p2);
+            mockedGUIManager.when(GUIManager::getMainFrame).thenReturn(m);
+            mockedGUIManager.when(GUIManager::getGameFrame).thenReturn(f);
 
-        try(MockedConstruction<Socket> mockSocket = Mockito.mockConstruction(Socket.class, (mock, context)-> {
-            when(mock.getOutputStream()).thenReturn(out);
-            when(mock.getInputStream()).thenReturn(in);
-        })) {
-            HashMap<String, Person> people = new HashMap<String, Person>();
-            PlayerDAO.getPlayerDAO().getPlayers();
-            EstateDAO.getEstateDAO().getEstates();
+            try (MockedConstruction<Socket> mockSocket = Mockito.mockConstruction(Socket.class, (mock, context) -> {
+                when(mock.getOutputStream()).thenReturn(out);
+                when(mock.getInputStream()).thenReturn(in);
+            })) {
+                HashMap<String, Person> people = new HashMap<String, Person>();
+                PlayerDAO.getPlayerDAO().getPlayers();
+                EstateDAO.getEstateDAO().getEstates();
 
-            people.put("test", PersonDAO.getPersonDAO().getThePerson());
-            Exit dat = new Exit("test");
-            outp.writeObject(dat);
-            outp.flush();
+                people.put("test", PersonDAO.getPersonDAO().getThePerson());
+                Exit dat = new Exit("test");
+                outp.writeObject(dat);
+                outp.flush();
 
-            buf = bos.toByteArray();
-            out = new ByteArrayOutputStream();
-            in = new ByteArrayInputStream(buf);
+                buf = bos.toByteArray();
+                out = new ByteArrayOutputStream();
+                in = new ByteArrayInputStream(buf);
 
-            clientSpy = spy(Client.getClient());
-            when(clientSpy.getSocket(anyString(), anyInt())).thenReturn(mockSocket.constructed().get(0));
-            Socket sock = clientSpy.getSocket(ip, port);
+                clientSpy = spy(Client.getClient());
+                when(clientSpy.getSocket(anyString(), anyInt())).thenReturn(mockSocket.constructed().get(0));
+                Socket sock = clientSpy.getSocket(ip, port);
 
-            assertDoesNotThrow(() -> clientSpy.runClient(port, ip));
+                assertDoesNotThrow(() -> clientSpy.runClient(port, ip));
+            }
         }
     }
 
@@ -242,31 +264,41 @@ public class ClientTest {
 
         socketMock = mock(Socket.class);
 
+        try(MockedStatic mockedGUIManager = Mockito.mockStatic(GUIManager.class)) {
+            EstatesPanel p = mock(EstatesPanel.class);
+            PlayerPanel p2 = mock(PlayerPanel.class);
+            MainFrame m = mock(MainFrame.class);
+            GameFrame f = mock(GameFrame.class);
+            mockedGUIManager.when(GUIManager::getEstatePanel).thenReturn(p);
+            mockedGUIManager.when(GUIManager::getPlayerPanel).thenReturn(p2);
+            mockedGUIManager.when(GUIManager::getMainFrame).thenReturn(m);
+            mockedGUIManager.when(GUIManager::getGameFrame).thenReturn(f);
 
-        try(MockedConstruction<Socket> mockSocket = Mockito.mockConstruction(Socket.class, (mock, context)-> {
-            when(mock.getOutputStream()).thenReturn(out);
-            when(mock.getInputStream()).thenReturn(in);
-        })) {
-            HashMap<String, Person> people = new HashMap<String, Person>();
-            PlayerDAO.getPlayerDAO().getPlayers();
-            EstateDAO.getEstateDAO().getEstates();
+            try (MockedConstruction<Socket> mockSocket = Mockito.mockConstruction(Socket.class, (mock, context) -> {
+                when(mock.getOutputStream()).thenReturn(out);
+                when(mock.getInputStream()).thenReturn(in);
+            })) {
+                HashMap<String, Person> people = new HashMap<String, Person>();
+                PlayerDAO.getPlayerDAO().getPlayers();
+                EstateDAO.getEstateDAO().getEstates();
 
-            PersonDAO.getPersonDAO().getThePerson().setPieceNumber(1);
-            people.put("test", PersonDAO.getPersonDAO().getThePerson());
-            Data dat = new Data(people, EstateDAO.getEstateDAO().getEstates(), 1, 1, 2);
-            outp.writeObject(dat);
-            outp.flush();
+                PersonDAO.getPersonDAO().getThePerson().setPieceNumber(1);
+                people.put("test", PersonDAO.getPersonDAO().getThePerson());
+                Data dat = new Data(people, EstateDAO.getEstateDAO().getEstates(), 1, 1, 2);
+                outp.writeObject(dat);
+                outp.flush();
 
-            buf = bos.toByteArray();
-            out = new ByteArrayOutputStream();
-            in = new ByteArrayInputStream(buf);
+                buf = bos.toByteArray();
+                out = new ByteArrayOutputStream();
+                in = new ByteArrayInputStream(buf);
 
-            clientSpy = spy(Client.getClient());
-            when(clientSpy.getSocket(anyString(), anyInt())).thenReturn(mockSocket.constructed().get(0));
-            Socket sock = clientSpy.getSocket(ip, port);
+                clientSpy = spy(Client.getClient());
+                when(clientSpy.getSocket(anyString(), anyInt())).thenReturn(mockSocket.constructed().get(0));
+                Socket sock = clientSpy.getSocket(ip, port);
 
-            assertDoesNotThrow(() -> clientSpy.runClient(port, ip));
-            PersonDAO.getPersonDAO().getThePerson().setPieceNumber(0);
+                assertDoesNotThrow(() -> clientSpy.runClient(port, ip));
+                PersonDAO.getPersonDAO().getThePerson().setPieceNumber(0);
+            }
         }
     }
 
