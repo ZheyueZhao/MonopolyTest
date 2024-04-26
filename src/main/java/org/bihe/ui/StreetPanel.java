@@ -8,7 +8,6 @@ import java.util.HashMap;
 import javax.swing.JPanel;
 
 import org.bihe.DAO.EstateDAO;
-import org.bihe.Generated;
 import org.bihe.model.Estate;
 import org.bihe.model.Street;
 
@@ -56,7 +55,6 @@ public class StreetPanel extends JPanel
 		repaint();
 	}
 
-	@Generated
 	@Override
 	protected void paintComponent(Graphics g)
 	{

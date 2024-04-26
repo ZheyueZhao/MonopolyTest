@@ -10,6 +10,7 @@ import org.bihe.ui.GUIManager;
 import org.bihe.ui.GamePanel;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 
@@ -20,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1072,11 +1074,13 @@ public class StreetTest {
         return Stream.of(1, 3, 6, 8, 9, 11, 13, 14, 16, 18, 19, 21, 23, 24, 26, 27, 29,31, 32, 34, 37, 39);
     }
 
+
     @ParameterizedTest
     @MethodSource("streetIdsProvider")
     public void testHouseExistInAllStreetsS1(int streetId) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         assert testHouseExistInAllStreetsForStreet(streetId) == true;
     }
+
 
     private boolean testHouseExistInAllStreetsForStreet(int streetId) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         estateDao.changeEstateDAO(estates);
@@ -1084,6 +1088,33 @@ public class StreetTest {
         Street street = (Street) test.get(streetId);
         street.setHotelExist(true);
         EstateDAO.getEstateDAO().changeEstate(street);
+
+        Class<?> streetTestClass = street.getClass();
+        Method haveEstateMethod = streetTestClass.getDeclaredMethod("houseExistInAllStreets");
+        haveEstateMethod.setAccessible(true);
+
+        return  (Boolean) haveEstateMethod.invoke(street);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1,3","3,1","6,8","6,9","8,6","8,9","9,6","9,8",
+            "11,13","11,14","13,11","13,14","14,11","14,13","16,18","16,19","18,16","18,19","19,16","19,18"
+    ,"21,23","23,21","23,24","24,21","24,23","26,29","27,26","27,29","29,26","29,27",
+    "31,32","31,34","32,31","32,34","34,31","34,32","37,39","39,37"})
+    public void testHouseExistInAllStreetsS1Hotel(int streetId, int hotelId) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        assert testHouseExistInAllStreetsForStreetHotelExists(streetId, hotelId) == true;
+    }
+
+    private boolean testHouseExistInAllStreetsForStreetHotelExists(int streetId, int hotelId) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        estateDao.changeEstateDAO(estates);
+        HashMap<Integer, Estate> test = EstateDAO.getEstateDAO().getEstates();
+        Street street = (Street) test.get(streetId);
+        Street street1 = (Street) test.get(hotelId);
+        street1.setHotelExist(true);
+        street.setHouseCount(street1.getHouseCount()+1);
+        street.setHotelExist(true);
+        EstateDAO.getEstateDAO().changeEstate(street);
+        EstateDAO.getEstateDAO().changeEstate(street1);
 
         Class<?> streetTestClass = street.getClass();
         Method haveEstateMethod = streetTestClass.getDeclaredMethod("houseExistInAllStreets");

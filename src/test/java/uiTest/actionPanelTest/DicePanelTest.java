@@ -12,6 +12,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class DicePanelTest {
     DicePanel dicePanel;
     @BeforeEach
@@ -46,6 +48,32 @@ public class DicePanelTest {
             }
 
         }
+
+    }
+
+    @Test
+    public void tossDiceTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Class<?> pieceWorkerTestClass = dicePanel.getClass();
+        Method makeRandomMethod = pieceWorkerTestClass.getDeclaredMethod("tossDice");
+        makeRandomMethod.setAccessible(true);
+
+
+        assertDoesNotThrow(() -> {
+            makeRandomMethod.invoke(dicePanel);
+        });
+
+    }
+
+    @Test
+    public void inJailTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Class<?> pieceWorkerTestClass = dicePanel.getClass();
+        Method makeRandomMethod = pieceWorkerTestClass.getDeclaredMethod("inJail");
+        makeRandomMethod.setAccessible(true);
+
+
+        assertDoesNotThrow(() -> {
+            makeRandomMethod.invoke(dicePanel);
+        });
 
     }
 }

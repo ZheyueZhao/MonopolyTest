@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import org.bihe.DAO.EstateDAO;
 import org.bihe.DAO.PersonDAO;
 import org.bihe.DAO.PlayerDAO;
-import org.bihe.Generated;
 import org.bihe.model.Data;
 import org.bihe.model.Person;
 import org.bihe.model.StreetActions;
@@ -102,7 +101,6 @@ public class DicePanel extends JPanel
 		this.repaint();
 	}
 
-	@Generated
 	private class GetActions implements ActionListener
 	{
 		@Override
