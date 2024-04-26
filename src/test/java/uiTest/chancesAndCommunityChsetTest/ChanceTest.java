@@ -6,6 +6,7 @@ import org.bihe.DAO.PlayerDAO;
 import org.bihe.Generated;
 import org.bihe.model.Estate;
 import org.bihe.model.Person;
+import org.bihe.model.Street;
 import org.bihe.model.StreetActions;
 import org.bihe.network.client.Client;
 import org.bihe.ui.BuyStreetDialog;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -60,6 +62,7 @@ public class ChanceTest {
     EstatesPanel mockEstatePanel;
     Client mockelient;
     Estate mockEstate;
+    PersonDAO mockPersonDAO;;
     @BeforeEach
     public void setUp(){
         mockEstatePanel = mock(EstatesPanel.class);
@@ -68,6 +71,7 @@ public class ChanceTest {
         mockPlayerDAO = Mockito.mock(PlayerDAO.class);
         mockedDicePanel = Mockito.mock(DicePanel.class);
         mockPlayerPanel = Mockito.mock(PlayerPanel.class);
+        mockPersonDAO = mock(PersonDAO.class);
         mockelient = mock(Client.class);
         mockEstate = mock(Estate.class);
         playerDAO = PlayerDAO.getPlayerDAO();
@@ -120,7 +124,7 @@ public class ChanceTest {
     }
 
     static Stream<Integer> diceRolls() {
-        return Stream.of(4,5);
+        return Stream.of(4,5,14);
     }
 
     @ParameterizedTest
@@ -318,5 +322,196 @@ public class ChanceTest {
             }
         });
     }
+    static Stream<Integer> diceRolls12() {
+        return Stream.of(1,2);
+    }
+
+    @ParameterizedTest
+    @MethodSource("diceRolls12")
+    public void chanceRollOne(int rolls) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Chance spyObj = spy(Chance.class);
+        when(spyObj.makeRandom()).thenReturn(rolls);
+        personDAO.removePerson(person);
+        person.setLocation(27);
+        personDAO.addPerson(person);
+        personDAO.setUserThatSignIn("testUser");
+        assertDoesNotThrow(() -> {
+            try (MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+                try (MockedStatic mockedClient = mockStatic(Client.class)) {
+                    try (MockedStatic mockedGUIManager = mockStatic(GUIManager.class)) {
+                        mockedGUIManager.when(GUIManager::getGamePanel).thenReturn(mockGamePanel);
+                        mockedGUIManager.when(GUIManager::getPlayerPanel).thenReturn(mockPlayerPanel);
+                        mockedGUIManager.when(GUIManager::getDicePanel).thenReturn(mockedDicePanel);
+                        mockedClient.when(Client::getClient).thenReturn(mockelient);
+                        spyObj.chance();
+                    }
+                }
+
+            }
+        });
+    }
+
+    @Test
+    public void chanceRollThree() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Chance spyObj = spy(Chance.class);
+        when(spyObj.makeRandom()).thenReturn(3);
+        personDAO.removePerson(person);
+        person.setLocation(22);
+        personDAO.addPerson(person);
+        personDAO.setUserThatSignIn("testUser");
+        assertDoesNotThrow(() -> {
+            try (MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+                try (MockedStatic mockedClient = mockStatic(Client.class)) {
+                    try (MockedStatic mockedGUIManager = mockStatic(GUIManager.class)) {
+                        try (MockedStatic mockedStreetAction = mockStatic(StreetActions.class)) {
+                            try(MockedConstruction<StreetActions> mockedChance = mockConstruction(StreetActions.class)){
+
+                                mockedGUIManager.when(GUIManager::getGamePanel).thenReturn(mockGamePanel);
+                                mockedGUIManager.when(GUIManager::getPlayerPanel).thenReturn(mockPlayerPanel);
+                                mockedGUIManager.when(GUIManager::getDicePanel).thenReturn(mockedDicePanel);
+                                mockedClient.when(Client::getClient).thenReturn(mockelient);
+                                spyObj.chance();
+                                StreetActions streetActionsMock = mockedChance.constructed().get(0);
+                            }
+                        }
+                    }
+
+                }}
+        });
+    }
+
+    static Stream<Integer> otherDiceRolls671115() {
+        return Stream.of(6,7,11,15);
+    }
+
+    @ParameterizedTest
+    @MethodSource("otherDiceRolls671115")
+    public void chanceSix(int dice) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Chance spyObj = spy(Chance.class);
+        when(spyObj.makeRandom()).thenReturn(dice);
+        personDAO.removePerson(person);
+        person.setLocation(22);
+        personDAO.addPerson(person);
+        personDAO.setUserThatSignIn("testUser");
+        assertDoesNotThrow(() -> {
+            try (MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+                try (MockedStatic mockedClient = mockStatic(Client.class)) {
+                    mockedClient.when(Client::getClient).thenReturn(mockelient);
+                    spyObj.chance();
+                }
+
+            }
+        });
+    }
+
+    static Stream<Integer> otherDiceRolls8() {
+        return Stream.of(8,9);
+    }
+
+    @ParameterizedTest
+    @MethodSource("otherDiceRolls8")
+    public void chanceEight(int dice) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Chance spyObj = spy(Chance.class);
+        when(spyObj.makeRandom()).thenReturn(dice);
+        personDAO.removePerson(person);
+        person.setLocation(22);
+        personDAO.addPerson(person);
+        personDAO.setUserThatSignIn("testUser");
+        assertDoesNotThrow(() -> {
+            try (MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+                try (MockedStatic mockedClient = mockStatic(Client.class)) {
+                    try (MockedStatic mockedGUIManager = mockStatic(GUIManager.class)) {
+                        mockedGUIManager.when(GUIManager::getGamePanel).thenReturn(mockGamePanel);
+                        mockedClient.when(Client::getClient).thenReturn(mockelient);
+                        spyObj.chance();
+                    }
+                }
+
+            }
+        });
+    }
+
+    @Test
+    public void chanceEightJailCard() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Chance spyObj = spy(Chance.class);
+        when(spyObj.makeRandom()).thenReturn(9);
+        personDAO.removePerson(person);
+        person.setHaveJailCard(true);
+        person.setLocation(22);
+        personDAO.addPerson(person);
+        personDAO.setUserThatSignIn("testUser");
+        assertDoesNotThrow(() -> {
+            try (MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+                try (MockedStatic mockedClient = mockStatic(Client.class)) {
+                    try (MockedStatic mockedGUIManager = mockStatic(GUIManager.class)) {
+                        mockedGUIManager.when(GUIManager::getGamePanel).thenReturn(mockGamePanel);
+                        mockedClient.when(Client::getClient).thenReturn(mockelient);
+                        spyObj.chance();
+                    }
+                }
+
+            }
+        });
+    }
+
+    @Test
+    public void chanceTen() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Chance spyObj = spy(Chance.class);
+        when(spyObj.makeRandom()).thenReturn(10);
+        personDAO.removePerson(person);
+        person.setLocation(22);
+        personDAO.addPerson(person);
+        personDAO.setUserThatSignIn("testUser");
+        Person mockPerson = mock(Person.class);
+        assertDoesNotThrow(() -> {
+            try (MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+                try (MockedStatic mockedClient = mockStatic(Client.class)) {
+                    try (MockedStatic mockedPersonDAO = mockStatic(PersonDAO.class)) {
+                        mockedClient.when(Client::getClient).thenReturn(mockelient);
+                        mockedClient.when(PersonDAO::getPersonDAO).thenReturn(mockPersonDAO);
+                        when(mockPersonDAO.getThePerson()).thenReturn(mockPerson);
+                        ArrayList<Estate> newEstates = new ArrayList<>();
+                        Street street = new Street("NewStreet", 777, 100, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110);
+                        street.setHotelExist(true);
+                        newEstates.add(street);
+                        when(mockPerson.getEstates()).thenReturn(newEstates);
+                        spyObj.chance();
+                    }
+                }
+
+            }
+        });
+    }
+
+    @Test
+    public void chanceTwelve() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Chance spyObj = spy(Chance.class);
+        when(spyObj.makeRandom()).thenReturn(12);
+        personDAO.removePerson(person);
+        person.setLocation(22);
+        personDAO.addPerson(person);
+        personDAO.setUserThatSignIn("testUser");
+        Person mockPerson = mock(Person.class);
+        assertDoesNotThrow(() -> {
+            try (MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+                try (MockedStatic mockedClient = mockStatic(Client.class)) {
+                    try (MockedStatic mockedGUIManager = mockStatic(GUIManager.class)) {
+                        try (MockedStatic mockedPersonDAO = mockStatic(PersonDAO.class)) {
+                            mockedClient.when(PersonDAO::getPersonDAO).thenReturn(mockPersonDAO);
+                            when(mockPersonDAO.getThePerson()).thenReturn(mockPerson);
+                            mockedClient.when(Client::getClient).thenReturn(mockelient);
+                            mockedGUIManager.when(GUIManager::getGamePanel).thenReturn(mockGamePanel);
+                            doNothing().when(mockGamePanel).movePieceOnePlace(anyInt(),anyInt());
+                            doNothing().when(mockPerson).setMoney(anyInt());
+                            spyObj.chance();
+                    }}
+                }
+
+            }
+        });
+    }
+
+
+
 
 }

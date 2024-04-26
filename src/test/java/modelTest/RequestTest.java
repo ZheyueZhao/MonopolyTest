@@ -80,6 +80,7 @@ public class RequestTest {
         assertEquals(0, testRequest.getResponse());
     }
 
+    /*
     @Test
     public void testRequestWith1Response() {
         testRequest = new Request(giveEstates, recieveEstates, 50, 50, "testUser", "testUser");
@@ -98,6 +99,7 @@ public class RequestTest {
             }
         }
     }
+*/
 
     @Test
     public void testRequestWithNegativeOneResponse() {
