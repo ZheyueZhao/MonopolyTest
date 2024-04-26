@@ -57,7 +57,7 @@ public class StreetTest {
     private Estate str22;
     private Field EstateField;
     ArrayList<Estate> personEstates = new ArrayList<Estate>();
-
+    private HashMap<Integer, Estate> estates;
     @BeforeEach
     public void setUp() throws NoSuchFieldException {
         str1 = new Street("MediterraneanAvenue", 1, 60, 2, 30, 33, 4, 10, 30, 90, 160, 250, 50, 50);
@@ -86,8 +86,30 @@ public class StreetTest {
                 200);
         str22 = new Street("PennsylvaniaAvenue", 39, 320, 28, 160, 176, 56, 150, 450, 1000, 1200, 1400, 200,
                 200);
-
-        person = new Person("testUser", "password");
+        estates = new HashMap<>();
+        estates.put(1, str1);
+        estates.put(3, str2);
+        estates.put(6, str3);
+        estates.put(8, str4);
+        estates.put(9, str5);
+        estates.put(11, str6);
+        estates.put(13, str7);
+        estates.put(14, str8);
+        estates.put(16, str9);
+        estates.put(18, str10);
+        estates.put(19, str11);
+        estates.put(21, str12);
+        estates.put(23, str13);
+        estates.put(24, str14);
+        estates.put(26, str15);
+        estates.put(27, str16);
+        estates.put(29, str17);
+        estates.put(31, str18);
+        estates.put(32, str19);
+        estates.put(34, str20);
+        estates.put(37, str21);
+        estates.put(39, str22);
+        person = new Person("streettTstUser", "password");
         ArrayList<Estate> estates = new ArrayList<>();
         person.newEstates_add(estates);
         person.getEstates();
@@ -95,96 +117,104 @@ public class StreetTest {
         personDao = PersonDAO.getPersonDAO();
         estateDao = EstateDAO.getEstateDAO();
         personDao.addPerson(person);
-        personDao.setUserThatSignIn("testUser");
+        personDao.setUserThatSignIn("streettTstUser");
         EstateField = Person.class.getDeclaredField("estates");
         EstateField.setAccessible(true);
     }
 
+    @Order(1)
     @Test
     public void testColorSetRent() {
         street.setColorSetRent(100);
         assertEquals(100, street.getColorSetRent());
     }
 
+    @Order(2)
     @Test
     public void testHs1Rent() {
         street.setHs1Rent(50);
         assertEquals(50, street.getHs1Rent());
     }
 
+    @Order(3)
     @Test
     public void testHs2Rent() {
         street.setHs2Rent(50);
         assertEquals(50, street.getHs2Rent());
     }
 
+    @Order(4)
     @Test
     public void testHs3Rent() {
         street.setHs3Rent(50);
         assertEquals(50, street.getHs3Rent());
     }
 
+    @Order(5)
     @Test
     public void testHs4Rent() {
         street.setHs4Rent(50);
         assertEquals(50, street.getHs4Rent());
     }
 
+    @Order(6)
     @Test
     public void testHt1Rent() {
         street.setHt1Rent(50);
         assertEquals(50, street.getHt1Rent());
     }
 
+    @Order(7)
     @Test
     public void testColor() {
         street.setColorSet(true);
         assertEquals(true, street.isColorSet());
     }
 
+    @Order(8)
     @Test
     public void hotelRent() {
         street.setHotelsCost(50);
         assertEquals(50, street.getHotelsCost());
     }
 
+    @Order(9)
     @Test
-    @Order(1)
     public void testRentWithNoHousesOrHotels() {
         assertEquals(10, street.rent());
     }
 
     @Test
-    @Order(2)
+    @Order(10)
     public void testRentWithOneHouse() {
         street.setHouseCount(1);
         assertEquals(30, street.rent());
     }
 
     @Test
-    @Order(3)
+    @Order(11)
     public void testRentWithFourHouses() {
         street.setHouseCount(4);
         assertEquals(60, street.rent());
     }
 
     @Test
-    @Order(4)
+    @Order(12)
     public void testRentWithHotel() {
         street.setHouseCount(0);
         street.setHotelExist(true);
         assertEquals(70, street.rent());
     }
-    /*
+/*
     @Test
     public void testBuyHouseWithEnoughMoney() {
         // Assuming the person has enough money
         assertTrue(street.buyHouse());
         assertEquals(1, street.getHouseCount());
-    }*/
-
+    }
+*/
     @Test
-    @Order(5)
+    @Order(13)
     public void testHaveEstate() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         ArrayList<Estate> personEstates = new ArrayList<Estate>();
         personEstates.add(str1);
@@ -199,7 +229,7 @@ public class StreetTest {
     }
 
     @Test
-    @Order(6)
+    @Order(14)
     public void testHaveNoEstate() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         Class<?> streetTestClass = street.getClass();
@@ -210,10 +240,11 @@ public class StreetTest {
     }
 
     @Test
-    @Order(7)
+    @Order(15)
     public void testBuyHouse() throws IllegalAccessException {
             try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
                 try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                    estateDao.changeEstateDAO(estates);
                     PersonDAO mockPersonDao = mock(PersonDAO.class);
                     personEstates.add(str1);
                     personEstates.add(str2);
@@ -227,11 +258,13 @@ public class StreetTest {
         }
     }
 
+
     @Test
-    @Order(8)
+    @Order(16)
     public void testBuyHouseNoHouse() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str1);
                 personEstates.add(str2);
@@ -242,17 +275,17 @@ public class StreetTest {
                 mockedPersonDao.when(PersonDAO::getPersonDAO).thenReturn(mockPersonDao);
                 when(mockPersonDao.getThePerson()).thenReturn(person);
                 assert street.buyHouse() == false;
-                street3.setHouseCount(0);
-                estateDao.changeEstate(street3);
+
             }
         }
     }
 
     @Test
-    @Order(9)
+    @Order(17)
     public void testBuyHouseNoMoney() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setHousesCost(9999999);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str1);
@@ -268,10 +301,11 @@ public class StreetTest {
     }
 
     @Test
-    @Order(10)
+    @Order(18)
     public void testBuyHouseCount4() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setHousesCost(0);
                 street.setHouseCount(4);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
@@ -292,6 +326,7 @@ public class StreetTest {
     public void testBuyHouseCount3() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setHousesCost(0); street.setHouseCount(3);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str1); personEstates.add(str2);
@@ -310,6 +345,7 @@ public class StreetTest {
     public void testBuyHousePanel6() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(6);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str3);personEstates.add(str4);personEstates.add(str5);
@@ -328,6 +364,7 @@ public class StreetTest {
     public void testBuyHouseNoHousePanel6() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(6);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str3);personEstates.add(str4);personEstates.add(str5);
@@ -349,6 +386,7 @@ public class StreetTest {
     public void testBuyHouseNoMoneyPanel8() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(6);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str3);personEstates.add(str4);personEstates.add(str5);
@@ -367,6 +405,7 @@ public class StreetTest {
     public void testBuyHouseCount4Panel8() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(6);
                 street.setHousesCost(0);
                 street.setHouseCount(4);
@@ -387,6 +426,7 @@ public class StreetTest {
     public void testBuyHouseCount3Panel6() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(6);
                 street.setHousesCost(0); street.setHouseCount(3);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
@@ -405,6 +445,7 @@ public class StreetTest {
     public void testBuyHousePanel11() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(11);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str6);personEstates.add(str7);personEstates.add(str8);
@@ -423,6 +464,7 @@ public class StreetTest {
     public void testBuyHouseNoHousePanel11() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(11);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str6);personEstates.add(str7);personEstates.add(str8);
@@ -444,6 +486,7 @@ public class StreetTest {
     public void testBuyHouseNoMoneyPanel11() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(11);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str6);personEstates.add(str7);personEstates.add(str8);
@@ -462,6 +505,7 @@ public class StreetTest {
     public void testBuyHouseCount4Panel11() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(11);
                 street.setHousesCost(0);
                 street.setHouseCount(4);
@@ -481,6 +525,7 @@ public class StreetTest {
     public void testBuyHouseCount3Panel11() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(11);
                 street.setHousesCost(0);
                 street.setHouseCount(3);
@@ -500,6 +545,7 @@ public class StreetTest {
     public void testBuyHousePanel16() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(16);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str9);personEstates.add(str10);personEstates.add(str11);
@@ -518,6 +564,7 @@ public class StreetTest {
     public void testBuyHouseNoHousePanel16() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(16);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str9);personEstates.add(str10);personEstates.add(str11);
@@ -539,6 +586,7 @@ public class StreetTest {
     public void testBuyHouseNoMoneyPanel16() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(16);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str9);personEstates.add(str10);personEstates.add(str11);
@@ -556,6 +604,7 @@ public class StreetTest {
     public void testBuyHouseCount4Panel16() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(16);
                 street.setHousesCost(0);
                 street.setHouseCount(4);
@@ -575,6 +624,7 @@ public class StreetTest {
     public void testBuyHouseCount3Panel16() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(16);
                 street.setHousesCost(0);
                 street.setHouseCount(3);
@@ -594,6 +644,7 @@ public class StreetTest {
     public void testBuyHousePanel21() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(21);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str12);personEstates.add(str13);personEstates.add(str14);
@@ -612,6 +663,7 @@ public class StreetTest {
     public void testBuyHouseNoHousePanel21() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(21);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str12);personEstates.add(str13);personEstates.add(str14);
@@ -633,6 +685,7 @@ public class StreetTest {
     public void testBuyHouseNoMoneyPanel21() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(21);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str12);personEstates.add(str13);personEstates.add(str14);
@@ -650,6 +703,7 @@ public class StreetTest {
     public void testBuyHouseCount4Panel21() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(21);
                 street.setHousesCost(0);
                 street.setHouseCount(4);
@@ -669,6 +723,7 @@ public class StreetTest {
     public void testBuyHouseCount3Panel21() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(21);
                 street.setHousesCost(0);
                 street.setHouseCount(3);
@@ -688,6 +743,7 @@ public class StreetTest {
     public void testBuyHousePanel26() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(26);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str15);personEstates.add(str16);personEstates.add(str17);
@@ -706,6 +762,7 @@ public class StreetTest {
     public void testBuyHouseNoHousePanel26() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(27);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str15);personEstates.add(str16);personEstates.add(str17);
@@ -727,6 +784,7 @@ public class StreetTest {
     public void testBuyHouseNoMoneyPanel26() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(26);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str15);personEstates.add(str16);personEstates.add(str17);
@@ -744,6 +802,7 @@ public class StreetTest {
     public void testBuyHouseCount4Panel26() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(26);
                 street.setHousesCost(0);
                 street.setHouseCount(4);
@@ -763,6 +822,7 @@ public class StreetTest {
     public void testBuyHouseCount3Panel26() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(26);
                 street.setHousesCost(0);
                 street.setHouseCount(3);
@@ -782,6 +842,7 @@ public class StreetTest {
     public void testBuyHousePanel31() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(31);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str18);personEstates.add(str19);personEstates.add(str20);
@@ -800,6 +861,7 @@ public class StreetTest {
     public void testBuyHouseNoHousePanel31() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(32);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str18);personEstates.add(str19);personEstates.add(str20);
@@ -821,6 +883,7 @@ public class StreetTest {
     public void testBuyHouseNoMoneyPanel31() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(31);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str18);personEstates.add(str19);personEstates.add(str20);
@@ -838,6 +901,7 @@ public class StreetTest {
     public void testBuyHouseCount4Panel31() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(31);
                 street.setHousesCost(0);
                 street.setHouseCount(4);
@@ -857,6 +921,7 @@ public class StreetTest {
     public void testBuyHouseCount3Panel31() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(31);
                 street.setHousesCost(0);
                 street.setHouseCount(3);
@@ -876,6 +941,7 @@ public class StreetTest {
     public void testBuyHousePanel37() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(37);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str21);personEstates.add(str22);
@@ -894,6 +960,7 @@ public class StreetTest {
     public void testBuyHouseNoHousePanel37() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(39);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str21);personEstates.add(str22);
@@ -915,6 +982,7 @@ public class StreetTest {
     public void testBuyHouseNoMoneyPanel37() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(37);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 personEstates.add(str21);personEstates.add(str22);
@@ -932,6 +1000,7 @@ public class StreetTest {
     public void testBuyHouseCount4Panel37() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(37);
                 street.setHousesCost(0);
                 street.setHouseCount(4);
@@ -951,6 +1020,7 @@ public class StreetTest {
     public void testBuyHouseCount3Panel37() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(37);
                 street.setHousesCost(0);
                 street.setHouseCount(3);
@@ -972,6 +1042,7 @@ public class StreetTest {
     public void testBuyHouseCount3PanelOOB() throws IllegalAccessException {
         try(MockedStatic mockedPersonDao = mockStatic(PersonDAO.class)) {
             try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                estateDao.changeEstateDAO(estates);
                 street.setPanelNo(100);
                 PersonDAO mockPersonDao = mock(PersonDAO.class);
                 EstateField.set(person, personEstates);
@@ -984,6 +1055,7 @@ public class StreetTest {
 
     @Test
     public void testHouseExistInAllStreets() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        estateDao.changeEstateDAO(estates);
         HashMap<Integer, Estate> test = EstateDAO.getEstateDAO().getEstates();
         Street s1 = (Street) EstateDAO.getEstateDAO().getEstates().get(1);
         s1.setHotelExist(true);
@@ -1007,6 +1079,7 @@ public class StreetTest {
     }
 
     private boolean testHouseExistInAllStreetsForStreet(int streetId) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        estateDao.changeEstateDAO(estates);
         HashMap<Integer, Estate> test = EstateDAO.getEstateDAO().getEstates();
         Street street = (Street) test.get(streetId);
         street.setHotelExist(true);
@@ -1022,6 +1095,7 @@ public class StreetTest {
     @ParameterizedTest
     @MethodSource("streetIdsProvider")
     public void testSellHouseAllStreetsHotelExist(int streetId){
+        estateDao.changeEstateDAO(estates);
         street.setPanelNo(streetId);
         street.setHotelExist(true);
         assert street.sellHouse() == true;
@@ -1035,7 +1109,7 @@ public class StreetTest {
     @Order(1)
     public void testSellHouseAllStreetsHotelDoesNotExist(int streetId){
         street.setPanelNo(streetId);
-
+        estateDao.changeEstateDAO(estates);
         HashMap<Integer, Estate> test = EstateDAO.getEstateDAO().getEstates();
         Street street = (Street) test.get(streetId);
         street.setHouseCount(100);
@@ -1051,6 +1125,7 @@ public class StreetTest {
     @Test
     public void testSellHouseZero(){
         try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+            estateDao.changeEstateDAO(estates);
             street.setHotelExist(false);
             street.setHouseCount(0);
             assert street.sellHouse() == false;
@@ -1062,6 +1137,7 @@ public class StreetTest {
     @Test
     public void testSellHouseOutOfBound(){
         try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+            estateDao.changeEstateDAO(estates);
             street.setPanelNo(99);
             street.setHouseCount(1);
             assert street.sellHouse() == false;
@@ -1074,6 +1150,7 @@ public class StreetTest {
     @MethodSource("streetIdsProvider")
     public void testMortgageAllStreets(int streetId){
         try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+            estateDao.changeEstateDAO(estates);
             street.setPanelNo(streetId);
             HashMap<Integer, Estate> test = EstateDAO.getEstateDAO().getEstates();
             Street street = (Street) test.get(streetId);
@@ -1087,6 +1164,7 @@ public class StreetTest {
     @Test
     public void testMortgageAlreadyMortgage(){
         try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+            estateDao.changeEstateDAO(estates);
             street.setMortgage(true);
             assert street.mortgage() == false;
             street.setMortgage(false);
@@ -1095,6 +1173,7 @@ public class StreetTest {
 
     @Test
     public void testMortgageSuccess(){
+        estateDao.changeEstateDAO(estates);
         street.setPanelNo(99);
         assert street.mortgage() == true;
     }
@@ -1102,6 +1181,7 @@ public class StreetTest {
     @Test
     public void testUnMortgageNotMortgaged(){
         try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+            estateDao.changeEstateDAO(estates);
             street.setPanelNo(3);
             assert street.unMortgage() == false;
         }
@@ -1110,6 +1190,7 @@ public class StreetTest {
     @Test
     public void testUnMortgageNotEnoughMoney(){
         try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+            estateDao.changeEstateDAO(estates);
             HashMap<Integer, Estate> test = EstateDAO.getEstateDAO().getEstates();
             Street s1 = (Street) EstateDAO.getEstateDAO().getEstates().get(1);
             s1.setMortgage(true);
@@ -1122,6 +1203,7 @@ public class StreetTest {
     @Test
     public void testUnMortgageSuccess(){
         try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
+            estateDao.changeEstateDAO(estates);
             HashMap<Integer, Estate> test = EstateDAO.getEstateDAO().getEstates();
             Street s1 = (Street) EstateDAO.getEstateDAO().getEstates().get(1);
             s1.setMortgage(true);

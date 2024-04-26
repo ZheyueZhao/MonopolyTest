@@ -1,30 +1,19 @@
 package uiTest;
 
-import org.bihe.DAO.PersonDAO;
-import org.bihe.DAO.PlayerDAO;
-import org.bihe.model.Estate;
-import org.bihe.model.StreetActions;
-import org.bihe.network.client.Client;
-import org.bihe.network.server.Server;
 import org.bihe.ui.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedConstruction;
-import org.bihe.model.Person;
 
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
-import org.bihe.DAO.EstateDAO;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 
 public class GamePanelTest {
 

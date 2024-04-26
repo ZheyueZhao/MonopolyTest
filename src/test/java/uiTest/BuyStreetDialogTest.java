@@ -3,7 +3,6 @@ package uiTest;
 import org.bihe.model.StreetActions;
 import org.bihe.ui.BuyStreetDialog;
 import org.bihe.ui.GUIManager;
-import org.bihe.ui.RequestDialog;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;

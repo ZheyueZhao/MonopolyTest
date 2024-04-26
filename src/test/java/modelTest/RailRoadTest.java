@@ -1,11 +1,8 @@
 package modelTest;
 
 import org.bihe.DAO.EstateDAO;
-import org.bihe.DAO.PersonDAO;
 import org.bihe.model.Estate;
-import org.bihe.model.Person;
 import org.bihe.model.RailRoad;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
