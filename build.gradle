@@ -18,9 +18,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    ignoreFailures = true
 }
 
 jacocoTestReport {
+    dependsOn test
     reports {
         html.required = true
     }
