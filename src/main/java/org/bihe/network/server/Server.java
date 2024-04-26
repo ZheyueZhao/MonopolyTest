@@ -51,7 +51,7 @@ public class Server
 		try
 		{
 			@SuppressWarnings("resource")
-			// ServerSocket ss = new ServerSocket(port);
+			// ServerSocket ss = new ServerSocket(port); //this line was commented off and the line below takes its place
 			ServerSocket ss = getSocket(port);
 			
 			for (int i = 0; i < numberOfPlayers; i++)
