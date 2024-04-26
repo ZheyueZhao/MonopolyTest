@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EstateDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.DAO</a> &gt; <span class="el_source">EstateDAO.java</span></div><h1>EstateDAO.java</h1><pre class="source lang-java linenums">package org.bihe.DAO;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import org.bihe.model.Estate;
+import org.bihe.model.RailRoad;
+import org.bihe.model.Street;
+import org.bihe.model.Utility;
+
+public class EstateDAO
+{
+	private HashMap&lt;Integer, Estate&gt; estates;
+	private static EstateDAO instance;
+
+	public EstateDAO()
+<span class="fc" id="L17">	{</span>
+<span class="fc" id="L18">		estates = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L19">		putStreets();</span>
+<span class="fc" id="L20">		putRailRoads();</span>
+<span class="fc" id="L21">		putUtilities();</span>
+<span class="fc" id="L22">	}</span>
+
+	public static EstateDAO getEstateDAO()
+	{
+<span class="fc bfc" id="L26" title="All 2 branches covered.">		if (instance == null)</span>
+		{
+<span class="fc" id="L28">			instance = new EstateDAO();</span>
+		}
+<span class="fc" id="L30">		return instance;</span>
+	}
+
+	public static void reset() {
+<span class="fc" id="L34">		instance = null;</span>
+<span class="fc" id="L35">	}</span>
+
+	public void changeEstate(Estate estate)
+	{
+<span class="fc" id="L39">		estates.replace(estate.getPanelNo(), estate);</span>
+<span class="fc" id="L40">	}</span>
+
+	public void changeEstateDAO(HashMap&lt;Integer, Estate&gt; estates)
+	{
+<span class="fc" id="L44">		this.estates = estates;</span>
+<span class="fc" id="L45">	}</span>
+
+	public HashMap&lt;Integer, Estate&gt; getEstates()
+	{
+<span class="fc" id="L49">		return this.estates;</span>
+	}
+
+	public Estate getOneEstate(int panelNo)
+	{
+<span class="fc bfc" id="L54" title="All 2 branches covered.">		for (Entry&lt;Integer, Estate&gt; E : estates.entrySet())</span>
+		{
+<span class="fc bfc" id="L56" title="All 2 branches covered.">			if (E.getKey().equals(panelNo))</span>
+<span class="fc" id="L57">				return E.getValue();</span>
+<span class="fc" id="L58">		}</span>
+<span class="fc" id="L59">		return null;</span>
+	}
+
+	public Estate getOneEstateByName(String stateName)
+	{
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		for (Entry&lt;Integer, Estate&gt; E : estates.entrySet())</span>
+		{
+<span class="fc bfc" id="L66" title="All 2 branches covered.">			if (E.getValue().getName().equals(stateName))</span>
+<span class="fc" id="L67">				return E.getValue();</span>
+<span class="fc" id="L68">		}</span>
+<span class="fc" id="L69">		return null;</span>
+	}
+
+	private void putStreets()
+	{
+<span class="fc" id="L74">		Estate str1 = new Street(&quot;MediterraneanAvenue&quot;, 1, 60, 2, 30, 33, 4, 10, 30, 90, 160, 250, 50, 50);</span>
+
+<span class="fc" id="L76">		Estate str2 = new Street(&quot;BalticAvenue&quot;, 3, 60, 4, 30, 33, 8, 20, 60, 180, 320, 450, 50, 50);</span>
+		//
+<span class="fc" id="L78">		Estate str3 = new Street(&quot;OrientalAvenue&quot;, 6, 100, 6, 50, 55, 12, 30, 90, 270, 400, 550, 50, 50);</span>
+<span class="fc" id="L79">		Estate str4 = new Street(&quot;VermontAvenue&quot;, 8, 100, 6, 50, 55, 12, 30, 90, 270, 400, 550, 50, 50);</span>
+<span class="fc" id="L80">		Estate str5 = new Street(&quot;ConnecticutAvenue&quot;, 9, 120, 8, 60, 66, 16, 40, 100, 300, 450, 600, 50, 50);</span>
+		//
+<span class="fc" id="L82">		Estate str6 = new Street(&quot;St.CharlesPlace&quot;, 11, 140, 10, 70, 77, 20, 50, 150, 450, 625, 750, 100, 100);</span>
+<span class="fc" id="L83">		Estate str7 = new Street(&quot;StatesAvenue&quot;, 13, 140, 10, 70, 77, 20, 50, 150, 450, 625, 750, 100, 100);</span>
+<span class="fc" id="L84">		Estate str8 = new Street(&quot;VirginiaAvenue&quot;, 14, 160, 12, 80, 88, 24, 60, 180, 500, 700, 900, 100, 100);</span>
+		//
+<span class="fc" id="L86">		Estate str9 = new Street(&quot;St.JamesPlace&quot;, 16, 180, 14, 90, 99, 28, 70, 200, 550, 750, 950, 100, 100);</span>
+<span class="fc" id="L87">		Estate str10 = new Street(&quot;TennesseeAvenue&quot;, 18, 180, 14, 90, 99, 28, 70, 200, 550, 750, 950, 100, 100);</span>
+<span class="fc" id="L88">		Estate str11 = new Street(&quot;NewyorkAvenue&quot;, 19, 200, 16, 100, 110, 32, 80, 220, 600, 800, 1000, 100, 100);</span>
+		//
+<span class="fc" id="L90">		Estate str12 = new Street(&quot;KentuckyAvenue&quot;, 21, 220, 18, 110, 121, 36, 90, 250, 700, 875, 1050, 150, 150);</span>
+<span class="fc" id="L91">		Estate str13 = new Street(&quot;IndiniaAvenue&quot;, 23, 220, 18, 110, 121, 36, 90, 250, 700, 875, 1050, 150, 150);</span>
+<span class="fc" id="L92">		Estate str14 = new Street(&quot;IllinoisAvenue&quot;, 24, 240, 20, 120, 132, 40, 100, 300, 750, 925, 1100, 150, 150);</span>
+		//
+<span class="fc" id="L94">		Estate str15 = new Street(&quot;AtlanticAvenue&quot;, 26, 260, 22, 130, 143, 44, 110, 330, 800, 975, 1150, 150, 150);</span>
+<span class="fc" id="L95">		Estate str16 = new Street(&quot;VentnorAvenue&quot;, 27, 260, 22, 130, 143, 44, 110, 330, 800, 975, 1150, 150, 150);</span>
+<span class="fc" id="L96">		Estate str17 = new Street(&quot;MarvinAvenue&quot;, 29, 280, 24, 140, 154, 48, 120, 360, 850, 1025, 1200, 150, 150);</span>
+		//
+<span class="fc" id="L98">		Estate str18 = new Street(&quot;PacificAvenue&quot;, 31, 300, 26, 150, 165, 52, 130, 390, 900, 1100, 1275, 200, 200);</span>
+<span class="fc" id="L99">		Estate str19 = new Street(&quot;NorthCaliforniaAvenue&quot;, 32, 300, 26, 150, 165, 52, 130, 390, 900, 1100, 1275, 200,</span>
+				200);
+<span class="fc" id="L101">		Estate str20 = new Street(&quot;PennsylvaniaAvenue&quot;, 34, 320, 28, 160, 176, 56, 150, 450, 1000, 1200, 1400, 200,</span>
+				200);
+		//
+<span class="fc" id="L104">		Estate str21 = new Street(&quot;ParkPlace&quot;, 37, 350, 35, 175, 193, 70, 175, 500, 1100, 1300, 1500, 200, 200);</span>
+<span class="fc" id="L105">		Estate str22 = new Street(&quot;BoardWalk&quot;, 39, 400, 50, 200, 220, 100, 200, 600, 1400, 1700, 2000, 200, 200);</span>
+		//
+
+<span class="fc" id="L108">		estates.put(1, str1);</span>
+<span class="fc" id="L109">		estates.put(3, str2);</span>
+<span class="fc" id="L110">		estates.put(6, str3);</span>
+<span class="fc" id="L111">		estates.put(8, str4);</span>
+<span class="fc" id="L112">		estates.put(9, str5);</span>
+<span class="fc" id="L113">		estates.put(11, str6);</span>
+<span class="fc" id="L114">		estates.put(13, str7);</span>
+<span class="fc" id="L115">		estates.put(14, str8);</span>
+<span class="fc" id="L116">		estates.put(16, str9);</span>
+<span class="fc" id="L117">		estates.put(18, str10);</span>
+<span class="fc" id="L118">		estates.put(19, str11);</span>
+<span class="fc" id="L119">		estates.put(21, str12);</span>
+<span class="fc" id="L120">		estates.put(23, str13);</span>
+<span class="fc" id="L121">		estates.put(24, str14);</span>
+<span class="fc" id="L122">		estates.put(26, str15);</span>
+<span class="fc" id="L123">		estates.put(27, str16);</span>
+<span class="fc" id="L124">		estates.put(29, str17);</span>
+<span class="fc" id="L125">		estates.put(31, str18);</span>
+<span class="fc" id="L126">		estates.put(32, str19);</span>
+<span class="fc" id="L127">		estates.put(34, str20);</span>
+<span class="fc" id="L128">		estates.put(37, str21);</span>
+<span class="fc" id="L129">		estates.put(39, str22);</span>
+
+<span class="fc" id="L131">	}</span>
+
+	private void putUtilities()
+	{
+<span class="fc" id="L135">		Estate utl1 = new Utility(&quot;ElectricCompany&quot;, 12, 150, 4, 75, 83, 10);</span>
+<span class="fc" id="L136">		Estate utl2 = new Utility(&quot;WaterWork&quot;, 28, 150, 4, 75, 83, 10);</span>
+		//
+<span class="fc" id="L138">		estates.put(12, utl1);</span>
+<span class="fc" id="L139">		estates.put(28, utl2);</span>
+<span class="fc" id="L140">	}</span>
+
+	private void putRailRoads()
+	{
+<span class="fc" id="L144">		Estate rr1 = new RailRoad(&quot;ReadingRailroad&quot;, 5, 200, 25, 100, 110, 50, 100, 200);</span>
+<span class="fc" id="L145">		Estate rr2 = new RailRoad(&quot;PennsylvaniaRailroad&quot;, 15, 200, 25, 100, 110, 50, 100, 200);</span>
+<span class="fc" id="L146">		Estate rr3 = new RailRoad(&quot;B&amp;ORailroad&quot;, 25, 200, 25, 100, 110, 50, 100, 200);</span>
+<span class="fc" id="L147">		Estate rr4 = new RailRoad(&quot;ShortLine&quot;, 35, 200, 25, 100, 110, 50, 100, 200);</span>
+		//
+<span class="fc" id="L149">		estates.put(5, rr1);</span>
+<span class="fc" id="L150">		estates.put(15, rr2);</span>
+<span class="fc" id="L151">		estates.put(25, rr3);</span>
+<span class="fc" id="L152">		estates.put(35, rr4);</span>
+<span class="fc" id="L153">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

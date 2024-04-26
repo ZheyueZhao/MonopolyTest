@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Request.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.model</a> &gt; <span class="el_source">Request.java</span></div><h1>Request.java</h1><pre class="source lang-java linenums">package org.bihe.model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
+import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PlayerDAO;
+import org.bihe.network.client.Client;
+import org.bihe.ui.GUIManager;
+
+public class Request implements Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5064072459813802833L;
+
+	private ArrayList&lt;Estate&gt; giveEstates;
+	private ArrayList&lt;Estate&gt; recieveEstates;
+	private int giveMoney;
+	private int recieveMoney;
+	private String sender;
+	private String receiver;
+	private int response;
+
+	public Request(ArrayList&lt;Estate&gt; giveEstates, ArrayList&lt;Estate&gt; recieveEstates, int giveMoney, int recieveMoney,
+			String sender, String receiver)
+<span class="fc" id="L30">	{</span>
+<span class="fc" id="L31">		this.giveEstates = giveEstates;</span>
+<span class="fc" id="L32">		this.recieveEstates = recieveEstates;</span>
+<span class="fc" id="L33">		this.giveMoney = giveMoney;</span>
+<span class="fc" id="L34">		this.recieveMoney = recieveMoney;</span>
+<span class="fc" id="L35">		this.sender = sender;</span>
+<span class="fc" id="L36">		this.receiver = receiver;</span>
+<span class="fc" id="L37">		this.response = 0;</span>
+<span class="fc" id="L38">	}</span>
+
+	public ArrayList&lt;Estate&gt; getGiveEstates()
+	{
+<span class="fc" id="L42">		return giveEstates;</span>
+	}
+
+	public void analyseRequest()
+	{
+<span class="fc bfc" id="L47" title="All 2 branches covered.">		if (response == 0)</span>
+		{
+<span class="fc" id="L49">			GUIManager.getRequestDialog().setRequest(this);</span>
+<span class="fc" id="L50">			GUIManager.getRequestDialog().setVisible(true);</span>
+
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">		} else if (response == 1)</span>
+		{
+<span class="nc" id="L54">			JOptionPane.showMessageDialog(null, sender + &quot; accept your request&quot;);</span>
+<span class="nc" id="L55">			Person p1 = PlayerDAO.getPlayerDAO().getOnePlayer(receiver);</span>
+<span class="nc" id="L56">			Person p2 = PlayerDAO.getPlayerDAO().getOnePlayer(sender);</span>
+
+<span class="nc" id="L58">			p1.setMoney(p1.newMoney(recieveMoney - giveMoney));</span>
+<span class="nc" id="L59">			p2.setMoney(p2.newMoney(giveMoney - recieveMoney));</span>
+<span class="nc" id="L60">			p1.setEstates(p1.newEstates_remove(giveEstates));</span>
+<span class="nc" id="L61">			p1.setEstates(p1.newEstates_add(recieveEstates));</span>
+<span class="nc" id="L62">			p2.setEstates(p2.newEstates_remove(recieveEstates));</span>
+<span class="nc" id="L63">			p2.setEstates(p2.newEstates_add(giveEstates));</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">			for (int i = 0; i &lt; giveEstates.size(); i++)</span>
+			{
+<span class="nc" id="L66">				Estate estate = giveEstates.get(i);</span>
+<span class="nc" id="L67">				estate.setOwner(p2.getUserName());</span>
+<span class="nc" id="L68">				EstateDAO.getEstateDAO().changeEstate(estate);</span>
+			}
+<span class="nc bnc" id="L70" title="All 2 branches missed.">			for (int i = 0; i &lt; recieveEstates.size(); i++)</span>
+			{
+<span class="nc" id="L72">				Estate estate = recieveEstates.get(i);</span>
+<span class="nc" id="L73">				estate.setOwner(p1.getUserName());</span>
+<span class="nc" id="L74">				EstateDAO.getEstateDAO().changeEstate(estate);</span>
+			}
+<span class="nc" id="L76">			PlayerDAO.getPlayerDAO().changeOnePlayer(p1);</span>
+<span class="nc" id="L77">			PlayerDAO.getPlayerDAO().changeOnePlayer(p2);</span>
+<span class="nc" id="L78">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="nc" id="L79">			Client.getClient().sendObject(data);</span>
+
+<span class="pc bfc" id="L81" title="All 2 branches covered.">		} else if (response == -1)</span>
+		{
+<span class="fc" id="L83">			JOptionPane.showMessageDialog(null, sender + &quot; don't accept your request&quot;);</span>
+		}
+<span class="fc" id="L85">	}</span>
+
+	public ArrayList&lt;Estate&gt; getRecieveEstates()
+	{
+<span class="fc" id="L89">		return recieveEstates;</span>
+	}
+
+	public int getGiveMoney()
+	{
+<span class="fc" id="L94">		return giveMoney;</span>
+	}
+
+	public int getRecieveMoney()
+	{
+<span class="fc" id="L99">		return recieveMoney;</span>
+	}
+
+	public String getSender()
+	{
+<span class="fc" id="L104">		return sender;</span>
+	}
+
+	public void setSender(String sender)
+	{
+<span class="fc" id="L109">		this.sender = sender;</span>
+<span class="fc" id="L110">	}</span>
+
+	public String getReceiver()
+	{
+<span class="fc" id="L114">		return receiver;</span>
+	}
+
+	public void setReceiver(String receiver)
+	{
+<span class="fc" id="L119">		this.receiver = receiver;</span>
+<span class="fc" id="L120">	}</span>
+
+	public int getResponse()
+	{
+<span class="fc" id="L124">		return response;</span>
+	}
+
+	public void setResponse(int response)
+	{
+<span class="fc" id="L129">		this.response = response;</span>
+<span class="fc" id="L130">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

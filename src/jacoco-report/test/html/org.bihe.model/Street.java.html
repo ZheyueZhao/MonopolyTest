@@ -1,0 +1,947 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Street.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.model</a> &gt; <span class="el_source">Street.java</span></div><h1>Street.java</h1><pre class="source lang-java linenums">package org.bihe.model;
+
+import java.util.HashMap;
+
+import javax.swing.JOptionPane;
+
+import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PersonDAO;
+
+public class Street extends Estate implements Rent
+{
+	private static final long serialVersionUID = 1L;
+	private int colorSetRent;
+	private int hs1Rent;
+	private int hs2Rent;
+	private int hs3Rent;
+	private int hs4Rent;
+	private int ht1Rent;
+	private int housesCost;
+	private int HotelsCost;
+	private int houseCount;
+	private boolean isHotelExist;
+	private boolean isColorSet;
+
+	public Street(String name, int price, int panelNo, int rent, int mortage, int unMortage)
+	{
+<span class="fc" id="L27">		super(name, panelNo, price, rent, mortage, unMortage);</span>
+<span class="fc" id="L28">	}</span>
+
+	public Street(String name, int panelNo, int price, int rent, int mortage, int unMortage, int rentColorSet,
+			int rent1Hs, int rent2Hs, int rent3Hs, int rent4Hs, int rent1Ht, int housesCost, int hotelsCost)
+	{
+<span class="fc" id="L33">		super(name, panelNo, price, rent, mortage, unMortage);</span>
+<span class="fc" id="L34">		this.colorSetRent = rentColorSet;</span>
+<span class="fc" id="L35">		this.hs1Rent = rent1Hs;</span>
+<span class="fc" id="L36">		this.hs2Rent = rent2Hs;</span>
+<span class="fc" id="L37">		this.hs3Rent = rent3Hs;</span>
+<span class="fc" id="L38">		this.hs4Rent = rent4Hs;</span>
+<span class="fc" id="L39">		this.ht1Rent = rent1Ht;</span>
+<span class="fc" id="L40">		this.housesCost = housesCost;</span>
+<span class="fc" id="L41">		HotelsCost = hotelsCost;</span>
+<span class="fc" id="L42">	}</span>
+
+	public int getColorSetRent()
+	{
+<span class="fc" id="L46">		return colorSetRent;</span>
+	}
+
+	public void setColorSetRent(int colorSetRent)
+	{
+<span class="fc" id="L51">		this.colorSetRent = colorSetRent;</span>
+<span class="fc" id="L52">	}</span>
+
+	public int getHs1Rent()
+	{
+<span class="fc" id="L56">		return hs1Rent;</span>
+	}
+
+	public void setHs1Rent(int hs1Rent)
+	{
+<span class="fc" id="L61">		this.hs1Rent = hs1Rent;</span>
+<span class="fc" id="L62">	}</span>
+
+	public int getHs2Rent()
+	{
+<span class="fc" id="L66">		return hs2Rent;</span>
+	}
+
+	public void setHs2Rent(int hs2Rent)
+	{
+<span class="fc" id="L71">		this.hs2Rent = hs2Rent;</span>
+<span class="fc" id="L72">	}</span>
+
+	public int getHs3Rent()
+	{
+<span class="fc" id="L76">		return hs3Rent;</span>
+	}
+
+	public void setHs3Rent(int hs3Rent)
+	{
+<span class="fc" id="L81">		this.hs3Rent = hs3Rent;</span>
+<span class="fc" id="L82">	}</span>
+
+	public int getHs4Rent()
+	{
+<span class="fc" id="L86">		return hs4Rent;</span>
+	}
+
+	public void setHs4Rent(int hs4Rent)
+	{
+<span class="fc" id="L91">		this.hs4Rent = hs4Rent;</span>
+<span class="fc" id="L92">	}</span>
+
+	public int getHt1Rent()
+	{
+<span class="fc" id="L96">		return ht1Rent;</span>
+	}
+
+	public void setHt1Rent(int ht1Rent)
+	{
+<span class="fc" id="L101">		this.ht1Rent = ht1Rent;</span>
+<span class="fc" id="L102">	}</span>
+
+	public int getHousesCost()
+	{
+<span class="nc" id="L106">		return housesCost;</span>
+	}
+
+	public void setHousesCost(int housesCost)
+	{
+<span class="fc" id="L111">		this.housesCost = housesCost;</span>
+<span class="fc" id="L112">	}</span>
+
+	public int getHotelsCost()
+	{
+<span class="fc" id="L116">		return HotelsCost;</span>
+	}
+
+	public void setHotelsCost(int hotelsCost)
+	{
+<span class="fc" id="L121">		HotelsCost = hotelsCost;</span>
+<span class="fc" id="L122">	}</span>
+
+	public int getHouseCount()
+	{
+<span class="fc" id="L126">		return houseCount;</span>
+	}
+
+	public void setHouseCount(int houseCount)
+	{
+<span class="fc" id="L131">		this.houseCount = houseCount;</span>
+<span class="fc" id="L132">	}</span>
+
+	public boolean isHotelExist()
+	{
+<span class="fc" id="L136">		return isHotelExist;</span>
+	}
+
+	public void setHotelExist(boolean isHotelExist)
+	{
+<span class="fc" id="L141">		this.isHotelExist = isHotelExist;</span>
+<span class="fc" id="L142">	}</span>
+
+	public boolean isColorSet()
+	{
+<span class="fc" id="L146">		return isColorSet;</span>
+	}
+
+	public void setColorSet(boolean isColorSet)
+	{
+<span class="fc" id="L151">		this.isColorSet = isColorSet;</span>
+<span class="fc" id="L152">	}</span>
+
+	@Override
+	public int rent()
+	{
+		int rent;
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		if (isHotelExist)</span>
+<span class="fc" id="L159">			rent = ht1Rent;</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		else if (houseCount == 0)</span>
+<span class="fc" id="L161">			rent = super.getRent();</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		else if (houseCount == 1)</span>
+<span class="fc" id="L163">			rent = hs1Rent;</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">		else if (houseCount == 2)</span>
+<span class="nc" id="L165">			rent = hs2Rent;</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		else if (houseCount == 3)</span>
+<span class="nc" id="L167">			rent = hs3Rent;</span>
+		else
+<span class="fc" id="L169">			rent = hs4Rent;</span>
+
+<span class="fc" id="L171">		return rent;</span>
+	}
+
+	private boolean haveEstate(int panelNo)
+	{
+<span class="fc" id="L176">		Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">		for (int i = 0; i &lt; p.getEstates().size(); i++)</span>
+		{
+<span class="fc bfc" id="L179" title="All 2 branches covered.">			if (p.getEstates().get(i).getPanelNo() == panelNo)</span>
+<span class="fc" id="L180">				return true;</span>
+		}
+<span class="fc" id="L182">		return false;</span>
+	}
+
+	public boolean buyHouse()
+	{
+<span class="fc" id="L187">		HashMap&lt;Integer, Estate&gt; estates = EstateDAO.getEstateDAO().getEstates();</span>
+<span class="fc" id="L188">		Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="pc bpc" id="L189" title="5 of 10 branches missed.">		if (haveEstate(1) &amp;&amp; haveEstate(3) &amp;&amp; !isHotelExist &amp;&amp; (super.getPanelNo() == 1 || super.getPanelNo() == 3))</span>
+		{
+<span class="pc bpc" id="L191" title="1 of 4 branches missed.">			if (estates.get(1).isMortgage() || estates.get(3).isMortgage())</span>
+			{
+<span class="fc" id="L193">				JOptionPane.showMessageDialog(null, &quot;You must unmortgage your street first&quot;);</span>
+<span class="fc" id="L194">				return false;</span>
+			}
+<span class="fc bfc" id="L196" title="All 2 branches covered.">			if (!houseExistInAllStreets())</span>
+			{
+<span class="fc" id="L198">				JOptionPane.showMessageDialog(null, &quot;It is not posible fgd gdf fg&quot;);</span>
+<span class="fc" id="L199">				return false;</span>
+			}
+<span class="fc bfc" id="L201" title="All 2 branches covered.">			if (p.getMoney() &lt; housesCost)</span>
+			{
+<span class="fc" id="L203">				JOptionPane.showMessageDialog(null, &quot;You don't have  enough money&quot;);</span>
+<span class="fc" id="L204">				return false;</span>
+			}
+
+<span class="fc bfc" id="L207" title="All 2 branches covered.">			if (houseCount == 4)</span>
+			{
+<span class="fc" id="L209">				houseCount = 0;</span>
+<span class="fc" id="L210">				isHotelExist = true;</span>
+			} else
+<span class="fc" id="L212">				houseCount++;</span>
+
+<span class="pc bpc" id="L214" title="3 of 8 branches missed.">		} else if (haveEstate(6) &amp;&amp; haveEstate(8) &amp;&amp; haveEstate(9) &amp;&amp; !isHotelExist</span>
+<span class="pc bpc" id="L215" title="5 of 6 branches missed.">				&amp;&amp; (super.getPanelNo() == 6 || super.getPanelNo() == 8 || super.getPanelNo() == 9))</span>
+		{
+<span class="pc bpc" id="L217" title="2 of 6 branches missed.">			if (estates.get(6).isMortgage() || estates.get(8).isMortgage() || estates.get(9).isMortgage())</span>
+			{
+<span class="fc" id="L219">				JOptionPane.showMessageDialog(null, &quot;You must unmortgage your street first&quot;);</span>
+<span class="fc" id="L220">				return false;</span>
+			}
+
+<span class="fc bfc" id="L223" title="All 2 branches covered.">			if (!houseExistInAllStreets())</span>
+			{
+<span class="fc" id="L225">				JOptionPane.showMessageDialog(null, &quot;It is not posible&quot;);</span>
+<span class="fc" id="L226">				return false;</span>
+			}
+<span class="fc bfc" id="L228" title="All 2 branches covered.">			if (p.getMoney() &lt; housesCost)</span>
+			{
+<span class="fc" id="L230">				JOptionPane.showMessageDialog(null, &quot;You don't have  enough money&quot;);</span>
+<span class="fc" id="L231">				return false;</span>
+			}
+<span class="fc bfc" id="L233" title="All 2 branches covered.">			if (houseCount == 4)</span>
+			{
+<span class="fc" id="L235">				houseCount = 0;</span>
+<span class="fc" id="L236">				isHotelExist = true;</span>
+			} else
+<span class="fc" id="L238">				houseCount++;</span>
+
+<span class="pc bpc" id="L240" title="3 of 8 branches missed.">		} else if (haveEstate(11) &amp;&amp; haveEstate(13) &amp;&amp; haveEstate(14) &amp;&amp; !isHotelExist</span>
+<span class="pc bpc" id="L241" title="5 of 6 branches missed.">				&amp;&amp; (super.getPanelNo() == 11 || super.getPanelNo() == 13 || super.getPanelNo() == 14))</span>
+		{
+<span class="pc bpc" id="L243" title="2 of 6 branches missed.">			if (estates.get(11).isMortgage() || estates.get(13).isMortgage() || estates.get(14).isMortgage())</span>
+			{
+<span class="fc" id="L245">				JOptionPane.showMessageDialog(null, &quot;You must unmortgage your street first&quot;);</span>
+<span class="fc" id="L246">				return false;</span>
+			}
+<span class="fc bfc" id="L248" title="All 2 branches covered.">			if (!houseExistInAllStreets())</span>
+			{
+<span class="fc" id="L250">				JOptionPane.showMessageDialog(null, &quot;It is not posible&quot;);</span>
+<span class="fc" id="L251">				return false;</span>
+			}
+<span class="fc bfc" id="L253" title="All 2 branches covered.">			if (p.getMoney() &lt; housesCost)</span>
+			{
+<span class="fc" id="L255">				JOptionPane.showMessageDialog(null, &quot;You don't have  enough money&quot;);</span>
+<span class="fc" id="L256">				return false;</span>
+			}
+<span class="fc bfc" id="L258" title="All 2 branches covered.">			if (houseCount == 4)</span>
+			{
+<span class="fc" id="L260">				houseCount = 0;</span>
+<span class="fc" id="L261">				isHotelExist = true;</span>
+			} else
+<span class="fc" id="L263">				houseCount++;</span>
+
+<span class="pc bpc" id="L265" title="3 of 8 branches missed.">		} else if (haveEstate(16) &amp;&amp; haveEstate(18) &amp;&amp; haveEstate(19) &amp;&amp; !isHotelExist</span>
+<span class="pc bpc" id="L266" title="5 of 6 branches missed.">				&amp;&amp; (super.getPanelNo() == 16 || super.getPanelNo() == 18 || super.getPanelNo() == 19))</span>
+		{
+<span class="pc bpc" id="L268" title="2 of 6 branches missed.">			if (estates.get(16).isMortgage() || estates.get(18).isMortgage() || estates.get(19).isMortgage())</span>
+			{
+<span class="fc" id="L270">				JOptionPane.showMessageDialog(null, &quot;You must unmortgage your street first&quot;);</span>
+<span class="fc" id="L271">				return false;</span>
+			}
+<span class="fc bfc" id="L273" title="All 2 branches covered.">			if (!houseExistInAllStreets())</span>
+			{
+<span class="fc" id="L275">				JOptionPane.showMessageDialog(null, &quot;It is not posible&quot;);</span>
+<span class="fc" id="L276">				return false;</span>
+			}
+<span class="fc bfc" id="L278" title="All 2 branches covered.">			if (p.getMoney() &lt; housesCost)</span>
+			{
+<span class="fc" id="L280">				JOptionPane.showMessageDialog(null, &quot;You don't have  enough money&quot;);</span>
+<span class="fc" id="L281">				return false;</span>
+			}
+<span class="fc bfc" id="L283" title="All 2 branches covered.">			if (houseCount == 4)</span>
+			{
+<span class="fc" id="L285">				houseCount = 0;</span>
+<span class="fc" id="L286">				isHotelExist = true;</span>
+			} else
+<span class="fc" id="L288">				houseCount++;</span>
+<span class="pc bpc" id="L289" title="3 of 8 branches missed.">		} else if (haveEstate(21) &amp;&amp; haveEstate(23) &amp;&amp; haveEstate(24) &amp;&amp; !isHotelExist)</span>
+		{
+<span class="pc bpc" id="L291" title="2 of 6 branches missed.">			if (estates.get(21).isMortgage() || estates.get(23).isMortgage() || estates.get(24).isMortgage())</span>
+			{
+<span class="fc" id="L293">				JOptionPane.showMessageDialog(null, &quot;You must unmortgage your street first&quot;);</span>
+<span class="fc" id="L294">				return false;</span>
+			}
+<span class="fc bfc" id="L296" title="All 2 branches covered.">			if (!houseExistInAllStreets())</span>
+			{
+<span class="fc" id="L298">				JOptionPane.showMessageDialog(null, &quot;It is not posible&quot;);</span>
+<span class="fc" id="L299">				return false;</span>
+			}
+<span class="fc bfc" id="L301" title="All 2 branches covered.">			if (p.getMoney() &lt; housesCost)</span>
+			{
+<span class="fc" id="L303">				JOptionPane.showMessageDialog(null, &quot;You don't have  enough money&quot;);</span>
+<span class="fc" id="L304">				return false;</span>
+			}
+<span class="fc bfc" id="L306" title="All 2 branches covered.">			if (houseCount == 4)</span>
+			{
+<span class="fc" id="L308">				houseCount = 0;</span>
+<span class="fc" id="L309">				isHotelExist = true;</span>
+			} else
+<span class="fc" id="L311">				houseCount++;</span>
+<span class="pc bpc" id="L312" title="3 of 8 branches missed.">		} else if (haveEstate(26) &amp;&amp; haveEstate(27) &amp;&amp; haveEstate(29) &amp;&amp; !isHotelExist</span>
+<span class="pc bpc" id="L313" title="3 of 6 branches missed.">				&amp;&amp; (super.getPanelNo() == 26 || super.getPanelNo() == 27 || super.getPanelNo() == 29))</span>
+		{
+<span class="pc bpc" id="L315" title="2 of 6 branches missed.">			if (estates.get(26).isMortgage() || estates.get(27).isMortgage() || estates.get(29).isMortgage())</span>
+			{
+<span class="fc" id="L317">				JOptionPane.showMessageDialog(null, &quot;You must unmortgage your street first&quot;);</span>
+<span class="fc" id="L318">				return false;</span>
+			}
+<span class="fc bfc" id="L320" title="All 2 branches covered.">			if (!houseExistInAllStreets())</span>
+			{
+<span class="fc" id="L322">				JOptionPane.showMessageDialog(null, &quot;It is not posible&quot;);</span>
+<span class="fc" id="L323">				return false;</span>
+			}
+<span class="fc bfc" id="L325" title="All 2 branches covered.">			if (p.getMoney() &lt; housesCost)</span>
+			{
+<span class="fc" id="L327">				JOptionPane.showMessageDialog(null, &quot;You don't have  enough money&quot;);</span>
+<span class="fc" id="L328">				return false;</span>
+			}
+<span class="fc bfc" id="L330" title="All 2 branches covered.">			if (houseCount == 4)</span>
+			{
+<span class="fc" id="L332">				houseCount = 0;</span>
+<span class="fc" id="L333">				isHotelExist = true;</span>
+			} else
+<span class="fc" id="L335">				houseCount++;</span>
+<span class="pc bpc" id="L336" title="3 of 8 branches missed.">		} else if (haveEstate(31) &amp;&amp; haveEstate(32) &amp;&amp; haveEstate(34) &amp;&amp; !isHotelExist</span>
+<span class="pc bpc" id="L337" title="3 of 6 branches missed.">				&amp;&amp; (super.getPanelNo() == 31 || super.getPanelNo() == 32 || super.getPanelNo() == 34))</span>
+		{
+<span class="pc bpc" id="L339" title="2 of 6 branches missed.">			if (estates.get(31).isMortgage() || estates.get(32).isMortgage() || estates.get(34).isMortgage())</span>
+			{
+<span class="fc" id="L341">				JOptionPane.showMessageDialog(null, &quot;You must unmortgage your street first&quot;);</span>
+<span class="fc" id="L342">				return false;</span>
+			}
+<span class="fc bfc" id="L344" title="All 2 branches covered.">			if (!houseExistInAllStreets())</span>
+			{
+<span class="fc" id="L346">				JOptionPane.showMessageDialog(null, &quot;It is not posible&quot;);</span>
+<span class="fc" id="L347">				return false;</span>
+			}
+<span class="fc bfc" id="L349" title="All 2 branches covered.">			if (p.getMoney() &lt; housesCost)</span>
+			{
+<span class="fc" id="L351">				JOptionPane.showMessageDialog(null, &quot;You don't have  enough money&quot;);</span>
+<span class="fc" id="L352">				return false;</span>
+			}
+<span class="fc bfc" id="L354" title="All 2 branches covered.">			if (houseCount == 4)</span>
+			{
+<span class="fc" id="L356">				houseCount = 0;</span>
+<span class="fc" id="L357">				isHotelExist = true;</span>
+			} else
+<span class="fc" id="L359">				houseCount++;</span>
+<span class="pc bpc" id="L360" title="2 of 6 branches missed.">		} else if (haveEstate(37) &amp;&amp; haveEstate(39) &amp;&amp; !isHotelExist</span>
+<span class="pc bpc" id="L361" title="1 of 4 branches missed.">				&amp;&amp; (super.getPanelNo() == 37 || super.getPanelNo() == 39))</span>
+		{
+
+<span class="pc bpc" id="L364" title="1 of 4 branches missed.">			if (estates.get(37).isMortgage() || estates.get(39).isMortgage())</span>
+			{
+<span class="fc" id="L366">				JOptionPane.showMessageDialog(null, &quot;You must unmortgage your street first&quot;);</span>
+<span class="fc" id="L367">				return false;</span>
+			}
+<span class="fc bfc" id="L369" title="All 2 branches covered.">			if (!houseExistInAllStreets())</span>
+			{
+<span class="fc" id="L371">				JOptionPane.showMessageDialog(null, &quot;It is not posible&quot;);</span>
+<span class="fc" id="L372">				return false;</span>
+			}
+<span class="fc bfc" id="L374" title="All 2 branches covered.">			if (p.getMoney() &lt; housesCost)</span>
+			{
+<span class="fc" id="L376">				JOptionPane.showMessageDialog(null, &quot;You don't have  enough money&quot;);</span>
+<span class="fc" id="L377">				return false;</span>
+			}
+
+<span class="fc bfc" id="L380" title="All 2 branches covered.">			if (houseCount == 4)</span>
+			{
+<span class="fc" id="L382">				houseCount = 0;</span>
+<span class="fc" id="L383">				isHotelExist = true;</span>
+			} else
+<span class="fc" id="L385">				houseCount++;</span>
+
+		} else
+		{
+<span class="fc" id="L389">			JOptionPane.showMessageDialog(null, &quot;It is not posible&quot;);</span>
+<span class="fc" id="L390">			return true;</span>
+		}
+<span class="fc" id="L392">		return true;</span>
+	}
+
+	private boolean houseExistInAllStreets()
+	{
+<span class="fc" id="L397">		Street s1 = (Street) EstateDAO.getEstateDAO().getEstates().get(1);</span>
+<span class="fc" id="L398">		Street s3 = (Street) EstateDAO.getEstateDAO().getEstates().get(3);</span>
+<span class="fc" id="L399">		Street s6 = (Street) EstateDAO.getEstateDAO().getEstates().get(6);</span>
+<span class="fc" id="L400">		Street s8 = (Street) EstateDAO.getEstateDAO().getEstates().get(8);</span>
+<span class="fc" id="L401">		Street s9 = (Street) EstateDAO.getEstateDAO().getEstates().get(9);</span>
+<span class="fc" id="L402">		Street s11 = (Street) EstateDAO.getEstateDAO().getEstates().get(11);</span>
+<span class="fc" id="L403">		Street s13 = (Street) EstateDAO.getEstateDAO().getEstates().get(13);</span>
+<span class="fc" id="L404">		Street s14 = (Street) EstateDAO.getEstateDAO().getEstates().get(14);</span>
+<span class="fc" id="L405">		Street s16 = (Street) EstateDAO.getEstateDAO().getEstates().get(16);</span>
+<span class="fc" id="L406">		Street s18 = (Street) EstateDAO.getEstateDAO().getEstates().get(18);</span>
+<span class="fc" id="L407">		Street s19 = (Street) EstateDAO.getEstateDAO().getEstates().get(19);</span>
+<span class="fc" id="L408">		Street s21 = (Street) EstateDAO.getEstateDAO().getEstates().get(21);</span>
+<span class="fc" id="L409">		Street s23 = (Street) EstateDAO.getEstateDAO().getEstates().get(23);</span>
+<span class="fc" id="L410">		Street s24 = (Street) EstateDAO.getEstateDAO().getEstates().get(24);</span>
+<span class="fc" id="L411">		Street s26 = (Street) EstateDAO.getEstateDAO().getEstates().get(26);</span>
+<span class="fc" id="L412">		Street s27 = (Street) EstateDAO.getEstateDAO().getEstates().get(27);</span>
+<span class="fc" id="L413">		Street s29 = (Street) EstateDAO.getEstateDAO().getEstates().get(29);</span>
+<span class="fc" id="L414">		Street s31 = (Street) EstateDAO.getEstateDAO().getEstates().get(31);</span>
+<span class="fc" id="L415">		Street s32 = (Street) EstateDAO.getEstateDAO().getEstates().get(32);</span>
+<span class="fc" id="L416">		Street s34 = (Street) EstateDAO.getEstateDAO().getEstates().get(34);</span>
+<span class="fc" id="L417">		Street s37 = (Street) EstateDAO.getEstateDAO().getEstates().get(37);</span>
+<span class="fc" id="L418">		Street s39 = (Street) EstateDAO.getEstateDAO().getEstates().get(39);</span>
+
+<span class="fc bfc" id="L420" title="All 2 branches covered.">		if (super.getPanelNo() == 1)</span>
+		{
+<span class="fc bfc" id="L422" title="All 4 branches covered.">			if (s1.getHouseCount() &lt;= s3.getHouseCount() || s3.isHotelExist)</span>
+<span class="fc" id="L423">				return true;</span>
+<span class="fc bfc" id="L424" title="All 2 branches covered.">		} else if (super.getPanelNo() == 3)</span>
+		{
+<span class="pc bpc" id="L426" title="1 of 4 branches missed.">			if (s3.getHouseCount() &lt;= s1.getHouseCount() || s1.isHotelExist)</span>
+<span class="fc" id="L427">				return true;</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">		} else if (super.getPanelNo() == 6)</span>
+		{
+<span class="fc bfc" id="L430" title="All 6 branches covered.">			if (s6.getHouseCount() &lt;= s8.getHouseCount() || s8.isHotelExist || s9.isHotelExist)</span>
+<span class="fc" id="L431">				return true;</span>
+<span class="fc bfc" id="L432" title="All 2 branches covered.">		} else if (super.getPanelNo() == 8)</span>
+		{
+<span class="pc bpc" id="L434" title="1 of 6 branches missed.">			if (s8.getHouseCount() &lt;= s6.getHouseCount() || s6.isHotelExist || s9.isHotelExist)</span>
+<span class="fc" id="L435">				return true;</span>
+<span class="fc bfc" id="L436" title="All 2 branches covered.">		} else if (super.getPanelNo() == 9)</span>
+		{
+<span class="pc bpc" id="L438" title="1 of 6 branches missed.">			if (s9.getHouseCount() &lt;= s8.getHouseCount() || s6.isHotelExist || s8.isHotelExist)</span>
+<span class="fc" id="L439">				return true;</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">		} else if (super.getPanelNo() == 11)</span>
+		{
+<span class="fc bfc" id="L442" title="All 6 branches covered.">			if (s11.getHouseCount() &lt;= s13.getHouseCount() || s13.isHotelExist || s14.isHotelExist)</span>
+<span class="fc" id="L443">				return true;</span>
+<span class="fc bfc" id="L444" title="All 2 branches covered.">		} else if (super.getPanelNo() == 13)</span>
+		{
+<span class="pc bpc" id="L446" title="1 of 6 branches missed.">			if (s13.getHouseCount() &lt;= s11.getHouseCount() || s11.isHotelExist || s14.isHotelExist)</span>
+<span class="fc" id="L447">				return true;</span>
+<span class="fc bfc" id="L448" title="All 2 branches covered.">		} else if (super.getPanelNo() == 14)</span>
+		{
+<span class="pc bpc" id="L450" title="1 of 6 branches missed.">			if (s14.getHouseCount() &lt;= s11.getHouseCount() || s11.isHotelExist || s13.isHotelExist)</span>
+<span class="fc" id="L451">				return true;</span>
+<span class="fc bfc" id="L452" title="All 2 branches covered.">		} else if (super.getPanelNo() == 16)</span>
+		{
+<span class="fc bfc" id="L454" title="All 6 branches covered.">			if (s16.getHouseCount() &lt;= s18.getHouseCount() || s18.isHotelExist || s19.isHotelExist)</span>
+<span class="fc" id="L455">				return true;</span>
+<span class="fc bfc" id="L456" title="All 2 branches covered.">		} else if (super.getPanelNo() == 18)</span>
+		{
+<span class="pc bpc" id="L458" title="1 of 6 branches missed.">			if (s18.getHouseCount() &lt;= s16.getHouseCount() || s16.isHotelExist || s19.isHotelExist)</span>
+<span class="fc" id="L459">				return true;</span>
+<span class="fc bfc" id="L460" title="All 2 branches covered.">		} else if (super.getPanelNo() == 19)</span>
+		{
+<span class="pc bpc" id="L462" title="1 of 6 branches missed.">			if (s19.getHouseCount() &lt;= s16.getHouseCount() || s16.isHotelExist || s18.isHotelExist)</span>
+<span class="fc" id="L463">				return true;</span>
+<span class="fc bfc" id="L464" title="All 2 branches covered.">		} else if (super.getPanelNo() == 21)</span>
+		{
+<span class="pc bpc" id="L466" title="1 of 6 branches missed.">			if (s21.getHouseCount() &lt;= s23.getHouseCount() || s23.isHotelExist || s24.isHotelExist)</span>
+<span class="fc" id="L467">				return true;</span>
+<span class="fc bfc" id="L468" title="All 2 branches covered.">		} else if (super.getPanelNo() == 23)</span>
+		{
+<span class="pc bpc" id="L470" title="1 of 6 branches missed.">			if (s23.getHouseCount() &lt;= s21.getHouseCount() || s21.isHotelExist || s24.isHotelExist)</span>
+<span class="fc" id="L471">				return true;</span>
+<span class="fc bfc" id="L472" title="All 2 branches covered.">		} else if (super.getPanelNo() == 24)</span>
+		{
+<span class="pc bpc" id="L474" title="1 of 6 branches missed.">			if (s24.getHouseCount() &lt;= s21.getHouseCount() || s21.isHotelExist || s23.isHotelExist)</span>
+<span class="fc" id="L475">				return true;</span>
+<span class="fc bfc" id="L476" title="All 2 branches covered.">		} else if (super.getPanelNo() == 26)</span>
+		{
+<span class="pc bpc" id="L478" title="2 of 6 branches missed.">			if (s26.getHouseCount() &lt;= s27.getHouseCount() || s27.isHotelExist || s29.isHotelExist)</span>
+<span class="fc" id="L479">				return true;</span>
+<span class="fc bfc" id="L480" title="All 2 branches covered.">		} else if (super.getPanelNo() == 27)</span>
+		{
+<span class="fc bfc" id="L482" title="All 6 branches covered.">			if (s27.getHouseCount() &lt;= s26.getHouseCount() || s26.isHotelExist || s29.isHotelExist)</span>
+<span class="fc" id="L483">				return true;</span>
+<span class="fc bfc" id="L484" title="All 2 branches covered.">		} else if (super.getPanelNo() == 29)</span>
+		{
+<span class="pc bpc" id="L486" title="1 of 6 branches missed.">			if (s29.getHouseCount() &lt;= s26.getHouseCount() || s26.isHotelExist || s27.isHotelExist)</span>
+<span class="fc" id="L487">				return true;</span>
+<span class="fc bfc" id="L488" title="All 2 branches covered.">		} else if (super.getPanelNo() == 31)</span>
+		{
+<span class="pc bpc" id="L490" title="1 of 6 branches missed.">			if (s31.getHouseCount() &lt;= s32.getHouseCount() || s32.isHotelExist || s34.isHotelExist)</span>
+<span class="fc" id="L491">				return true;</span>
+<span class="fc bfc" id="L492" title="All 2 branches covered.">		} else if (super.getPanelNo() == 32)</span>
+		{
+<span class="fc bfc" id="L494" title="All 6 branches covered.">			if (s32.getHouseCount() &lt;= s31.getHouseCount() || s31.isHotelExist || s34.isHotelExist)</span>
+<span class="fc" id="L495">				return true;</span>
+<span class="fc bfc" id="L496" title="All 2 branches covered.">		} else if (super.getPanelNo() == 34)</span>
+		{
+<span class="pc bpc" id="L498" title="1 of 6 branches missed.">			if (s34.getHouseCount() &lt;= s31.getHouseCount() || s31.isHotelExist || s32.isHotelExist)</span>
+<span class="fc" id="L499">				return true;</span>
+<span class="fc bfc" id="L500" title="All 2 branches covered.">		} else if (super.getPanelNo() == 37)</span>
+		{
+<span class="pc bpc" id="L502" title="1 of 4 branches missed.">			if (s37.getHouseCount() &lt;= s39.getHouseCount() || s39.isHotelExist)</span>
+<span class="fc" id="L503">				return true;</span>
+<span class="pc bpc" id="L504" title="1 of 2 branches missed.">		} else if (super.getPanelNo() == 39)</span>
+		{
+<span class="fc bfc" id="L506" title="All 4 branches covered.">			if (s39.getHouseCount() &lt;= s37.getHouseCount() || s37.isHotelExist)</span>
+<span class="fc" id="L507">				return true;</span>
+		}
+
+<span class="fc" id="L510">		return false;</span>
+	}
+
+	public boolean sellHouse()
+	{
+
+<span class="fc" id="L516">		Street s1 = (Street) EstateDAO.getEstateDAO().getEstates().get(1);</span>
+<span class="fc" id="L517">		Street s3 = (Street) EstateDAO.getEstateDAO().getEstates().get(3);</span>
+<span class="fc" id="L518">		Street s6 = (Street) EstateDAO.getEstateDAO().getEstates().get(6);</span>
+<span class="fc" id="L519">		Street s8 = (Street) EstateDAO.getEstateDAO().getEstates().get(8);</span>
+<span class="fc" id="L520">		Street s9 = (Street) EstateDAO.getEstateDAO().getEstates().get(9);</span>
+<span class="fc" id="L521">		Street s11 = (Street) EstateDAO.getEstateDAO().getEstates().get(11);</span>
+<span class="fc" id="L522">		Street s13 = (Street) EstateDAO.getEstateDAO().getEstates().get(13);</span>
+<span class="fc" id="L523">		Street s14 = (Street) EstateDAO.getEstateDAO().getEstates().get(14);</span>
+<span class="fc" id="L524">		Street s16 = (Street) EstateDAO.getEstateDAO().getEstates().get(16);</span>
+<span class="fc" id="L525">		Street s18 = (Street) EstateDAO.getEstateDAO().getEstates().get(18);</span>
+<span class="fc" id="L526">		Street s19 = (Street) EstateDAO.getEstateDAO().getEstates().get(19);</span>
+<span class="fc" id="L527">		Street s21 = (Street) EstateDAO.getEstateDAO().getEstates().get(21);</span>
+<span class="fc" id="L528">		Street s23 = (Street) EstateDAO.getEstateDAO().getEstates().get(23);</span>
+<span class="fc" id="L529">		Street s24 = (Street) EstateDAO.getEstateDAO().getEstates().get(24);</span>
+<span class="fc" id="L530">		Street s26 = (Street) EstateDAO.getEstateDAO().getEstates().get(26);</span>
+<span class="fc" id="L531">		Street s27 = (Street) EstateDAO.getEstateDAO().getEstates().get(27);</span>
+<span class="fc" id="L532">		Street s29 = (Street) EstateDAO.getEstateDAO().getEstates().get(29);</span>
+<span class="fc" id="L533">		Street s31 = (Street) EstateDAO.getEstateDAO().getEstates().get(31);</span>
+<span class="fc" id="L534">		Street s32 = (Street) EstateDAO.getEstateDAO().getEstates().get(32);</span>
+<span class="fc" id="L535">		Street s34 = (Street) EstateDAO.getEstateDAO().getEstates().get(34);</span>
+<span class="fc" id="L536">		Street s37 = (Street) EstateDAO.getEstateDAO().getEstates().get(37);</span>
+<span class="fc" id="L537">		Street s39 = (Street) EstateDAO.getEstateDAO().getEstates().get(39);</span>
+<span class="fc bfc" id="L538" title="All 4 branches covered.">		if (houseCount == 0 &amp;&amp; isHotelExist == false)</span>
+		{
+<span class="fc" id="L540">			JOptionPane.showMessageDialog(null, &quot;there is no house&quot;);</span>
+<span class="fc" id="L541">			return false;</span>
+		}
+<span class="fc bfc" id="L543" title="All 2 branches covered.">		if (super.getPanelNo() == 1)</span>
+		{
+<span class="pc bpc" id="L545" title="2 of 6 branches missed.">			if ((isHotelExist() || s1.getHouseCount() &gt;= s3.getHouseCount()) &amp;&amp; !s3.isHotelExist)</span>
+			{
+<span class="fc bfc" id="L547" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L549">					isHotelExist = false;</span>
+<span class="fc" id="L550">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L552">					houseCount--;</span>
+<span class="fc" id="L553">				return true;</span>
+			}
+<span class="fc bfc" id="L555" title="All 2 branches covered.">		} else if (super.getPanelNo() == 3)</span>
+		{
+<span class="pc bpc" id="L557" title="2 of 6 branches missed.">			if ((isHotelExist() || s3.getHouseCount() &gt;= s1.getHouseCount()) &amp;&amp; !s1.isHotelExist)</span>
+			{
+<span class="fc bfc" id="L559" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L561">					isHotelExist = false;</span>
+<span class="fc" id="L562">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L564">					houseCount--;</span>
+<span class="fc" id="L565">				return true;</span>
+			}
+<span class="fc bfc" id="L567" title="All 2 branches covered.">		} else if (super.getPanelNo() == 6)</span>
+		{
+<span class="fc bfc" id="L569" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L570" title="4 of 8 branches missed.">					|| (s6.getHouseCount() &gt;= s8.getHouseCount() &amp;&amp; s6.getHouseCount() &gt;= s9.getHouseCount()))</span>
+					&amp;&amp; !s8.isHotelExist &amp;&amp; !s9.isHotelExist)
+			{
+<span class="fc bfc" id="L573" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L575">					isHotelExist = false;</span>
+<span class="fc" id="L576">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L578">					houseCount--;</span>
+<span class="fc" id="L579">				return true;</span>
+			}
+<span class="fc bfc" id="L581" title="All 2 branches covered.">		} else if (super.getPanelNo() == 8)</span>
+		{
+<span class="fc bfc" id="L583" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L584" title="4 of 8 branches missed.">					|| (s8.getHouseCount() &gt;= s6.getHouseCount() &amp;&amp; s8.getHouseCount() &gt;= s9.getHouseCount()))</span>
+					&amp;&amp; !s6.isHotelExist &amp;&amp; !s9.isHotelExist)
+			{
+<span class="fc bfc" id="L587" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L589">					isHotelExist = false;</span>
+<span class="fc" id="L590">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L592">					houseCount--;</span>
+<span class="fc" id="L593">				return true;</span>
+			}
+<span class="fc bfc" id="L595" title="All 2 branches covered.">		} else if (super.getPanelNo() == 9)</span>
+		{
+<span class="fc bfc" id="L597" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L598" title="4 of 8 branches missed.">					|| (s9.getHouseCount() &gt;= s8.getHouseCount() &amp;&amp; s9.getHouseCount() &gt;= s6.getHouseCount()))</span>
+					&amp;&amp; !s6.isHotelExist &amp;&amp; !s8.isHotelExist)
+			{
+<span class="fc bfc" id="L601" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L603">					isHotelExist = false;</span>
+<span class="fc" id="L604">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L606">					houseCount--;</span>
+<span class="fc" id="L607">				return true;</span>
+			}
+<span class="fc bfc" id="L609" title="All 2 branches covered.">		} else if (super.getPanelNo() == 11)</span>
+		{
+<span class="fc bfc" id="L611" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L612" title="4 of 8 branches missed.">					|| (s11.getHouseCount() &gt;= s13.getHouseCount() &amp;&amp; s11.getHouseCount() &gt;= s14.getHouseCount()))</span>
+					&amp;&amp; !s13.isHotelExist &amp;&amp; !s14.isHotelExist)
+			{
+<span class="fc bfc" id="L615" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L617">					isHotelExist = false;</span>
+<span class="fc" id="L618">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L620">					houseCount--;</span>
+<span class="fc" id="L621">				return true;</span>
+			}
+<span class="fc bfc" id="L623" title="All 2 branches covered.">		} else if (super.getPanelNo() == 13)</span>
+		{
+<span class="fc bfc" id="L625" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L626" title="4 of 8 branches missed.">					|| (s13.getHouseCount() &gt;= s11.getHouseCount() &amp;&amp; s13.getHouseCount() &gt;= s14.getHouseCount()))</span>
+					&amp;&amp; !s11.isHotelExist &amp;&amp; !s14.isHotelExist)
+			{
+<span class="fc bfc" id="L629" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L631">					isHotelExist = false;</span>
+<span class="fc" id="L632">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L634">					houseCount--;</span>
+<span class="fc" id="L635">				return true;</span>
+			}
+<span class="fc bfc" id="L637" title="All 2 branches covered.">		} else if (super.getPanelNo() == 14)</span>
+		{
+<span class="fc bfc" id="L639" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L640" title="4 of 8 branches missed.">					|| (s14.getHouseCount() &gt;= s11.getHouseCount() &amp;&amp; s14.getHouseCount() &gt;= s13.getHouseCount()))</span>
+					&amp;&amp; !s11.isHotelExist &amp;&amp; !s13.isHotelExist)
+			{
+<span class="fc bfc" id="L643" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L645">					isHotelExist = false;</span>
+<span class="fc" id="L646">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L648">					houseCount--;</span>
+<span class="fc" id="L649">				return true;</span>
+			}
+<span class="fc bfc" id="L651" title="All 2 branches covered.">		} else if (super.getPanelNo() == 16)</span>
+		{
+<span class="fc bfc" id="L653" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L654" title="4 of 8 branches missed.">					|| (s16.getHouseCount() &gt;= s18.getHouseCount() &amp;&amp; s16.getHouseCount() &gt;= s19.getHouseCount()))</span>
+					&amp;&amp; !s18.isHotelExist &amp;&amp; !s19.isHotelExist)
+			{
+<span class="fc bfc" id="L657" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L659">					isHotelExist = false;</span>
+<span class="fc" id="L660">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L662">					houseCount--;</span>
+<span class="fc" id="L663">				return true;</span>
+			}
+<span class="fc bfc" id="L665" title="All 2 branches covered.">		} else if (super.getPanelNo() == 18)</span>
+		{
+<span class="fc bfc" id="L667" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L668" title="4 of 8 branches missed.">					|| (s18.getHouseCount() &gt;= s16.getHouseCount() &amp;&amp; s18.getHouseCount() &gt;= s19.getHouseCount()))</span>
+					&amp;&amp; !s16.isHotelExist &amp;&amp; !s19.isHotelExist)
+			{
+<span class="fc bfc" id="L671" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L673">					isHotelExist = false;</span>
+<span class="fc" id="L674">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L676">					houseCount--;</span>
+<span class="fc" id="L677">				return true;</span>
+			}
+<span class="fc bfc" id="L679" title="All 2 branches covered.">		} else if (super.getPanelNo() == 19)</span>
+		{
+<span class="fc bfc" id="L681" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L682" title="4 of 8 branches missed.">					|| (s19.getHouseCount() &gt;= s16.getHouseCount() &amp;&amp; s19.getHouseCount() &gt;= s18.getHouseCount()))</span>
+					&amp;&amp; !s16.isHotelExist &amp;&amp; !s18.isHotelExist)
+			{
+<span class="fc bfc" id="L685" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L687">					isHotelExist = false;</span>
+<span class="fc" id="L688">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L690">					houseCount--;</span>
+<span class="fc" id="L691">				return true;</span>
+			}
+<span class="fc bfc" id="L693" title="All 2 branches covered.">		} else if (super.getPanelNo() == 21)</span>
+		{
+<span class="fc bfc" id="L695" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L696" title="4 of 8 branches missed.">					|| (s21.getHouseCount() &gt;= s23.getHouseCount() &amp;&amp; s21.getHouseCount() &gt;= s24.getHouseCount()))</span>
+					&amp;&amp; !s23.isHotelExist &amp;&amp; !s24.isHotelExist)
+			{
+<span class="fc bfc" id="L699" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L701">					isHotelExist = false;</span>
+<span class="fc" id="L702">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L704">					houseCount--;</span>
+<span class="fc" id="L705">				return true;</span>
+			}
+<span class="fc bfc" id="L707" title="All 2 branches covered.">		} else if (super.getPanelNo() == 23)</span>
+		{
+<span class="fc bfc" id="L709" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L710" title="4 of 8 branches missed.">					|| (s23.getHouseCount() &gt;= s21.getHouseCount() &amp;&amp; s23.getHouseCount() &gt;= s24.getHouseCount()))</span>
+					&amp;&amp; !s21.isHotelExist &amp;&amp; !s24.isHotelExist)
+			{
+<span class="fc bfc" id="L713" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L715">					isHotelExist = false;</span>
+<span class="fc" id="L716">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L718">					houseCount--;</span>
+<span class="fc" id="L719">				return true;</span>
+			}
+<span class="fc bfc" id="L721" title="All 2 branches covered.">		} else if (super.getPanelNo() == 24)</span>
+		{
+<span class="fc bfc" id="L723" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L724" title="4 of 8 branches missed.">					|| (s24.getHouseCount() &gt;= s21.getHouseCount() &amp;&amp; s24.getHouseCount() &gt;= s23.getHouseCount()))</span>
+					&amp;&amp; !s21.isHotelExist &amp;&amp; !s23.isHotelExist)
+			{
+<span class="fc bfc" id="L727" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L729">					isHotelExist = false;</span>
+<span class="fc" id="L730">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L732">					houseCount--;</span>
+<span class="fc" id="L733">				return true;</span>
+			}
+<span class="fc bfc" id="L735" title="All 2 branches covered.">		} else if (super.getPanelNo() == 26)</span>
+		{
+<span class="fc bfc" id="L737" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L738" title="4 of 8 branches missed.">					|| (s26.getHouseCount() &gt;= s27.getHouseCount() &amp;&amp; s26.getHouseCount() &gt;= s29.getHouseCount()))</span>
+					&amp;&amp; !s27.isHotelExist &amp;&amp; !s29.isHotelExist)
+			{
+<span class="fc bfc" id="L741" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L743">					isHotelExist = false;</span>
+<span class="fc" id="L744">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L746">					houseCount--;</span>
+<span class="fc" id="L747">				return true;</span>
+			}
+<span class="fc bfc" id="L749" title="All 2 branches covered.">		} else if (super.getPanelNo() == 27)</span>
+		{
+<span class="fc bfc" id="L751" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L752" title="4 of 8 branches missed.">					|| (s27.getHouseCount() &gt;= s26.getHouseCount() &amp;&amp; s27.getHouseCount() &gt;= s29.getHouseCount()))</span>
+					&amp;&amp; !s29.isHotelExist &amp;&amp; !s26.isHotelExist)
+			{
+<span class="fc bfc" id="L755" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L757">					isHotelExist = false;</span>
+<span class="fc" id="L758">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L760">					houseCount--;</span>
+<span class="fc" id="L761">				return true;</span>
+			}
+<span class="fc bfc" id="L763" title="All 2 branches covered.">		} else if (super.getPanelNo() == 29)</span>
+		{
+<span class="fc bfc" id="L765" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L766" title="4 of 8 branches missed.">					|| (s29.getHouseCount() &gt;= s26.getHouseCount() &amp;&amp; s29.getHouseCount() &gt;= s27.getHouseCount()))</span>
+					&amp;&amp; !s26.isHotelExist &amp;&amp; !s27.isHotelExist)
+			{
+<span class="fc bfc" id="L769" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L771">					isHotelExist = false;</span>
+<span class="fc" id="L772">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L774">					houseCount--;</span>
+<span class="fc" id="L775">				return true;</span>
+			}
+<span class="fc bfc" id="L777" title="All 2 branches covered.">		} else if (super.getPanelNo() == 31)</span>
+		{
+<span class="fc bfc" id="L779" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L780" title="4 of 8 branches missed.">					|| (s31.getHouseCount() &gt;= s32.getHouseCount() &amp;&amp; s31.getHouseCount() &gt;= s34.getHouseCount()))</span>
+					&amp;&amp; !s32.isHotelExist &amp;&amp; !s34.isHotelExist)
+			{
+<span class="fc bfc" id="L783" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L785">					isHotelExist = false;</span>
+<span class="fc" id="L786">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L788">					houseCount--;</span>
+<span class="fc" id="L789">				return true;</span>
+			}
+<span class="fc bfc" id="L791" title="All 2 branches covered.">		} else if (super.getPanelNo() == 32)</span>
+		{
+<span class="fc bfc" id="L793" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L794" title="4 of 8 branches missed.">					|| (s32.getHouseCount() &gt;= s31.getHouseCount() &amp;&amp; s32.getHouseCount() &gt;= s34.getHouseCount()))</span>
+					&amp;&amp; !s31.isHotelExist &amp;&amp; !s34.isHotelExist)
+			{
+<span class="fc bfc" id="L797" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L799">					isHotelExist = false;</span>
+<span class="fc" id="L800">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L802">					houseCount--;</span>
+<span class="fc" id="L803">				return true;</span>
+			}
+<span class="fc bfc" id="L805" title="All 2 branches covered.">		} else if (super.getPanelNo() == 34)</span>
+		{
+<span class="fc bfc" id="L807" title="All 2 branches covered.">			if ((isHotelExist()</span>
+<span class="pc bpc" id="L808" title="4 of 8 branches missed.">					|| (s34.getHouseCount() &gt;= s31.getHouseCount() &amp;&amp; s34.getHouseCount() &gt;= s32.getHouseCount()))</span>
+					&amp;&amp; !s31.isHotelExist &amp;&amp; !s32.isHotelExist)
+			{
+<span class="fc bfc" id="L811" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L813">					isHotelExist = false;</span>
+<span class="fc" id="L814">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L816">					houseCount--;</span>
+<span class="fc" id="L817">				return true;</span>
+			}
+<span class="fc bfc" id="L819" title="All 2 branches covered.">		} else if (super.getPanelNo() == 37)</span>
+		{
+<span class="pc bpc" id="L821" title="2 of 6 branches missed.">			if ((isHotelExist() || s37.getHouseCount() &gt;= s39.getHouseCount()) &amp;&amp; !s39.isHotelExist)</span>
+			{
+<span class="fc bfc" id="L823" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L825">					isHotelExist = false;</span>
+<span class="fc" id="L826">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L828">					houseCount--;</span>
+<span class="fc" id="L829">				return true;</span>
+			}
+<span class="fc bfc" id="L831" title="All 2 branches covered.">		} else if (super.getPanelNo() == 39)</span>
+		{
+<span class="pc bpc" id="L833" title="2 of 6 branches missed.">			if ((isHotelExist() || s39.getHouseCount() &gt;= s37.getHouseCount()) &amp;&amp; !s37.isHotelExist)</span>
+			{
+<span class="fc bfc" id="L835" title="All 2 branches covered.">				if (isHotelExist())</span>
+				{
+<span class="fc" id="L837">					isHotelExist = false;</span>
+<span class="fc" id="L838">					houseCount = 4;</span>
+				} else
+<span class="fc" id="L840">					houseCount--;</span>
+<span class="fc" id="L841">				return true;</span>
+			}
+		}
+<span class="fc" id="L844">		JOptionPane.showMessageDialog(null, &quot;impossible request&quot;);</span>
+<span class="fc" id="L845">		return false;</span>
+	}
+
+	public boolean mortgage()
+	{
+<span class="fc" id="L850">		Street s1 = (Street) EstateDAO.getEstateDAO().getEstates().get(1);</span>
+<span class="fc" id="L851">		Street s3 = (Street) EstateDAO.getEstateDAO().getEstates().get(3);</span>
+<span class="fc" id="L852">		Street s6 = (Street) EstateDAO.getEstateDAO().getEstates().get(6);</span>
+<span class="fc" id="L853">		Street s8 = (Street) EstateDAO.getEstateDAO().getEstates().get(8);</span>
+<span class="fc" id="L854">		Street s9 = (Street) EstateDAO.getEstateDAO().getEstates().get(9);</span>
+<span class="fc" id="L855">		Street s11 = (Street) EstateDAO.getEstateDAO().getEstates().get(11);</span>
+<span class="fc" id="L856">		Street s13 = (Street) EstateDAO.getEstateDAO().getEstates().get(13);</span>
+<span class="fc" id="L857">		Street s14 = (Street) EstateDAO.getEstateDAO().getEstates().get(14);</span>
+<span class="fc" id="L858">		Street s16 = (Street) EstateDAO.getEstateDAO().getEstates().get(16);</span>
+<span class="fc" id="L859">		Street s18 = (Street) EstateDAO.getEstateDAO().getEstates().get(18);</span>
+<span class="fc" id="L860">		Street s19 = (Street) EstateDAO.getEstateDAO().getEstates().get(19);</span>
+<span class="fc" id="L861">		Street s21 = (Street) EstateDAO.getEstateDAO().getEstates().get(21);</span>
+<span class="fc" id="L862">		Street s23 = (Street) EstateDAO.getEstateDAO().getEstates().get(23);</span>
+<span class="fc" id="L863">		Street s24 = (Street) EstateDAO.getEstateDAO().getEstates().get(24);</span>
+<span class="fc" id="L864">		Street s26 = (Street) EstateDAO.getEstateDAO().getEstates().get(26);</span>
+<span class="fc" id="L865">		Street s27 = (Street) EstateDAO.getEstateDAO().getEstates().get(27);</span>
+<span class="fc" id="L866">		Street s29 = (Street) EstateDAO.getEstateDAO().getEstates().get(29);</span>
+<span class="fc" id="L867">		Street s31 = (Street) EstateDAO.getEstateDAO().getEstates().get(31);</span>
+<span class="fc" id="L868">		Street s32 = (Street) EstateDAO.getEstateDAO().getEstates().get(32);</span>
+<span class="fc" id="L869">		Street s34 = (Street) EstateDAO.getEstateDAO().getEstates().get(34);</span>
+<span class="fc" id="L870">		Street s37 = (Street) EstateDAO.getEstateDAO().getEstates().get(37);</span>
+<span class="fc" id="L871">		Street s39 = (Street) EstateDAO.getEstateDAO().getEstates().get(39);</span>
+<span class="fc bfc" id="L872" title="All 2 branches covered.">		if (super.isMortgage())</span>
+		{
+<span class="fc" id="L874">			JOptionPane.showMessageDialog(null, &quot;Impossible request&quot;);</span>
+<span class="fc" id="L875">			return false;</span>
+		}
+<span class="fc bfc" id="L877" title="All 4 branches covered.">		if ((super.getPanelNo() == 1 || super.getPanelNo() == 3)</span>
+<span class="pc bpc" id="L878" title="5 of 8 branches missed.">				&amp;&amp; (s1.getHouseCount() != 0 || s3.getHouseCount() != 0 || s1.isHotelExist || s3.isHotelExist))</span>
+		{
+<span class="fc" id="L880">			JOptionPane.showMessageDialog(null, &quot;First you have to sell your houses or hotels&quot;);</span>
+<span class="fc" id="L881">			return false;</span>
+<span class="fc bfc" id="L882" title="All 6 branches covered.">		} else if ((super.getPanelNo() == 6 || super.getPanelNo() == 8 || super.getPanelNo() == 9)</span>
+<span class="pc bpc" id="L883" title="7 of 12 branches missed.">				&amp;&amp; (s6.getHouseCount() != 0 || s8.getHouseCount() != 0 || s9.getHouseCount() != 0 || s6.isHotelExist</span>
+						|| s8.isHotelExist || s9.isHotelExist))
+		{
+<span class="fc" id="L886">			JOptionPane.showMessageDialog(null, &quot;First you have to sell your houses or hotels&quot;);</span>
+<span class="fc" id="L887">			return false;</span>
+<span class="fc bfc" id="L888" title="All 6 branches covered.">		} else if ((super.getPanelNo() == 11 || super.getPanelNo() == 13 || super.getPanelNo() == 14)</span>
+<span class="pc bpc" id="L889" title="7 of 12 branches missed.">				&amp;&amp; (s11.getHouseCount() != 0 || s13.getHouseCount() != 0 || s14.getHouseCount() != 0 || s11.isHotelExist</span>
+						|| s13.isHotelExist || s14.isHotelExist))
+		{
+<span class="fc" id="L892">			JOptionPane.showMessageDialog(null, &quot;First you have to sell your houses or hotels&quot;);</span>
+<span class="fc" id="L893">			return false;</span>
+<span class="fc bfc" id="L894" title="All 6 branches covered.">		} else if ((super.getPanelNo() == 16 || super.getPanelNo() == 18 || super.getPanelNo() == 19)</span>
+<span class="pc bpc" id="L895" title="7 of 12 branches missed.">				&amp;&amp; (s16.getHouseCount() != 0 || s18.getHouseCount() != 0 || s19.getHouseCount() != 0 || s16.isHotelExist</span>
+						|| s18.isHotelExist || s19.isHotelExist))
+		{
+<span class="fc" id="L898">			JOptionPane.showMessageDialog(null, &quot;First you have to sell your houses or hotels&quot;);</span>
+<span class="fc" id="L899">			return false;</span>
+<span class="fc bfc" id="L900" title="All 6 branches covered.">		} else if ((super.getPanelNo() == 21 || super.getPanelNo() == 23 || super.getPanelNo() == 24)</span>
+<span class="pc bpc" id="L901" title="7 of 12 branches missed.">				&amp;&amp; (s21.getHouseCount() != 0 || s23.getHouseCount() != 0 || s24.getHouseCount() != 0 || s21.isHotelExist</span>
+						|| s23.isHotelExist || s24.isHotelExist))
+		{
+<span class="fc" id="L904">			JOptionPane.showMessageDialog(null, &quot;First you have to sell your houses or hotels&quot;);</span>
+<span class="fc" id="L905">			return false;</span>
+<span class="fc bfc" id="L906" title="All 6 branches covered.">		} else if ((super.getPanelNo() == 26 || super.getPanelNo() == 27 || super.getPanelNo() == 29)</span>
+<span class="pc bpc" id="L907" title="7 of 12 branches missed.">				&amp;&amp; (s26.getHouseCount() != 0 || s27.getHouseCount() != 0 || s29.getHouseCount() != 0 || s26.isHotelExist</span>
+						|| s27.isHotelExist || s29.isHotelExist))
+		{
+<span class="fc" id="L910">			JOptionPane.showMessageDialog(null, &quot;First you have to sell your houses or hotels&quot;);</span>
+<span class="fc" id="L911">			return false;</span>
+<span class="fc bfc" id="L912" title="All 6 branches covered.">		} else if ((super.getPanelNo() == 31 || super.getPanelNo() == 32 || super.getPanelNo() == 34)</span>
+<span class="pc bpc" id="L913" title="7 of 12 branches missed.">				&amp;&amp; (s31.getHouseCount() != 0 || s32.getHouseCount() != 0 || s34.getHouseCount() != 0 || s31.isHotelExist</span>
+						|| s32.isHotelExist || s34.isHotelExist))
+		{
+<span class="fc" id="L916">			JOptionPane.showMessageDialog(null, &quot;First you have to sell your houses or hotels&quot;);</span>
+<span class="fc" id="L917">			return false;</span>
+<span class="fc bfc" id="L918" title="All 4 branches covered.">		} else if ((super.getPanelNo() == 37 || super.getPanelNo() == 39)</span>
+<span class="pc bpc" id="L919" title="5 of 8 branches missed.">				&amp;&amp; (s37.getHouseCount() != 0 || s39.getHouseCount() != 0 || s37.isHotelExist || s39.isHotelExist))</span>
+		{
+<span class="fc" id="L921">			JOptionPane.showMessageDialog(null, &quot;First you have to sell your houses or hotels&quot;);</span>
+<span class="fc" id="L922">			return false;</span>
+		}
+<span class="fc" id="L924">		super.setMortgage(true);</span>
+<span class="fc" id="L925">		return true;</span>
+	}
+
+	public boolean unMortgage()
+	{
+<span class="fc" id="L930">		HashMap&lt;Integer, Estate&gt; estates = EstateDAO.getEstateDAO().getEstates();</span>
+<span class="fc" id="L931">		Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="fc bfc" id="L932" title="All 2 branches covered.">		if (!estates.get(super.getPanelNo()).isMortgage())</span>
+		{
+<span class="fc" id="L934">			JOptionPane.showMessageDialog(null, &quot;Not mortgaged&quot;);</span>
+<span class="fc" id="L935">			return false;</span>
+		}
+<span class="fc bfc" id="L937" title="All 2 branches covered.">		if (p.getMoney() &lt; estates.get(super.getPanelNo()).getUnMortgage())</span>
+		{
+<span class="fc" id="L939">			JOptionPane.showMessageDialog(null, &quot;You don't have enough money&quot;);</span>
+<span class="fc" id="L940">			return false;</span>
+		}
+<span class="fc" id="L942">		super.setMortgage(false);</span>
+<span class="fc" id="L943">		return true;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnterGamePanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui.mainFrame</a> &gt; <span class="el_source">EnterGamePanel.java</span></div><h1>EnterGamePanel.java</h1><pre class="source lang-java linenums">package org.bihe.ui.mainFrame;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import org.bihe.DAO.PersonDAO;
+import org.bihe.DAO.PlayerDAO;
+import org.bihe.model.Person;
+import org.bihe.network.client.Client;
+import org.bihe.ui.GUIManager;
+
+public class EnterGamePanel extends JPanel
+{
+	private static final long serialVersionUID = 1L;
+	private Dimension dim;
+	private JTextField portField;
+	private JTextField ipField;
+	private JButton joinButton;
+	private String portNo;
+	private String ipAddress;
+
+	public EnterGamePanel()
+<span class="nc" id="L35">	{</span>
+<span class="nc" id="L36">		setBackground(Color.WHITE);</span>
+<span class="nc" id="L37">		dim = GUIManager.getMainFrame().getSize();</span>
+<span class="nc" id="L38">		setLayout(creatGbl());</span>
+<span class="nc" id="L39">		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.0d, 0.0d, GridBagConstraints.CENTER,</span>
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
+
+<span class="nc" id="L42">		gbc.gridy = 1;</span>
+<span class="nc" id="L43">		JLabel title = new JLabel(&quot;Monopoly&quot;);</span>
+<span class="nc" id="L44">		title.setFont(new Font(&quot;&quot;, Font.BOLD, 70));</span>
+<span class="nc" id="L45">		this.add(title, gbc);</span>
+
+<span class="nc" id="L47">		gbc.gridy = 3;</span>
+<span class="nc" id="L48">		JPanel userNamePanel = new JPanel(new FlowLayout());</span>
+<span class="nc" id="L49">		userNamePanel.setBackground(Color.WHITE);</span>
+<span class="nc" id="L50">		userNamePanel.setPreferredSize(new Dimension(dim.width * 2 / 3, 50));</span>
+<span class="nc" id="L51">		JLabel userNameLabel1 = new JLabel(&quot;You'll join by this acccount: &quot;);</span>
+<span class="nc" id="L52">		userNameLabel1.setFont(new Font(&quot;&quot;, Font.PLAIN, 14));</span>
+<span class="nc" id="L53">		userNamePanel.add(userNameLabel1);</span>
+<span class="nc" id="L54">		JLabel userNameLabel2 = new JLabel(PersonDAO.getPersonDAO().getThePerson().getUserName());</span>
+<span class="nc" id="L55">		userNameLabel2.setFont(new Font(&quot;&quot;, Font.BOLD, 14));</span>
+<span class="nc" id="L56">		userNamePanel.add(userNameLabel2);</span>
+<span class="nc" id="L57">		this.add(userNamePanel, gbc);</span>
+		//
+<span class="nc" id="L59">		gbc.gridy = 5;</span>
+<span class="nc" id="L60">		JPanel portPanel = new JPanel(new FlowLayout());</span>
+<span class="nc" id="L61">		portPanel.setBackground(Color.WHITE);</span>
+<span class="nc" id="L62">		portPanel.setPreferredSize(new Dimension(dim.width * 2 / 3, 50));</span>
+<span class="nc" id="L63">		JLabel portLabel = new JLabel(&quot;port: &quot;);</span>
+<span class="nc" id="L64">		portLabel.setFont(new Font(&quot;&quot;, Font.BOLD, 12));</span>
+<span class="nc" id="L65">		portPanel.add(portLabel);</span>
+<span class="nc" id="L66">		portField = new JTextField();</span>
+<span class="nc" id="L67">		portField.setPreferredSize(new Dimension(dim.width / 3, 25));</span>
+<span class="nc" id="L68">		portPanel.add(portField);</span>
+<span class="nc" id="L69">		this.add(portPanel, gbc);</span>
+		//
+<span class="nc" id="L71">		gbc.gridy = 6;</span>
+<span class="nc" id="L72">		JPanel ipPanel = new JPanel(new FlowLayout());</span>
+<span class="nc" id="L73">		ipPanel.setBackground(Color.WHITE);</span>
+<span class="nc" id="L74">		ipPanel.setPreferredSize(new Dimension(dim.width * 2 / 3, 50));</span>
+<span class="nc" id="L75">		JLabel ipLabel = new JLabel(&quot;IP:    &quot;);</span>
+<span class="nc" id="L76">		ipLabel.setFont(new Font(&quot;&quot;, Font.BOLD, 12));</span>
+<span class="nc" id="L77">		ipPanel.add(ipLabel);</span>
+<span class="nc" id="L78">		ipField = new JTextField();</span>
+<span class="nc" id="L79">		ipField = new JTextField();</span>
+<span class="nc" id="L80">		ipField.setPreferredSize(new Dimension(dim.width / 3, 25));</span>
+<span class="nc" id="L81">		ipPanel.add(ipField);</span>
+<span class="nc" id="L82">		this.add(ipPanel, gbc);</span>
+		//
+<span class="nc" id="L84">		gbc.gridy = 7;</span>
+<span class="nc" id="L85">		joinButton = new JButton(&quot;Join&quot;);</span>
+<span class="nc" id="L86">		joinButton.setPreferredSize(new Dimension(dim.width / 3, 30));</span>
+<span class="nc" id="L87">		joinButton.addActionListener(new getActions());</span>
+<span class="nc" id="L88">		this.add(joinButton, gbc);</span>
+<span class="nc" id="L89">	}</span>
+
+	public String getPortNo()
+	{
+<span class="nc" id="L93">		return portNo;</span>
+	}
+
+	public String getIpAddress()
+	{
+<span class="nc" id="L98">		return ipAddress;</span>
+	}
+
+	private GridBagLayout creatGbl()
+	{
+
+<span class="nc" id="L104">		GridBagLayout gbl = new GridBagLayout();</span>
+<span class="nc" id="L105">		gbl.columnWidths = new int[] { 400 };</span>
+<span class="nc" id="L106">		gbl.rowHeights = new int[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };</span>
+<span class="nc" id="L107">		gbl.columnWeights = new double[] { 0 };</span>
+<span class="nc" id="L108">		return gbl;</span>
+	}
+
+<span class="nc" id="L111">	private class getActions implements ActionListener</span>
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{			
+<span class="nc" id="L116">			portNo = portField.getText();</span>
+<span class="nc" id="L117">			ipAddress = ipField.getText();</span>
+<span class="nc" id="L118">			Client client = Client.getClient();</span>
+<span class="nc" id="L119">			client.runClient(Integer.parseInt(getPortNo()), getIpAddress());</span>
+<span class="nc" id="L120">			Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="nc" id="L121">			p.setPieceNumber(Client.getClient().getClientNo());</span>
+<span class="nc" id="L122">			p.setYourTurn(false);</span>
+<span class="nc" id="L123">			PlayerDAO.getPlayerDAO().changeOnePlayer(p);</span>
+			
+<span class="nc" id="L125">		}</span>
+
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

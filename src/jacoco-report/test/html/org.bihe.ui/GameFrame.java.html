@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameFrame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui</a> &gt; <span class="el_source">GameFrame.java</span></div><h1>GameFrame.java</h1><pre class="source lang-java linenums">package org.bihe.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import org.bihe.network.client.Client;
+
+import java.awt.Toolkit;
+
+public class GameFrame extends JFrame
+{
+	private static final long serialVersionUID = 1L;
+<span class="fc" id="L15">	private static final int WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;</span>
+<span class="fc" id="L16">	private static final int HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height - 31;</span>
+<span class="fc" id="L17">	private int x = WIDTH * 10 / 46;</span>
+
+	public GameFrame()
+<span class="fc" id="L20">	{</span>
+<span class="fc" id="L21">		this.setLayout(null);</span>
+<span class="fc" id="L22">		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);</span>
+<span class="fc" id="L23">		this.setTitle(&quot;Online Monopoly!&quot;);</span>
+<span class="fc" id="L24">		this.setIconImage(resources.Resources.getImage(&quot;MrMonopoly.gif&quot;));</span>
+<span class="fc" id="L25">		this.setLocationRelativeTo(null);</span>
+<span class="fc" id="L26">		this.getContentPane().setBackground(Color.WHITE);</span>
+<span class="fc" id="L27">		this.setBounds(x / 2, 0, HEIGHT + x, HEIGHT);</span>
+<span class="fc" id="L28">		this.setMinimumSize(new Dimension(HEIGHT + x, HEIGHT));</span>
+
+<span class="fc" id="L30">		this.add(GUIManager.getActionPanel());</span>
+<span class="fc" id="L31">		GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">		if (System.getProperty(&quot;os.name&quot;).toLowerCase().equals(&quot;linux&quot;))</span>
+		{
+<span class="nc" id="L34">			gamePanel.setBounds(x, 0, HEIGHT - 2, HEIGHT - 2);</span>
+		} else
+		{
+<span class="fc" id="L37">			gamePanel.setBounds(x, 0, HEIGHT - 20, HEIGHT - 38);</span>
+		}
+<span class="fc" id="L39">		this.pack();</span>
+<span class="fc" id="L40">		this.add(gamePanel);</span>
+<span class="fc" id="L41">		this.pack();</span>
+<span class="fc" id="L42">		this.setVisible(true);</span>
+<span class="fc" id="L43">		gamePanel.addImageToPanels();</span>
+		
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">		for (int i = 1; i &lt; Client.getClient().getNumberOfPlayers()+1; i++)</span>
+		{
+<span class="nc" id="L47">			gamePanel.makePiece(i, 0);</span>
+		
+		}
+<span class="fc" id="L50">		repaint();</span>
+<span class="fc" id="L51">		Runnable r = new Runnable()</span>
+<span class="fc" id="L52">		{</span>
+
+			@Override
+			public void run()
+			{
+				try
+				{
+<span class="fc" id="L59">					Thread.sleep(10);</span>
+<span class="fc" id="L60">					GUIManager.getPlayerPanel().fillPlayersList();</span>
+<span class="nc" id="L61">				} catch (InterruptedException e)</span>
+				{
+<span class="nc" id="L63">					JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L64">				}</span>
+
+<span class="fc" id="L66">			}</span>
+		};
+<span class="fc" id="L68">		new Thread(r).start();</span>
+<span class="fc" id="L69">	}</span>
+
+	public static int getWIDTH()
+	{
+<span class="nc" id="L73">		return WIDTH;</span>
+	}
+
+	public static int getHEIGHT()
+	{
+<span class="fc" id="L78">		return HEIGHT;</span>
+	}
+
+	public void addComponent(JPanel p)
+	{
+<span class="nc" id="L83">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

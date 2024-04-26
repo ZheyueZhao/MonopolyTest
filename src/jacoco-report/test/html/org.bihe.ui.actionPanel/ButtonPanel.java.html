@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ButtonPanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui.actionPanel</a> &gt; <span class="el_source">ButtonPanel.java</span></div><h1>ButtonPanel.java</h1><pre class="source lang-java linenums">package org.bihe.ui.actionPanel;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PersonDAO;
+import org.bihe.DAO.PlayerDAO;
+import org.bihe.model.Data;
+import org.bihe.model.Estate;
+import org.bihe.model.Exit;
+import org.bihe.model.Person;
+import org.bihe.model.Street;
+import org.bihe.network.client.Client;
+import org.bihe.playSound.PlaySound;
+import org.bihe.ui.GUIManager;
+
+public class ButtonPanel extends JPanel
+{
+	private static final long serialVersionUID = 1L;
+	private JButton buyHouseOrHotelBtn;
+	private JButton sellHouseOrHotelBtn;
+	private JButton mortgage;
+	private JButton unMortgage;
+	private JButton exitBtn;
+	private int HEIGHT;
+	private int WIDTH;
+
+	public ButtonPanel()
+<span class="fc" id="L39">	{</span>
+<span class="fc" id="L40">		this.setLayout(new FlowLayout());</span>
+<span class="fc" id="L41">		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();</span>
+<span class="fc" id="L42">		HEIGHT = (int) dimension.getHeight();</span>
+<span class="fc" id="L43">		WIDTH = (int) dimension.getWidth() * 10 / 46;</span>
+<span class="fc" id="L44">		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));</span>
+<span class="fc" id="L45">		this.setBackground(Color.white);</span>
+<span class="fc" id="L46">		this.setBounds(0, 0, WIDTH / 2, (HEIGHT - 30) / 3);</span>
+		//
+<span class="fc" id="L48">		buyHouseOrHotelBtn = new JButton(&quot;Buy a House/Hotel&quot;);</span>
+<span class="fc" id="L49">		buyHouseOrHotelBtn.setPreferredSize(new Dimension(WIDTH / 2 - 25, (HEIGHT - 30) / 25));</span>
+<span class="fc" id="L50">		buyHouseOrHotelBtn.addActionListener(new GetActions());</span>
+<span class="fc" id="L51">		this.add(buyHouseOrHotelBtn);</span>
+		//
+<span class="fc" id="L53">		sellHouseOrHotelBtn = new JButton(&quot;Sell a House/Hotel&quot;);</span>
+<span class="fc" id="L54">		sellHouseOrHotelBtn.setPreferredSize(new Dimension(WIDTH / 2 - 25, (HEIGHT - 30) / 25));</span>
+<span class="fc" id="L55">		sellHouseOrHotelBtn.addActionListener(new GetActions());</span>
+<span class="fc" id="L56">		this.add(sellHouseOrHotelBtn);</span>
+		//
+<span class="fc" id="L58">		mortgage = new JButton(&quot;mortgage&quot;);</span>
+<span class="fc" id="L59">		mortgage.setPreferredSize(new Dimension(WIDTH / 2 - 25, (HEIGHT - 30) / 25));</span>
+<span class="fc" id="L60">		mortgage.addActionListener(new GetActions());</span>
+<span class="fc" id="L61">		this.add(mortgage);</span>
+		//
+<span class="fc" id="L63">		unMortgage = new JButton(&quot;unmortgage&quot;);</span>
+<span class="fc" id="L64">		unMortgage.setPreferredSize(new Dimension(WIDTH / 2 - 25, (HEIGHT - 30) / 25));</span>
+<span class="fc" id="L65">		unMortgage.addActionListener(new GetActions());</span>
+<span class="fc" id="L66">		this.add(unMortgage);</span>
+		//
+<span class="fc" id="L68">		JLabel adjustLabel = new JLabel();</span>
+<span class="fc" id="L69">		adjustLabel.setPreferredSize(new Dimension(WIDTH / 2, (HEIGHT - 30) * 2 / 52));</span>
+<span class="fc" id="L70">		this.add(adjustLabel);</span>
+		//
+<span class="fc" id="L72">		exitBtn = new JButton(&quot;Exit&quot;);</span>
+<span class="fc" id="L73">		exitBtn.setPreferredSize(new Dimension(WIDTH / 2 - 25, (HEIGHT - 30) / 25));</span>
+<span class="fc" id="L74">		exitBtn.addActionListener(new GetActions());</span>
+<span class="fc" id="L75">		this.add(exitBtn);</span>
+
+<span class="fc" id="L77">	}</span>
+
+<span class="fc" id="L79">	private class GetActions implements ActionListener</span>
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+<span class="nc bnc" id="L84" title="All 2 branches missed.">			if (arg0.getSource().equals(buyHouseOrHotelBtn))</span>
+			{
+<span class="nc" id="L86">				Estate e = GUIManager.getEstatePanel().getEstates().getSelectedValue();</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">				if (e instanceof Street)</span>
+				{
+<span class="nc" id="L90">					Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="nc" id="L91">					Street s = (Street) e;</span>
+<span class="nc" id="L92">					int money = p.getMoney();</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">					if (s.buyHouse())</span>
+					{
+						//
+<span class="nc" id="L96">						Thread tr = new Thread(new Runnable()</span>
+<span class="nc" id="L97">						{</span>
+							@Override
+							public void run()
+							{
+<span class="nc" id="L101">								PlaySound p = new PlaySound(&quot;MH.wav&quot;);</span>
+<span class="nc" id="L102">								p.playSound();</span>
+<span class="nc" id="L103">							}</span>
+						});
+<span class="nc" id="L105">						tr.start();</span>
+						//
+<span class="nc" id="L107">						money = p.newMoney(-1 * s.getHousesCost());</span>
+<span class="nc" id="L108">						p.setMoney(money);</span>
+<span class="nc" id="L109">						PlayerDAO.getPlayerDAO().changeOnePlayer(p);</span>
+					}
+<span class="nc" id="L111">					EstateDAO.getEstateDAO().changeEstate(s);</span>
+<span class="nc" id="L112">					Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="nc" id="L113">					Client.getClient().sendObject(data);</span>
+
+<span class="nc" id="L115">					GUIManager.getPlayerPanel().setPriceLabel(money + &quot; M &quot;);</span>
+<span class="nc" id="L116">					GUIManager.getGamePanel().repaint();</span>
+
+				}
+<span class="nc bnc" id="L119" title="All 2 branches missed.">			} else if (arg0.getSource().equals(sellHouseOrHotelBtn))</span>
+			{
+
+<span class="nc" id="L122">				Estate e = GUIManager.getEstatePanel().getEstates().getSelectedValue();</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">				if (e instanceof Street)</span>
+				{
+<span class="nc" id="L125">					Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="nc" id="L126">					Street s = (Street) e;</span>
+<span class="nc" id="L127">					int money = p.getMoney();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">					if (s.sellHouse())</span>
+					{
+						//
+<span class="nc" id="L131">						Thread tr = new Thread(new Runnable()</span>
+<span class="nc" id="L132">						{</span>
+							@Override
+							public void run()
+							{
+<span class="nc" id="L136">								PlaySound p = new PlaySound(&quot;RH.wav&quot;);</span>
+<span class="nc" id="L137">								p.playSound();</span>
+<span class="nc" id="L138">							}</span>
+						});
+<span class="nc" id="L140">						tr.start();</span>
+						//
+<span class="nc" id="L142">						money = p.newMoney(s.getHousesCost() / 2);</span>
+<span class="nc" id="L143">						p.setMoney(money);</span>
+<span class="nc" id="L144">						PersonDAO.getPersonDAO().changePerson(p);</span>
+					}
+<span class="nc" id="L146">					EstateDAO.getEstateDAO().changeEstate(s);</span>
+<span class="nc" id="L147">					Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="nc" id="L148">					Client.getClient().sendObject(data);</span>
+<span class="nc" id="L149">					GUIManager.getPlayerPanel().setPriceLabel(money + &quot; M &quot;);</span>
+<span class="nc" id="L150">					GUIManager.getGamePanel().repaint();</span>
+
+				}
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			} else if (arg0.getSource().equals(mortgage))</span>
+			{
+<span class="nc" id="L155">				Estate e = GUIManager.getEstatePanel().getEstates().getSelectedValue();</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">				if (e instanceof Street)</span>
+				{
+<span class="nc" id="L158">					Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="nc" id="L159">					Street s = (Street) e;</span>
+<span class="nc" id="L160">					int money = p.getMoney();</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">					if (s.mortgage())</span>
+					{
+<span class="nc" id="L163">						money = p.newMoney(s.getMortgage());</span>
+<span class="nc" id="L164">						p.setMoney(money);</span>
+<span class="nc" id="L165">						PersonDAO.getPersonDAO().changePerson(p);</span>
+					}
+<span class="nc" id="L167">					EstateDAO.getEstateDAO().changeEstate(s);</span>
+<span class="nc" id="L168">					Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="nc" id="L169">					Client.getClient().sendObject(data);</span>
+<span class="nc" id="L170">					GUIManager.getEstatePanel().updateEstates();</span>
+<span class="nc" id="L171">					GUIManager.getGamePanel().repaint();</span>
+
+				}
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			} else if (arg0.getSource().equals(unMortgage))</span>
+			{
+<span class="nc" id="L177">				Estate e = GUIManager.getEstatePanel().getEstates().getSelectedValue();</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">				if (e instanceof Street)</span>
+				{
+<span class="nc" id="L180">					Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="nc" id="L181">					Street s = (Street) e;</span>
+<span class="nc" id="L182">					int money = p.getMoney();</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">					if (s.unMortgage())</span>
+					{
+<span class="nc" id="L185">						money = p.newMoney(-1 * s.getUnMortgage());</span>
+<span class="nc" id="L186">						p.setMoney(money);</span>
+<span class="nc" id="L187">						PersonDAO.getPersonDAO().changePerson(p);</span>
+					}
+<span class="nc" id="L189">					EstateDAO.getEstateDAO().changeEstate(s);</span>
+<span class="nc" id="L190">					Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="nc" id="L191">					Client.getClient().sendObject(data);</span>
+<span class="nc" id="L192">					GUIManager.getEstatePanel().updateEstates();</span>
+<span class="nc" id="L193">					GUIManager.getGamePanel().repaint();</span>
+
+				}
+<span class="nc bnc" id="L196" title="All 2 branches missed.">			} else if (arg0.getSource().equals(exitBtn))</span>
+			{
+<span class="nc" id="L198">				Exit exit = new Exit(PersonDAO.getPersonDAO().getThePerson().getUserName());</span>
+<span class="nc" id="L199">				Client.getClient().sendObject(exit);</span>
+<span class="nc" id="L200">				System.exit(0);</span>
+			}
+<span class="nc" id="L202">		}</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

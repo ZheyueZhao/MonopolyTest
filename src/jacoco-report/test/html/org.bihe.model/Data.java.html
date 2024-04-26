@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Data.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.model</a> &gt; <span class="el_source">Data.java</span></div><h1>Data.java</h1><pre class="source lang-java linenums">package org.bihe.model;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PersonDAO;
+import org.bihe.DAO.PlayerDAO;
+import org.bihe.ui.GUIManager;
+import org.bihe.ui.GamePanel;
+
+public class Data implements Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3232895936533010422L;
+
+	private HashMap&lt;String, Person&gt; players;
+	private HashMap&lt;Integer, Estate&gt; estates;
+	private int pieceNumber;
+	private boolean playerMove;
+	private int location;
+	private int newLocation;
+
+	public Data(HashMap&lt;String, Person&gt; players, HashMap&lt;Integer, Estate&gt; estates)
+<span class="fc" id="L26">	{</span>
+
+<span class="fc" id="L28">		this.players = players;</span>
+<span class="fc" id="L29">		this.estates = estates;</span>
+<span class="fc" id="L30">		this.playerMove = false;</span>
+<span class="fc" id="L31">	}</span>
+
+	public Data(HashMap&lt;String, Person&gt; players, HashMap&lt;Integer, Estate&gt; estates, int pieceNumber, int location,
+			int newLocation)
+<span class="fc" id="L35">	{</span>
+
+<span class="fc" id="L37">		this.players = players;</span>
+<span class="fc" id="L38">		this.estates = estates;</span>
+<span class="fc" id="L39">		this.pieceNumber = pieceNumber;</span>
+<span class="fc" id="L40">		this.playerMove = true;</span>
+<span class="fc" id="L41">		this.location = location;</span>
+<span class="fc" id="L42">		this.newLocation = newLocation;</span>
+<span class="fc" id="L43">	}</span>
+
+	public void analysData()
+	{
+<span class="fc" id="L47">		PlayerDAO.getPlayerDAO().changePlayerDAO(getPlayers());</span>
+<span class="fc" id="L48">		EstateDAO.getEstateDAO().changeEstateDAO(getEstates());</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">		if (playerMove)</span>
+		{
+<span class="fc bfc" id="L51" title="All 2 branches covered.">			if (pieceNumber != PersonDAO.getPersonDAO().getThePerson().getPieceNumber())</span>
+			{
+<span class="fc" id="L53">				GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L54">				gamePanel.movePieceOnePlace(getPieceNumber(), gamePanel.distance(getLocation(), getNewLocation()));</span>
+			}
+		}
+<span class="fc" id="L57">		GUIManager.getEstatePanel().updateEstates();</span>
+<span class="fc" id="L58">		GUIManager.getPlayerPanel().setPriceLabel(PersonDAO.getPersonDAO().getThePerson().getMoney() + &quot; M &quot;);</span>
+<span class="fc" id="L59">		GUIManager.getGameFrame().repaint();</span>
+<span class="fc" id="L60">	}</span>
+
+	public int getLocation()
+	{
+<span class="fc" id="L64">		return location;</span>
+	}
+
+	public int getNewLocation()
+	{
+<span class="fc" id="L69">		return newLocation;</span>
+	}
+
+	public HashMap&lt;String, Person&gt; getPlayers()
+	{
+<span class="fc" id="L74">		return players;</span>
+	}
+
+	public HashMap&lt;Integer, Estate&gt; getEstates()
+	{
+<span class="fc" id="L79">		return estates;</span>
+	}
+
+	public int getPieceNumber()
+	{
+<span class="fc" id="L84">		return pieceNumber;</span>
+	}
+
+	public boolean isPlayerMove()
+	{
+<span class="fc" id="L89">		return playerMove;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

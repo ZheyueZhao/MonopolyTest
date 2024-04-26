@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StreetPanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui</a> &gt; <span class="el_source">StreetPanel.java</span></div><h1>StreetPanel.java</h1><pre class="source lang-java linenums">package org.bihe.ui;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JPanel;
+
+import org.bihe.DAO.EstateDAO;
+import org.bihe.model.Estate;
+import org.bihe.model.Street;
+
+public class StreetPanel extends JPanel
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4172903723945892154L;
+	private int panelNo;
+	private Image backGround;
+	private Image house1;
+	private Image house2;
+	private Image house3;
+	private Image house4;
+	private Image hotel;
+<span class="pc" id="L27">	private ArrayList&lt;Piece&gt; pieces = new ArrayList&lt;&gt;();</span>
+
+	private HashMap&lt;Integer, Estate&gt; estates;
+
+	public StreetPanel()
+<span class="nc" id="L32">	{</span>
+
+<span class="nc" id="L34">	}</span>
+
+	public StreetPanel(int number, Image image)
+<span class="fc" id="L37">	{</span>
+<span class="fc" id="L38">		estates = EstateDAO.getEstateDAO().getEstates();</span>
+<span class="fc" id="L39">		this.setNumber(number);</span>
+<span class="fc" id="L40">		this.backGround = image;</span>
+<span class="fc" id="L41">		repaint();</span>
+<span class="fc" id="L42">	}</span>
+
+	public StreetPanel(int panelNo, Image backGround, Image house1, Image house2, Image house3, Image house4,
+			Image hotel)
+<span class="fc" id="L46">	{</span>
+<span class="fc" id="L47">		estates = EstateDAO.getEstateDAO().getEstates();</span>
+<span class="fc" id="L48">		this.panelNo = panelNo;</span>
+<span class="fc" id="L49">		this.backGround = backGround;</span>
+<span class="fc" id="L50">		this.house1 = house1;</span>
+<span class="fc" id="L51">		this.house2 = house2;</span>
+<span class="fc" id="L52">		this.house3 = house3;</span>
+<span class="fc" id="L53">		this.house4 = house4;</span>
+<span class="fc" id="L54">		this.hotel = hotel;</span>
+<span class="fc" id="L55">		repaint();</span>
+<span class="fc" id="L56">	}</span>
+
+	@Override
+	protected void paintComponent(Graphics g)
+	{
+
+<span class="fc" id="L62">		super.paintComponent(g);</span>
+<span class="fc" id="L63">		estates = EstateDAO.getEstateDAO().getEstates();</span>
+<span class="fc" id="L64">		g.drawImage(backGround, 0, 0, this);</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">		for (int i = 0; i &lt; pieces.size(); i++)</span>
+		{
+<span class="nc" id="L67">			g.drawImage(pieces.get(i).getImage(), pieces.get(i).getX(), pieces.get(i).getY(), this);</span>
+		}
+
+<span class="fc bfc" id="L70" title="All 10 branches covered.">		if (panelNo == 1 || panelNo == 3 || panelNo == 6 || panelNo == 8 || panelNo == 9)</span>
+		{
+<span class="fc" id="L72">			Street s = (Street) estates.get(panelNo);</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">			if (s.isHotelExist())</span>
+<span class="nc" id="L74">				g.drawImage(hotel, 0, 0, this);</span>
+			else
+			{
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">				if (s.getHouseCount() == 1)</span>
+				{
+<span class="nc" id="L79">					g.drawImage(house1, 0, 0, this);</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 2)</span>
+				{
+<span class="nc" id="L82">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L83">					g.drawImage(house2, 0, 0, this);</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 3)</span>
+				{
+<span class="nc" id="L86">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L87">					g.drawImage(house2, 0, 0, this);</span>
+<span class="nc" id="L88">					g.drawImage(house3, 0, 0, this);</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 4)</span>
+				{
+<span class="nc" id="L91">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L92">					g.drawImage(house2, 0, 0, this);</span>
+<span class="nc" id="L93">					g.drawImage(house3, 0, 0, this);</span>
+<span class="nc" id="L94">					g.drawImage(house4, 0, 0, this);</span>
+				}
+			}
+
+<span class="fc bfc" id="L98" title="All 12 branches covered.">		} else if (panelNo == 11 || panelNo == 13 || panelNo == 14 || panelNo == 16 || panelNo == 18 || panelNo == 19)</span>
+		{
+<span class="fc" id="L100">			Street s = (Street) estates.get(panelNo);</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">			if (s.isHotelExist())</span>
+<span class="nc" id="L102">				g.drawImage(hotel, 0, 0, this);</span>
+			else
+			{
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">				if (s.getHouseCount() == 1)</span>
+				{
+<span class="nc" id="L107">					g.drawImage(house1, 0, 0, this);</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 2)</span>
+				{
+<span class="nc" id="L110">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L111">					g.drawImage(house2, 0, 0, this);</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 3)</span>
+				{
+<span class="nc" id="L114">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L115">					g.drawImage(house2, 0, 0, this);</span>
+<span class="nc" id="L116">					g.drawImage(house3, 0, 0, this);</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 4)</span>
+				{
+<span class="nc" id="L119">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L120">					g.drawImage(house2, 0, 0, this);</span>
+<span class="nc" id="L121">					g.drawImage(house3, 0, 0, this);</span>
+<span class="nc" id="L122">					g.drawImage(house4, 0, 0, this);</span>
+				}
+			}
+
+<span class="fc bfc" id="L126" title="All 12 branches covered.">		} else if (panelNo == 21 || panelNo == 23 || panelNo == 24 || panelNo == 26 || panelNo == 27 || panelNo == 29)</span>
+		{
+<span class="fc" id="L128">			Street s = (Street) estates.get(panelNo);</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">			if (s.isHotelExist())</span>
+<span class="nc" id="L130">				g.drawImage(hotel, 0, 0, this);</span>
+			else
+			{
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">				if (s.getHouseCount() == 1)</span>
+				{
+<span class="nc" id="L135">					g.drawImage(house1, 0, 0, this);</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 2)</span>
+				{
+<span class="nc" id="L138">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L139">					g.drawImage(house2, 0, 0, this);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 3)</span>
+				{
+<span class="nc" id="L142">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L143">					g.drawImage(house2, 0, 0, this);</span>
+<span class="nc" id="L144">					g.drawImage(house3, 0, 0, this);</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 4)</span>
+				{
+<span class="nc" id="L147">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L148">					g.drawImage(house2, 0, 0, this);</span>
+<span class="nc" id="L149">					g.drawImage(house3, 0, 0, this);</span>
+<span class="nc" id="L150">					g.drawImage(house4, 0, 0, this);</span>
+				}
+			}
+
+<span class="fc bfc" id="L154" title="All 10 branches covered.">		} else if (panelNo == 31 || panelNo == 32 || panelNo == 34 || panelNo == 37 || panelNo == 39)</span>
+		{
+<span class="fc" id="L156">			Street s = (Street) estates.get(panelNo);</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			if (s.isHotelExist())</span>
+<span class="nc" id="L158">				g.drawImage(hotel, 0, 0, this);</span>
+			else
+			{
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">				if (s.getHouseCount() == 1)</span>
+				{
+<span class="nc" id="L163">					g.drawImage(house1, 0, 0, this);</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 2)</span>
+				{
+<span class="nc" id="L166">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L167">					g.drawImage(house2, 0, 0, this);</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 3)</span>
+				{
+<span class="nc" id="L170">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L171">					g.drawImage(house2, 0, 0, this);</span>
+<span class="nc" id="L172">					g.drawImage(house3, 0, 0, this);</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">				} else if (s.getHouseCount() == 4)</span>
+				{
+<span class="nc" id="L175">					g.drawImage(house1, 0, 0, this);</span>
+<span class="nc" id="L176">					g.drawImage(house2, 0, 0, this);</span>
+<span class="nc" id="L177">					g.drawImage(house3, 0, 0, this);</span>
+<span class="nc" id="L178">					g.drawImage(house4, 0, 0, this);</span>
+				}
+			}
+
+		}
+<span class="fc" id="L183">	}</span>
+
+	public void addPiece(Piece piece)
+	{
+<span class="nc" id="L187">		this.pieces.add(piece);</span>
+<span class="nc" id="L188">	}</span>
+
+	public int getNumber()
+	{
+<span class="fc" id="L192">		return panelNo;</span>
+	}
+
+	public void setNumber(int number)
+	{
+<span class="fc" id="L197">		this.panelNo = number;</span>
+<span class="fc" id="L198">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

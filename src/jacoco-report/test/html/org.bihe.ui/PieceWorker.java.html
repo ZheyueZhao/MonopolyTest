@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PieceWorker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui</a> &gt; <span class="el_source">PieceWorker.java</span></div><h1>PieceWorker.java</h1><pre class="source lang-java linenums">package org.bihe.ui;
+
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+
+import resources.Resources;
+
+public class PieceWorker extends SwingWorker&lt;Boolean, Object&gt;
+{
+	boolean temp;
+	private int count;
+<span class="fc" id="L16">	private int delay = 1;</span>
+	private Component component;
+	private Piece piece;
+<span class="fc" id="L19">	private GamePanel gamePanel = GUIManager.getGamePanel();</span>
+
+	public PieceWorker(Component component, Piece piece, int count, boolean temp)
+<span class="fc" id="L22">	{</span>
+<span class="fc" id="L23">		this.component = component;</span>
+<span class="fc" id="L24">		this.piece = piece;</span>
+<span class="fc" id="L25">		this.setCount(count);</span>
+<span class="fc" id="L26">		this.temp = temp;</span>
+<span class="fc" id="L27">	}</span>
+
+	@Override
+	protected Boolean doInBackground()
+	{
+
+<span class="fc bfc" id="L33" title="All 2 branches covered.">		if (piece.getPanelNumber() == 0)</span>
+<span class="fc" id="L34">			panelNo0Move();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">		else if (piece.getPanelNumber() &lt; 10)</span>
+<span class="fc" id="L36">			southMove();</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">		else if (piece.getPanelNumber() == 10)</span>
+<span class="fc" id="L38">			panelNo10Move();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		else if (piece.getPanelNumber() &lt; 20)</span>
+<span class="fc" id="L40">			eastMove();</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		else if (piece.getPanelNumber() == 20)</span>
+<span class="fc" id="L42">			panelNo20Move();</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		else if (piece.getPanelNumber() &lt; 30)</span>
+<span class="fc" id="L44">			northMove();</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">		else if (piece.getPanelNumber() == 30)</span>
+<span class="fc" id="L46">			panelNo30Move();</span>
+
+		else
+<span class="fc" id="L49">			westMove();</span>
+
+<span class="fc" id="L51">		return true;</span>
+	}
+
+	@Override
+	protected void done()
+	{
+
+<span class="fc" id="L58">		super.done();</span>
+<span class="pc bpc" id="L59" title="2 of 4 branches missed.">		if (count - 1 &gt; 0 &amp;&amp; temp)</span>
+		{
+<span class="fc" id="L61">			GUIManager.getGamePanel().movePieceOnePlace(piece.getPieceNumber(), count - 1);</span>
+		}
+<span class="fc" id="L63">	}</span>
+
+	private void southMove()
+	{
+		try
+		{
+<span class="fc bfc" id="L69" title="All 2 branches covered.">			if (piece.isMove())</span>
+			{
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">				while (component.getWidth() &gt; -1 * piece.getX())</span>
+				{
+
+<span class="fc" id="L75">					piece.movePiece();</span>
+<span class="fc" id="L76">					component.repaint();</span>
+<span class="fc" id="L77">					Toolkit.getDefaultToolkit().sync();</span>
+
+<span class="fc" id="L79">					Thread.sleep(delay);</span>
+				}
+			} else
+			{
+
+<span class="fc bfc" id="L84" title="All 2 branches covered.">				while (piece.getX() &gt; 0)</span>
+				{
+<span class="fc" id="L86">					piece.movePiece();</span>
+<span class="fc" id="L87">					component.repaint();</span>
+<span class="fc" id="L88">					Toolkit.getDefaultToolkit().sync();</span>
+<span class="fc" id="L89">					Thread.sleep(delay);</span>
+				}
+
+			}
+<span class="nc" id="L93">		} catch (InterruptedException e)</span>
+		{
+<span class="nc" id="L95">			JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L96">		}</span>
+<span class="fc" id="L97">	}</span>
+
+	private void panelNo10Move()
+	{
+		try
+		{
+<span class="fc bfc" id="L103" title="All 2 branches covered.">			if (piece.isMove())</span>
+			{
+<span class="fc" id="L105">				String imageName = &quot;west_pieceNo&quot; + piece.getPieceNumber() + &quot;`.png&quot;;</span>
+<span class="fc" id="L106">				Image image = Resources.getImage(imageName);</span>
+<span class="fc" id="L107">				image = image.getScaledInstance(gamePanel.getPanelSize(piece.getPanelNumber()).width,</span>
+<span class="fc" id="L108">						gamePanel.getPanelSize(piece.getPanelNumber()).height, Image.SCALE_SMOOTH);</span>
+<span class="fc" id="L109">				piece.setImage(image);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">				while (component.getHeight() &gt; -1 * piece.getY())</span>
+				{
+
+<span class="fc" id="L113">					piece.movePiece();</span>
+<span class="fc" id="L114">					component.repaint();</span>
+<span class="fc" id="L115">					Toolkit.getDefaultToolkit().sync();</span>
+
+<span class="fc" id="L117">					Thread.sleep(delay);</span>
+				}
+<span class="fc" id="L119">			} else</span>
+			{
+
+<span class="fc bfc" id="L122" title="All 2 branches covered.">				while (piece.getX() &gt; 0)</span>
+				{
+<span class="fc" id="L124">					piece.movePiece();</span>
+<span class="fc" id="L125">					component.repaint();</span>
+<span class="fc" id="L126">					Toolkit.getDefaultToolkit().sync();</span>
+<span class="fc" id="L127">					Thread.sleep(delay);</span>
+				}
+
+			}
+<span class="nc" id="L131">		} catch (InterruptedException e)</span>
+		{
+<span class="nc" id="L133">			JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L134">		}</span>
+<span class="fc" id="L135">	}</span>
+
+	private void panelNo20Move()
+	{
+		try
+		{
+<span class="fc bfc" id="L141" title="All 2 branches covered.">			if (piece.isMove())</span>
+			{
+<span class="fc" id="L143">				String imageName = &quot;north_pieceNo&quot; + piece.getPieceNumber() + &quot;`.png&quot;;</span>
+<span class="fc" id="L144">				Image image = Resources.getImage(imageName);</span>
+<span class="fc" id="L145">				image = image.getScaledInstance(gamePanel.getPanelSize(piece.getPanelNumber()).width,</span>
+<span class="fc" id="L146">						gamePanel.getPanelSize(piece.getPanelNumber()).height, Image.SCALE_SMOOTH);</span>
+<span class="fc" id="L147">				piece.setImage(image);</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">				while (component.getWidth() &gt; piece.getX())</span>
+				{
+
+<span class="fc" id="L151">					piece.movePiece();</span>
+<span class="fc" id="L152">					component.repaint();</span>
+<span class="fc" id="L153">					Toolkit.getDefaultToolkit().sync();</span>
+
+<span class="fc" id="L155">					Thread.sleep(delay);</span>
+				}
+<span class="fc" id="L157">			} else</span>
+			{
+
+<span class="fc bfc" id="L160" title="All 2 branches covered.">				while (piece.getY() &gt; 0)</span>
+				{
+<span class="fc" id="L162">					piece.movePiece();</span>
+<span class="fc" id="L163">					component.repaint();</span>
+<span class="fc" id="L164">					Toolkit.getDefaultToolkit().sync();</span>
+<span class="fc" id="L165">					Thread.sleep(delay);</span>
+				}
+
+			}
+<span class="nc" id="L169">		} catch (InterruptedException e)</span>
+		{
+<span class="nc" id="L171">			JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L172">		}</span>
+<span class="fc" id="L173">	}</span>
+
+	private void panelNo30Move()
+	{
+		try
+		{
+<span class="fc bfc" id="L179" title="All 2 branches covered.">			if (piece.isMove())</span>
+			{
+<span class="fc" id="L181">				String imageName = &quot;east_pieceNo&quot; + piece.getPieceNumber() + &quot;`.png&quot;;</span>
+<span class="fc" id="L182">				Image image = Resources.getImage(imageName);</span>
+<span class="fc" id="L183">				image = image.getScaledInstance(gamePanel.getPanelSize(piece.getPanelNumber()).width,</span>
+<span class="fc" id="L184">						gamePanel.getPanelSize(piece.getPanelNumber()).height, Image.SCALE_SMOOTH);</span>
+<span class="fc" id="L185">				piece.setImage(image);</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">				while (component.getHeight() &gt; piece.getY())</span>
+				{
+
+<span class="fc" id="L189">					piece.movePiece();</span>
+<span class="fc" id="L190">					component.repaint();</span>
+<span class="fc" id="L191">					Toolkit.getDefaultToolkit().sync();</span>
+
+<span class="fc" id="L193">					Thread.sleep(delay);</span>
+				}
+<span class="fc" id="L195">			} else</span>
+			{
+
+<span class="fc bfc" id="L198" title="All 2 branches covered.">				while (piece.getX() &lt; 0)</span>
+				{
+<span class="fc" id="L200">					piece.movePiece();</span>
+<span class="fc" id="L201">					component.repaint();</span>
+<span class="fc" id="L202">					Toolkit.getDefaultToolkit().sync();</span>
+<span class="fc" id="L203">					Thread.sleep(delay);</span>
+				}
+
+			}
+<span class="nc" id="L207">		} catch (InterruptedException e)</span>
+		{
+<span class="nc" id="L209">			JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L210">		}</span>
+<span class="fc" id="L211">	}</span>
+
+	private void panelNo0Move()
+	{
+		try
+		{
+<span class="fc bfc" id="L217" title="All 2 branches covered.">			if (piece.isMove())</span>
+			{
+<span class="fc" id="L219">				String imageName = &quot;south_pieceNo&quot; + piece.getPieceNumber() + &quot;`.png&quot;;</span>
+<span class="fc" id="L220">				Image image = Resources.getImage(imageName);</span>
+<span class="fc" id="L221">				image = image.getScaledInstance(gamePanel.getPanelSize(piece.getPanelNumber()).width,</span>
+<span class="fc" id="L222">						gamePanel.getPanelSize(piece.getPanelNumber()).height, Image.SCALE_SMOOTH);</span>
+<span class="fc" id="L223">				piece.setImage(image);</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">				while (component.getWidth() &gt; -1 * piece.getX())</span>
+				{
+
+<span class="fc" id="L227">					piece.movePiece();</span>
+<span class="fc" id="L228">					component.repaint();</span>
+<span class="fc" id="L229">					Toolkit.getDefaultToolkit().sync();</span>
+
+<span class="fc" id="L231">					Thread.sleep(delay);</span>
+				}
+<span class="fc" id="L233">			} else</span>
+			{
+<span class="fc" id="L235">				String imageName = &quot;east_pieceNo&quot; + piece.getPieceNumber() + &quot;`.png&quot;;</span>
+<span class="fc" id="L236">				Image image = Resources.getImage(imageName);</span>
+<span class="fc" id="L237">				image = image.getScaledInstance(gamePanel.getPanelSize(piece.getPanelNumber()).width,</span>
+<span class="fc" id="L238">						gamePanel.getPanelSize(piece.getPanelNumber()).height, Image.SCALE_SMOOTH);</span>
+<span class="fc" id="L239">				piece.setImage(image);</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">				while (piece.getY() &lt; 0)</span>
+				{
+
+<span class="fc" id="L243">					piece.movePiece();</span>
+<span class="fc" id="L244">					component.repaint();</span>
+<span class="fc" id="L245">					Toolkit.getDefaultToolkit().sync();</span>
+<span class="fc" id="L246">					Thread.sleep(delay);</span>
+				}
+
+			}
+<span class="nc" id="L250">		} catch (InterruptedException e)</span>
+		{
+<span class="nc" id="L252">			JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L253">		}</span>
+<span class="fc" id="L254">	}</span>
+
+	private void eastMove()
+	{
+		try
+		{
+<span class="fc bfc" id="L260" title="All 2 branches covered.">			if (piece.isMove())</span>
+			{
+<span class="fc bfc" id="L262" title="All 2 branches covered.">				while (component.getHeight() &gt; -1 * piece.getY())</span>
+				{
+
+<span class="fc" id="L265">					piece.movePiece();</span>
+<span class="fc" id="L266">					component.repaint();</span>
+<span class="fc" id="L267">					Toolkit.getDefaultToolkit().sync();</span>
+
+<span class="fc" id="L269">					Thread.sleep(delay);</span>
+				}
+			} else
+			{
+<span class="fc bfc" id="L273" title="All 2 branches covered.">				while (piece.getY() &gt; 0)</span>
+				{
+<span class="fc" id="L275">					piece.movePiece();</span>
+<span class="fc" id="L276">					component.repaint();</span>
+<span class="fc" id="L277">					Toolkit.getDefaultToolkit().sync();</span>
+<span class="fc" id="L278">					Thread.sleep(delay);</span>
+				}
+
+			}
+<span class="nc" id="L282">		} catch (InterruptedException e)</span>
+		{
+<span class="nc" id="L284">			JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L285">		}</span>
+<span class="fc" id="L286">	}</span>
+
+	private void northMove()
+	{
+		try
+		{
+<span class="fc bfc" id="L292" title="All 2 branches covered.">			if (piece.isMove())</span>
+			{
+<span class="fc bfc" id="L294" title="All 2 branches covered.">				while (component.getWidth() &gt; piece.getX())</span>
+				{
+
+<span class="fc" id="L297">					piece.movePiece();</span>
+<span class="fc" id="L298">					component.repaint();</span>
+<span class="fc" id="L299">					Toolkit.getDefaultToolkit().sync();</span>
+
+<span class="fc" id="L301">					Thread.sleep(delay);</span>
+				}
+			} else
+			{
+<span class="fc bfc" id="L305" title="All 2 branches covered.">				while (piece.getX() &lt; 0)</span>
+				{
+<span class="fc" id="L307">					piece.movePiece();</span>
+<span class="fc" id="L308">					component.repaint();</span>
+<span class="fc" id="L309">					Toolkit.getDefaultToolkit().sync();</span>
+<span class="fc" id="L310">					Thread.sleep(delay);</span>
+				}
+
+			}
+<span class="nc" id="L314">		} catch (InterruptedException e)</span>
+		{
+<span class="nc" id="L316">			JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L317">		}</span>
+<span class="fc" id="L318">	}</span>
+
+	private void westMove()
+	{
+		try
+		{
+<span class="fc bfc" id="L324" title="All 2 branches covered.">			if (piece.isMove())</span>
+			{
+<span class="fc bfc" id="L326" title="All 2 branches covered.">				while (component.getHeight() &gt; piece.getY())</span>
+				{
+
+<span class="fc" id="L329">					piece.movePiece();</span>
+<span class="fc" id="L330">					component.repaint();</span>
+<span class="fc" id="L331">					Toolkit.getDefaultToolkit().sync();</span>
+
+<span class="fc" id="L333">					Thread.sleep(delay);</span>
+				}
+			} else
+			{
+<span class="fc bfc" id="L337" title="All 2 branches covered.">				while (piece.getY() &lt; 0)</span>
+				{
+<span class="fc" id="L339">					piece.movePiece();</span>
+<span class="fc" id="L340">					component.repaint();</span>
+<span class="fc" id="L341">					Toolkit.getDefaultToolkit().sync();</span>
+<span class="fc" id="L342">					Thread.sleep(delay);</span>
+				}
+
+			}
+<span class="nc" id="L346">		} catch (InterruptedException e)</span>
+		{
+<span class="nc" id="L348">			JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L349">		}</span>
+<span class="fc" id="L350">	}</span>
+
+	public Piece getPiece()
+	{
+<span class="fc" id="L354">		return piece;</span>
+	}
+
+	public void setPiece(Piece piece)
+	{
+<span class="fc" id="L359">		this.piece = piece;</span>
+<span class="fc" id="L360">	}</span>
+
+	public int getCount()
+	{
+<span class="fc" id="L364">		return count;</span>
+	}
+
+	public void setCount(int count)
+	{
+<span class="fc" id="L369">		this.count = count;</span>
+<span class="fc" id="L370">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Utility.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.model</a> &gt; <span class="el_source">Utility.java</span></div><h1>Utility.java</h1><pre class="source lang-java linenums">package org.bihe.model;
+
+import java.util.HashMap;
+
+import org.bihe.DAO.EstateDAO;
+
+public class Utility extends Estate implements Rent
+{
+	private static final long serialVersionUID = -3301710191628595014L;
+	private int rentForTwo;
+
+	public Utility(String name, int panelNo, int price, int rent, int mortage, int unMortage)
+	{
+<span class="fc" id="L14">		super(name, panelNo, price, rent, mortage, unMortage);</span>
+<span class="fc" id="L15">	}</span>
+
+	public Utility(String name, int panelNo, int price, int rent, int mortage, int unMortage, int rentForTwo)
+	{
+<span class="fc" id="L19">		super(name, panelNo, price, rent, mortage, unMortage);</span>
+<span class="fc" id="L20">		this.rentForTwo = rentForTwo;</span>
+<span class="fc" id="L21">	}</span>
+
+	public int getRentForTwo()
+	{
+<span class="fc" id="L25">		return rentForTwo;</span>
+	}
+
+	public void setRentForTwo(int rentForTwo)
+	{
+<span class="fc" id="L30">		this.rentForTwo = rentForTwo;</span>
+<span class="fc" id="L31">	}</span>
+
+	@Override
+	public int rent()
+	{
+<span class="fc" id="L36">		int count = 0;</span>
+		int rent;
+<span class="fc" id="L38">		HashMap&lt;Integer, Estate&gt; estates = EstateDAO.getEstateDAO().getEstates();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		if (estates.get(12).getOwner().equals(super.getOwner()))</span>
+<span class="fc" id="L40">			count++;</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		if (estates.get(28).getOwner().equals(super.getOwner()))</span>
+<span class="fc" id="L42">			count++;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if (count == 1)</span>
+<span class="fc" id="L44">			rent = super.getRent();</span>
+		else
+<span class="fc" id="L46">			rent = rentForTwo;</span>
+		
+<span class="fc" id="L48">		return rent;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

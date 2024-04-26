@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RailRoad.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.model</a> &gt; <span class="el_source">RailRoad.java</span></div><h1>RailRoad.java</h1><pre class="source lang-java linenums">package org.bihe.model;
+
+import java.util.HashMap;
+
+import org.bihe.DAO.EstateDAO;
+
+public class RailRoad extends Estate implements Rent
+{
+	private static final long serialVersionUID = 6897047567218898676L;
+	private int rentForTwo;
+	private int rentForThree;
+	private int rentForfour;
+
+	public RailRoad(String name, int panelNo, int price, int rent, int mortage, int unMortage)
+	{
+<span class="fc" id="L16">		super(name, panelNo, price, rent, mortage, unMortage);</span>
+<span class="fc" id="L17">	}</span>
+
+	public RailRoad(String name, int panelNo, int price, int rent, int mortage, int unMortage, int rentForTwo,
+			int rentForThree, int rentForfour)
+	{
+<span class="fc" id="L22">		super(name, panelNo, price, rent, mortage, unMortage);</span>
+<span class="fc" id="L23">		this.rentForTwo = rentForTwo;</span>
+<span class="fc" id="L24">		this.rentForThree = rentForThree;</span>
+<span class="fc" id="L25">		this.rentForfour = rentForfour;</span>
+<span class="fc" id="L26">	}</span>
+
+	public int getRentForTwo()
+	{
+<span class="fc" id="L30">		return rentForTwo;</span>
+	}
+
+	public void setRentForTwo(int rentForTwo)
+	{
+<span class="fc" id="L35">		this.rentForTwo = rentForTwo;</span>
+<span class="fc" id="L36">	}</span>
+
+	public int getRentForThree()
+	{
+<span class="fc" id="L40">		return rentForThree;</span>
+	}
+
+	public void setRentForThree(int rentForThree)
+	{
+<span class="fc" id="L45">		this.rentForThree = rentForThree;</span>
+<span class="fc" id="L46">	}</span>
+
+	public int getRentForfour()
+	{
+<span class="fc" id="L50">		return rentForfour;</span>
+	}
+
+	public void setRentForfour(int rentForfour)
+	{
+<span class="fc" id="L55">		this.rentForfour = rentForfour;</span>
+<span class="fc" id="L56">	}</span>
+
+	@Override
+	public int rent()
+	{
+<span class="fc" id="L61">		int count = 0;</span>
+		int rent;
+<span class="fc" id="L63">		HashMap&lt;Integer, Estate&gt; estates = EstateDAO.getEstateDAO().getEstates();</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		if (estates.get(5).getOwner().equals(super.getOwner()))</span>
+<span class="fc" id="L65">			count++;</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">		if (estates.get(15).getOwner().equals(super.getOwner()))</span>
+<span class="fc" id="L67">			count++;</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">		if (estates.get(25).getOwner().equals(super.getOwner()))</span>
+<span class="fc" id="L69">			count++;</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">		if (estates.get(35).getOwner().equals(super.getOwner()))</span>
+<span class="fc" id="L71">			count++;</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">		if (count == 1)</span>
+<span class="fc" id="L73">			rent = super.getRent();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">		else if (count == 2)</span>
+<span class="fc" id="L75">			rent = rentForTwo;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		else if (count == 3)</span>
+<span class="fc" id="L77">			rent = rentForThree;</span>
+		else
+<span class="fc" id="L79">			rent = rentForfour;</span>
+
+<span class="fc" id="L81">		return rent;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

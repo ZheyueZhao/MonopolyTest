@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JoinGamePanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui.mainFrame</a> &gt; <span class="el_source">JoinGamePanel.java</span></div><h1>JoinGamePanel.java</h1><pre class="source lang-java linenums">package org.bihe.ui.mainFrame;
+
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import org.bihe.DAO.PersonDAO;
+import org.bihe.model.Person;
+import org.bihe.ui.GUIManager;
+
+/**
+ * Make a panel for creating new game or joining to a game or loading an old
+ * game
+ */
+public class JoinGamePanel extends JPanel
+{
+	private static final long serialVersionUID = 1L;
+	private JButton newGame;
+	private JButton join;
+	private JButton changePassword;
+	private JButton gameRules;
+	private JButton signOut;
+	private Dimension dim;
+	private JButton saveButton;
+	private JButton cancelButton;
+	private JDialog changePasswordDialog;
+	private JTextField password1;
+	private JTextField password2;
+
+	public JoinGamePanel()
+<span class="fc" id="L51">	{</span>
+<span class="fc" id="L52">		setBackground(Color.WHITE);</span>
+<span class="fc" id="L53">		dim = GUIManager.getMainFrame().getSize();</span>
+<span class="fc" id="L54">		setLayout(creatGbl());</span>
+<span class="fc" id="L55">		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.0d, 0.0d, GridBagConstraints.CENTER,</span>
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
+
+<span class="fc" id="L58">		gbc.gridy = 1;</span>
+<span class="fc" id="L59">		JLabel title = new JLabel(&quot;Monopoly&quot;);</span>
+<span class="fc" id="L60">		title.setFont(new Font(&quot;&quot;, Font.BOLD, 70));</span>
+<span class="fc" id="L61">		this.add(title, gbc);</span>
+
+<span class="fc" id="L63">		gbc.gridy = 3;</span>
+<span class="fc" id="L64">		gbc.fill = GridBagConstraints.CENTER;</span>
+<span class="fc" id="L65">		newGame = new JButton(&quot;New Game&quot;);</span>
+<span class="fc" id="L66">		newGame.setPreferredSize(new Dimension(dim.width / 3, 30));</span>
+<span class="fc" id="L67">		newGame.addActionListener(new GetActions());</span>
+<span class="fc" id="L68">		this.add(newGame, gbc);</span>
+		//
+<span class="fc" id="L70">		gbc.gridy = 4;</span>
+<span class="fc" id="L71">		gbc.fill = GridBagConstraints.CENTER;</span>
+<span class="fc" id="L72">		join = new JButton(&quot;Join&quot;);</span>
+<span class="fc" id="L73">		join.setPreferredSize(new Dimension(dim.width / 3, 30));</span>
+<span class="fc" id="L74">		join.addActionListener(new GetActions());</span>
+<span class="fc" id="L75">		this.add(join, gbc);</span>
+		//
+<span class="fc" id="L77">		gbc.gridy = 6;</span>
+<span class="fc" id="L78">		gbc.fill = GridBagConstraints.CENTER;</span>
+<span class="fc" id="L79">		changePassword = new JButton(&quot;Change Password&quot;);</span>
+<span class="fc" id="L80">		changePassword.setPreferredSize(new Dimension(dim.width / 3, 30));</span>
+<span class="fc" id="L81">		changePassword.addActionListener(new GetActions());</span>
+<span class="fc" id="L82">		this.add(changePassword, gbc);</span>
+		//
+<span class="fc" id="L84">		gbc.gridy = 7;</span>
+<span class="fc" id="L85">		gbc.fill = GridBagConstraints.CENTER;</span>
+<span class="fc" id="L86">		gameRules = new JButton(&quot;Game Rules&quot;);</span>
+<span class="fc" id="L87">		gameRules.setPreferredSize(new Dimension(dim.width / 3, 30));</span>
+<span class="fc" id="L88">		gameRules.addActionListener(new GetActions());</span>
+<span class="fc" id="L89">		this.add(gameRules, gbc);</span>
+		//
+<span class="fc" id="L91">		gbc.gridy = 8;</span>
+<span class="fc" id="L92">		gbc.fill = GridBagConstraints.CENTER;</span>
+<span class="fc" id="L93">		signOut = new JButton(&quot;Sign Out&quot;);</span>
+<span class="fc" id="L94">		signOut.setPreferredSize(new Dimension(dim.width / 3, 30));</span>
+<span class="fc" id="L95">		signOut.addActionListener(new GetActions());</span>
+<span class="fc" id="L96">		this.add(signOut, gbc);</span>
+<span class="fc" id="L97">	}</span>
+
+	private GridBagLayout creatGbl()
+	{
+
+<span class="fc" id="L102">		GridBagLayout gbl = new GridBagLayout();</span>
+<span class="fc" id="L103">		gbl.columnWidths = new int[] { 400 };</span>
+<span class="fc" id="L104">		gbl.rowHeights = new int[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };</span>
+<span class="fc" id="L105">		gbl.columnWeights = new double[] { 0 };</span>
+<span class="fc" id="L106">		return gbl;</span>
+
+	}
+
+	private JDialog changePasswordDialog()
+	{
+<span class="nc" id="L112">		changePasswordDialog = new JDialog(GUIManager.getMainFrame(), &quot;Change Password&quot;, true);</span>
+<span class="nc" id="L113">		changePasswordDialog.setLayout(new FlowLayout());</span>
+<span class="nc" id="L114">		changePasswordDialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);</span>
+<span class="nc" id="L115">		changePasswordDialog.setSize(new Dimension(dim.width * 13 / 16, 150));</span>
+<span class="nc" id="L116">		changePasswordDialog.setMinimumSize(new Dimension(dim.width * 13 / 16, 150));</span>
+<span class="nc" id="L117">		changePasswordDialog.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - dim.width * 13 / 32,</span>
+<span class="nc" id="L118">				Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 75);</span>
+		//
+<span class="nc" id="L120">		changePasswordDialog.add(new JLabel(&quot;Enter your new Password: &quot;));</span>
+<span class="nc" id="L121">		password1 = new JPasswordField();</span>
+<span class="nc" id="L122">		password1.setPreferredSize(new Dimension(dim.width * 4 / 15, 25));</span>
+<span class="nc" id="L123">		changePasswordDialog.add(password1);</span>
+		//
+<span class="nc" id="L125">		changePasswordDialog.add(new JLabel(&quot;    Confirm your Password: &quot;));</span>
+<span class="nc" id="L126">		password2 = new JPasswordField();</span>
+<span class="nc" id="L127">		password2.setPreferredSize(new Dimension(dim.width * 4 / 15, 25));</span>
+<span class="nc" id="L128">		changePasswordDialog.add(password2);</span>
+		//
+<span class="nc" id="L130">		saveButton = new JButton(&quot;Save&quot;);</span>
+<span class="nc" id="L131">		saveButton.setPreferredSize(new Dimension(dim.width / 4, 25));</span>
+<span class="nc" id="L132">		saveButton.addActionListener(new GetActions());</span>
+<span class="nc" id="L133">		changePasswordDialog.add(saveButton);</span>
+		//
+<span class="nc" id="L135">		cancelButton = new JButton(&quot;Cancel&quot;);</span>
+<span class="nc" id="L136">		cancelButton.setPreferredSize(new Dimension(dim.width / 4, 25));</span>
+<span class="nc" id="L137">		cancelButton.addActionListener(new GetActions());</span>
+<span class="nc" id="L138">		changePasswordDialog.add(cancelButton);</span>
+
+<span class="nc" id="L140">		return changePasswordDialog;</span>
+	}
+
+<span class="fc" id="L143">	private class GetActions implements ActionListener</span>
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+<span class="nc bnc" id="L149" title="All 2 branches missed.">			if (arg0.getSource().equals(newGame))</span>
+			{
+<span class="nc" id="L151">				GUIManager.addMakeNewGamePaneltoMainFrame();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">			} else if (arg0.getSource().equals(join))</span>
+			{
+<span class="nc" id="L154">				Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="nc" id="L155">				p.setHaveJailCard(false);</span>
+<span class="nc" id="L156">				p.outOfJail();</span>
+<span class="nc" id="L157">				p.setLocation(0);</span>
+<span class="nc" id="L158">				p.setMoney(1500);</span>
+<span class="nc" id="L159">				p.setEstates(new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L160">				GUIManager.addEnterGamePaneltoMainFrame();</span>
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">			} else if (arg0.getSource().equals(changePassword))</span>
+			{
+<span class="nc" id="L164">				changePasswordDialog = changePasswordDialog();</span>
+<span class="nc" id="L165">				changePasswordDialog.setVisible(true);</span>
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">			} else if (arg0.getSource().equals(gameRules))</span>
+			{
+<span class="nc" id="L169">				File file = resources.Resources.getFile(&quot;GameRules.pdf&quot;);</span>
+				try
+				{
+<span class="nc" id="L172">					Desktop.getDesktop().open(file);</span>
+<span class="nc" id="L173">				} catch (IOException e)</span>
+				{
+<span class="nc" id="L175">					JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L176">				}</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">			} else if (arg0.getSource().equals(signOut))</span>
+			{
+<span class="nc" id="L179">				PersonDAO.getPersonDAO().setUserThatSignIn(null);</span>
+<span class="nc" id="L180">				GUIManager.addSignInPaneltoMainFrame();</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">			} else if (arg0.getSource().equals(saveButton))</span>
+			{
+<span class="nc bnc" id="L183" title="All 2 branches missed.">				if (password1.getText().trim().equals(password2.getText().trim()))</span>
+				{
+<span class="nc" id="L185">					PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="nc" id="L186">					Person p = personDao.getThePerson();</span>
+<span class="nc" id="L187">					p.setPassword(password1.getText().trim());</span>
+<span class="nc" id="L188">					personDao.changePerson(p);</span>
+<span class="nc" id="L189">					changePasswordDialog.setVisible(false);</span>
+<span class="nc" id="L190">				} else</span>
+<span class="nc" id="L191">					JOptionPane.showMessageDialog(GUIManager.getMainFrame(), &quot;Your inputs didn't match!&quot;, &quot;Error&quot;,</span>
+							JOptionPane.ERROR_MESSAGE);
+
+<span class="nc bnc" id="L194" title="All 2 branches missed.">			} else if (arg0.getSource().equals(cancelButton))</span>
+			{
+<span class="nc" id="L196">				changePasswordDialog.setVisible(false);</span>
+			}
+<span class="nc" id="L198">		}</span>
+
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

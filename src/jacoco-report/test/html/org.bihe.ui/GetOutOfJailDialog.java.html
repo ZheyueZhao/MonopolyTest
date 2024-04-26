@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetOutOfJailDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui</a> &gt; <span class="el_source">GetOutOfJailDialog.java</span></div><h1>GetOutOfJailDialog.java</h1><pre class="source lang-java linenums">package org.bihe.ui;
+
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import org.bihe.DAO.PersonDAO;
+import org.bihe.model.Person;
+
+public class GetOutOfJailDialog extends JDialog
+{
+	private static final long serialVersionUID = 1L;
+	private JButton yesButton;
+	private JButton noButton;
+	public GetOutOfJailDialog()
+<span class="fc" id="L24">	{</span>
+<span class="fc" id="L25">		Dimension dim = GUIManager.getMainFrame().getSize();</span>
+<span class="fc" id="L26">		this.setTitle(&quot;In Gail&quot;);</span>
+<span class="fc" id="L27">		this.setModal(true);</span>
+<span class="fc" id="L28">		this.setLayout(new FlowLayout());</span>
+<span class="fc" id="L29">		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);</span>
+<span class="fc" id="L30">		this.setSize(new Dimension(dim.width * 13 / 16, 150));</span>
+<span class="fc" id="L31">		this.setMinimumSize(new Dimension(dim.width * 13 / 16, 150));</span>
+<span class="fc" id="L32">		this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - dim.width * 13 / 32,</span>
+<span class="fc" id="L33">				Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 75);</span>
+		
+<span class="fc" id="L35">		JLabel jailLabel = new JLabel(&quot;&lt;html&gt;You are in jail.&lt;br&gt; Do yo want to pay 50M to get free?&lt;html&gt;&quot;);</span>
+<span class="fc" id="L36">		jailLabel.setFont(new Font(&quot;&quot;, Font.PLAIN, 13));</span>
+<span class="fc" id="L37">		this.add(jailLabel);</span>
+		//
+<span class="fc" id="L39">		yesButton = new JButton(&quot;Yes&quot;);</span>
+<span class="fc" id="L40">		yesButton.setPreferredSize(new Dimension(dim.width / 4, 30));</span>
+<span class="fc" id="L41">		yesButton.addActionListener(new getActions());</span>
+<span class="fc" id="L42">		this.add(yesButton);</span>
+		//
+<span class="fc" id="L44">		noButton = new JButton(&quot;No&quot;);</span>
+<span class="fc" id="L45">		noButton.setPreferredSize(new Dimension(dim.width / 4, 30));</span>
+<span class="fc" id="L46">		noButton.addActionListener(new getActions());</span>
+<span class="fc" id="L47">		this.add(noButton);</span>
+<span class="fc" id="L48">	}</span>
+<span class="fc" id="L49">	private class getActions implements ActionListener</span>
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+<span class="fc bfc" id="L55" title="All 2 branches covered.">			if (e.getSource().equals(yesButton))</span>
+			{
+<span class="fc" id="L57">				Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="fc" id="L58">				p.setMoney(p.newMoney(-50));</span>
+<span class="fc" id="L59">				p.outOfJail();</span>
+<span class="fc" id="L60">				PersonDAO.getPersonDAO().changePerson(p);</span>
+<span class="fc" id="L61">				GUIManager.getGetOutOfJailDialog().setVisible(false);</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">			} else if (e.getSource().equals(noButton))</span>
+			{
+<span class="fc" id="L64">				GUIManager.getGetOutOfJailDialog().setVisible(false);</span>
+			}
+<span class="fc" id="L66">		}</span>
+
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

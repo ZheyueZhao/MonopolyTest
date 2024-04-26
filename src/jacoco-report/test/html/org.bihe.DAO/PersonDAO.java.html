@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.DAO</a> &gt; <span class="el_source">PersonDAO.java</span></div><h1>PersonDAO.java</h1><pre class="source lang-java linenums">package org.bihe.DAO;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import org.bihe.model.Person;
+import org.bihe.util.FileService;
+
+public class PersonDAO implements Serializable
+{
+	private static final long serialVersionUID = 2679513329566019342L;
+	private Map&lt;String, Person&gt; persons;
+	private static PersonDAO instance;
+	private static final String FILE_PATH = &quot;players.npf&quot;;
+	private String userThatSignIn;
+
+	private PersonDAO()
+	{
+
+	}
+
+	public static PersonDAO getPersonDAO()
+	{
+<span class="fc bfc" id="L24" title="All 2 branches covered.">		if (instance == null)</span>
+		{
+<span class="fc" id="L26">			instance = new PersonDAO();</span>
+		}
+<span class="fc" id="L28">		return instance;</span>
+	}
+
+	/*
+	 * Note: Use for SignUp.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public boolean addPerson(Person person)
+	{
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">		if (persons == null)</span>
+		{
+<span class="nc" id="L39">			persons = (Map&lt;String, Person&gt;) FileService.readObj(FILE_PATH);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">			if (persons == null)</span>
+			{
+<span class="nc" id="L42">				persons = new HashMap&lt;&gt;();</span>
+			}
+		}
+<span class="fc bfc" id="L45" title="All 2 branches covered.">		if (persons.containsKey(person.getUserName()))</span>
+		{
+<span class="fc" id="L47">			return false;</span>
+		}
+<span class="fc" id="L49">		persons.put(person.getUserName(), person);</span>
+<span class="fc" id="L50">		FileService.writeObj((Serializable) persons, FILE_PATH);</span>
+<span class="fc" id="L51">		return true;</span>
+	}
+
+	public void removePerson(Person person){
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">		if (persons == null)</span>
+		{
+<span class="nc" id="L57">			persons = (Map&lt;String, Person&gt;) FileService.readObj(FILE_PATH);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">			if (persons == null)</span>
+			{
+<span class="nc" id="L60">				persons = new HashMap&lt;&gt;();</span>
+			}
+		}
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">		if (persons.containsKey(person.getUserName())) {</span>
+<span class="fc" id="L64">			persons.remove(person.getUserName());</span>
+		}
+<span class="fc" id="L66">	}</span>
+
+	/*
+	 * Note: Use to fill persons HashMap from file.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public HashMap&lt;String, Person&gt; getPersons()
+	{
+<span class="fc bfc" id="L74" title="All 2 branches covered.">		if (persons == null)</span>
+		{
+<span class="fc" id="L76">			persons = (Map&lt;String, Person&gt;) FileService.readObj(FILE_PATH);</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">			if (persons == null)</span>
+			{
+<span class="nc" id="L79">				persons = new HashMap&lt;&gt;();</span>
+			}
+		}
+
+<span class="fc" id="L83">		return (HashMap&lt;String, Person&gt;) persons;</span>
+	}
+
+	public Person getThePerson()
+	{
+<span class="fc" id="L88">		return persons.get(userThatSignIn);</span>
+	}
+
+	public void changePerson(Person p)
+	{
+<span class="fc" id="L93">		persons.replace(p.getUserName(), p);</span>
+<span class="fc" id="L94">		PlayerDAO.getPlayerDAO().changeOnePlayer(p);</span>
+<span class="fc" id="L95">		FileService.writeObj((Serializable) persons, FILE_PATH);</span>
+<span class="fc" id="L96">	}</span>
+
+	void changePersonForPlayerDao(Person p)
+	{
+<span class="fc" id="L100">		persons.replace(p.getUserName(), p);</span>
+<span class="fc" id="L101">		FileService.writeObj((Serializable) persons, FILE_PATH);</span>
+<span class="fc" id="L102">	}</span>
+
+	/*
+	 * Note: Use for SignIn.
+	 */
+	public boolean checkForPerson(String userName, String password)
+	{
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		if (persons.containsKey(userName))</span>
+		{
+<span class="fc" id="L111">			Person p = persons.get(userName);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">			if (p.getPassword().equals(password))</span>
+<span class="fc" id="L113">				return true;</span>
+		}
+
+<span class="fc" id="L116">		return false;</span>
+	}
+
+	public String getUserThatSignIn()
+	{
+<span class="fc" id="L121">		return userThatSignIn;</span>
+	}
+
+	public void setUserThatSignIn(String userThatSignIn)
+	{
+<span class="fc" id="L126">		this.userThatSignIn = userThatSignIn;</span>
+<span class="fc" id="L127">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

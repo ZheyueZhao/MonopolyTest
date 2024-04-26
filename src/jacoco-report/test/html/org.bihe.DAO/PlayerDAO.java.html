@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.DAO</a> &gt; <span class="el_source">PlayerDAO.java</span></div><h1>PlayerDAO.java</h1><pre class="source lang-java linenums">package org.bihe.DAO;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import org.bihe.model.Person;
+
+public class PlayerDAO implements Serializable
+{
+	private static final long serialVersionUID = 2918520485939532163L;
+	private HashMap&lt;String, Person&gt; players;
+	private static PlayerDAO instance;
+
+	private PlayerDAO()
+	{
+
+	}
+
+	public static PlayerDAO getPlayerDAO()
+	{
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		if (instance == null)</span>
+		{
+<span class="fc" id="L24">			instance = new PlayerDAO();</span>
+		}
+<span class="fc" id="L26">		return instance;</span>
+	}
+
+	public boolean addPlayer(Person person)
+	{
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">		if (players == null)</span>
+<span class="nc" id="L32">			players = new HashMap&lt;&gt;();</span>
+
+		// if (players.containsKey(person.getUserName()))
+		// return false;
+
+<span class="fc" id="L37">		players.put(person.getUserName(), person);</span>
+
+<span class="fc" id="L39">		return true;</span>
+	}
+
+	public HashMap&lt;String, Person&gt; getPlayers()
+	{
+<span class="fc bfc" id="L44" title="All 2 branches covered.">		if (players == null)</span>
+<span class="fc" id="L45">			players = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L47">		return players;</span>
+	}
+
+	public Person getOnePlayer(String st)
+	{
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">		if (players == null)</span>
+<span class="nc" id="L53">			return null;</span>
+
+<span class="fc" id="L55">		return this.players.get(st);</span>
+	}
+
+	public void changeOnePlayer(Person person)
+	{
+<span class="fc" id="L60">		int peiceNo = PersonDAO.getPersonDAO().getThePerson().getPieceNumber();</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		if (person.getUserName().equals(PersonDAO.getPersonDAO().getThePerson().getUserName()))</span>
+		{
+<span class="fc" id="L63">			person.setPieceNumber(peiceNo);</span>
+<span class="fc" id="L64">			PersonDAO.getPersonDAO().changePersonForPlayerDao(person);			</span>
+		}
+<span class="fc" id="L66">		players.replace(person.getUserName(), person);</span>
+<span class="fc" id="L67">	}</span>
+
+	public void changePlayerDAO(HashMap&lt;String, Person&gt; players)
+	{
+<span class="fc" id="L71">		int peiceNo = PersonDAO.getPersonDAO().getThePerson().getPieceNumber();</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">		for (Entry&lt;String, Person&gt; E : players.entrySet())</span>
+		{
+<span class="fc bfc" id="L74" title="All 2 branches covered.">			if (E.getValue().getUserName().equals(PersonDAO.getPersonDAO().getThePerson().getUserName()))</span>
+			{
+<span class="fc" id="L76">				E.getValue().setPieceNumber(peiceNo);</span>
+<span class="fc" id="L77">				PersonDAO.getPersonDAO().changePersonForPlayerDao(E.getValue());</span>
+			}	
+<span class="fc" id="L79">		}</span>
+<span class="fc" id="L80">		this.players = players;</span>
+<span class="fc" id="L81">	}</span>
+
+	@Override
+	public String toString()
+	{
+<span class="fc" id="L86">		return &quot;&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DicePanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui.actionPanel</a> &gt; <span class="el_source">DicePanel.java</span></div><h1>DicePanel.java</h1><pre class="source lang-java linenums">
+package org.bihe.ui.actionPanel;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PersonDAO;
+import org.bihe.DAO.PlayerDAO;
+import org.bihe.model.Data;
+import org.bihe.model.Person;
+import org.bihe.model.StreetActions;
+import org.bihe.network.client.Client;
+import org.bihe.playSound.PlaySound;
+import org.bihe.ui.GUIManager;
+import org.bihe.ui.GamePanel;
+
+public class DicePanel extends JPanel
+{
+	private static final long serialVersionUID = 1L;
+	private int HEIGHT;
+	private int WIDTH;
+	private JButton diceButton;
+	private JLabel diceOneLabel;
+	private JLabel diceTwoLabel;
+<span class="fc" id="L36">	public static boolean moveOnToss = true;</span>
+<span class="fc" id="L37">	public boolean isYourTurn = true;</span>
+	private int diceMultipiedTen;
+	private JLabel jailLabel;
+
+	public DicePanel()
+<span class="fc" id="L42">	{</span>
+<span class="fc" id="L43">		this.setLayout(new FlowLayout());</span>
+<span class="fc" id="L44">		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();</span>
+<span class="fc" id="L45">		HEIGHT = (int) dimension.getHeight();</span>
+<span class="fc" id="L46">		WIDTH = (int) dimension.getWidth() * 10 / 46;</span>
+<span class="fc" id="L47">		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));</span>
+<span class="fc" id="L48">		this.setBackground(new Color(150, 150, 150));</span>
+<span class="fc" id="L49">		this.setPreferredSize(new Dimension(WIDTH / 2, (HEIGHT - 30) / 3));</span>
+		//
+<span class="fc" id="L51">		diceButton = new JButton(&quot;Toss dice&quot;);</span>
+<span class="fc" id="L52">		diceButton.setPreferredSize(new Dimension(WIDTH / 2 - 40, (HEIGHT - 30) * 2 / 50));</span>
+<span class="fc" id="L53">		diceButton.addActionListener(new GetActions());</span>
+<span class="fc" id="L54">		this.add(diceButton);</span>
+		//
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">		if (diceOneLabel == null)</span>
+<span class="fc" id="L57">			diceOneLabel = new JLabel();</span>
+
+		//
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">		if (diceTwoLabel == null)</span>
+<span class="fc" id="L61">			diceTwoLabel = new JLabel();</span>
+<span class="fc" id="L62">	}</span>
+
+	private int makeRandom()
+	{
+<span class="fc" id="L66">		int a = (int) (Math.random() * 10);</span>
+<span class="fc bfc" id="L67" title="All 4 branches covered.">		while (a &gt; 6 || a == 0)</span>
+<span class="fc" id="L68">			a = (int) (Math.random() * 10);</span>
+
+<span class="fc" id="L70">		return a;</span>
+	}
+
+	private void tossDice()
+	{
+<span class="fc" id="L75">		diceOneLabel.setPreferredSize(new Dimension(WIDTH / 4, WIDTH / 4));</span>
+<span class="fc" id="L76">		diceTwoLabel.setPreferredSize(new Dimension(WIDTH / 4, WIDTH / 4));</span>
+<span class="fc" id="L77">		GUIManager.getDicePanel().add(diceOneLabel);</span>
+<span class="fc" id="L78">		GUIManager.getDicePanel().add(diceTwoLabel);</span>
+<span class="fc" id="L79">		GUIManager.getDicePanel().revalidate();</span>
+<span class="fc" id="L80">		GUIManager.getDicePanel().repaint();</span>
+<span class="fc" id="L81">	}</span>
+
+	private void inJail()
+	{
+<span class="fc" id="L85">		jailLabel = new JLabel(&quot;You Are in Jail!&quot;);</span>
+<span class="fc" id="L86">		jailLabel.setPreferredSize(new Dimension(WIDTH / 3, 25));</span>
+<span class="fc" id="L87">		jailLabel.setFont(new Font(&quot;&quot;, Font.BOLD, 13));</span>
+<span class="fc" id="L88">		jailLabel.setForeground(Color.RED);</span>
+<span class="fc" id="L89">		GUIManager.getDicePanel().add(jailLabel);</span>
+<span class="fc" id="L90">	}</span>
+
+	public int getDiceMultipiedTen()
+	{
+<span class="nc" id="L94">		return diceMultipiedTen;</span>
+	}
+
+	public void setDiceEnable(boolean boo)
+	{
+<span class="fc" id="L99">		diceButton.setEnabled(boo);</span>
+<span class="fc" id="L100">		this.revalidate();</span>
+<span class="fc" id="L101">		this.repaint();</span>
+<span class="fc" id="L102">	}</span>
+
+<span class="fc" id="L104">	private class GetActions implements ActionListener</span>
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+<span class="nc bnc" id="L109" title="All 2 branches missed.">			if (arg0.getSource().equals(diceButton))</span>
+			{
+<span class="nc" id="L111">				Thread tr = new Thread(new Runnable()</span>
+<span class="nc" id="L112">				{			</span>
+					@Override
+					public void run()
+					{
+<span class="nc" id="L116">						PlaySound p = new PlaySound(&quot;TD.wav&quot;);</span>
+<span class="nc" id="L117">						p.playSound();</span>
+<span class="nc" id="L118">					}</span>
+				});	
+<span class="nc" id="L120">				tr.start();</span>
+				
+<span class="nc" id="L122">				GUIManager.getDicePanel().remove(diceOneLabel);</span>
+<span class="nc" id="L123">				GUIManager.getDicePanel().remove(diceTwoLabel);</span>
+<span class="nc" id="L124">				int a = makeRandom();</span>
+<span class="nc" id="L125">				int b = makeRandom();</span>
+				try
+				{
+<span class="nc" id="L128">					Thread.sleep(500);</span>
+<span class="nc" id="L129">				} catch (InterruptedException e)</span>
+				{
+<span class="nc" id="L131">					JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L132">				}</span>
+<span class="nc" id="L133">				diceOneLabel = new JLabel(new ImageIcon(resources.Resources.getImage(&quot;diceNo&quot; + a + &quot;.png&quot;)));</span>
+<span class="nc" id="L134">				diceTwoLabel = new JLabel(new ImageIcon(resources.Resources.getImage(&quot;diceNo&quot; + b + &quot;.png&quot;)));</span>
+<span class="nc" id="L135">				Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">				if (moveOnToss &amp;&amp; isYourTurn)</span>
+				{
+<span class="nc bnc" id="L138" title="All 2 branches missed.">					if (a == b)</span>
+					{
+<span class="nc bnc" id="L140" title="All 2 branches missed.">						if (p.isThreePair())</span>
+						{
+<span class="nc" id="L142">							p.goToJail();</span>
+							//
+<span class="nc" id="L144">							int location = p.getLocation();</span>
+<span class="nc" id="L145">							GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="nc" id="L146">							gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(location, 10));</span>
+							//
+<span class="nc" id="L148">							p.setLocation(10);</span>
+<span class="nc" id="L149">							PersonDAO.getPersonDAO().changePerson(p);</span>
+<span class="nc" id="L150">							Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="nc" id="L151">									EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="nc" id="L152">									PersonDAO.getPersonDAO().getThePerson().getPieceNumber(), location,</span>
+<span class="nc" id="L153">									PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="nc" id="L154">							Client.getClient().sendObject(data);</span>
+<span class="nc" id="L155">						}</span>
+					} else
+					{
+<span class="nc" id="L158">						p.resetPair();</span>
+					}
+<span class="nc bnc" id="L160" title="All 2 branches missed.">					if (p.getJail() &gt; 0)</span>
+					{
+						//
+<span class="nc" id="L163">						GUIManager.getGetOutOfJailDialog().setVisible(true);;</span>
+						//
+<span class="nc bnc" id="L165" title="All 2 branches missed.">						if (jailLabel != null)</span>
+<span class="nc" id="L166">							remove(jailLabel);</span>
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">						if (p.getJail() &gt; 0)</span>
+						{
+<span class="nc" id="L170">							inJail();</span>
+<span class="nc" id="L171">							p.oneRoundInJail();</span>
+<span class="nc" id="L172">							PersonDAO.getPersonDAO().changePerson(p);</span>
+<span class="nc" id="L173">							Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="nc" id="L174">									EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="nc" id="L175">									PersonDAO.getPersonDAO().getThePerson().getPieceNumber(), 10, 10);</span>
+<span class="nc" id="L176">							Client.getClient().sendObject(data);</span>
+<span class="nc" id="L177">						} else</span>
+						{
+<span class="nc bnc" id="L179" title="All 2 branches missed.">							if (jailLabel != null)</span>
+<span class="nc" id="L180">								remove(jailLabel);</span>
+
+<span class="nc" id="L182">							tossDice();</span>
+<span class="nc" id="L183">							int location = p.getLocation();</span>
+<span class="nc" id="L184">							p.setLocation(p.newLocation(a + b));</span>
+<span class="nc" id="L185">							PersonDAO.getPersonDAO().changePerson(p);</span>
+<span class="nc" id="L186">							GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="nc" id="L187">							gamePanel.movePieceOnePlace(p.getPieceNumber(), a + b);</span>
+<span class="nc" id="L188">							Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="nc" id="L189">									EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="nc" id="L190">									PersonDAO.getPersonDAO().getThePerson().getPieceNumber(), location,</span>
+<span class="nc" id="L191">									PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="nc" id="L192">							Client.getClient().sendObject(data);</span>
+<span class="nc" id="L193">							StreetActions s = new StreetActions();</span>
+<span class="nc" id="L194">							s.action();</span>
+<span class="nc" id="L195">						}</span>
+					} else
+					{
+<span class="nc bnc" id="L198" title="All 2 branches missed.">						if (jailLabel != null)</span>
+<span class="nc" id="L199">							remove(jailLabel);</span>
+
+<span class="nc" id="L201">						tossDice();</span>
+<span class="nc" id="L202">						int location = p.getLocation();</span>
+<span class="nc" id="L203">						p.setLocation(p.newLocation(a + b));</span>
+<span class="nc" id="L204">						PersonDAO.getPersonDAO().changePerson(p);</span>
+<span class="nc" id="L205">						GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="nc" id="L206">						gamePanel.movePieceOnePlace(p.getPieceNumber(), a + b);</span>
+<span class="nc" id="L207">						Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="nc" id="L208">								EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="nc" id="L209">								PersonDAO.getPersonDAO().getThePerson().getPieceNumber(), location,</span>
+<span class="nc" id="L210">								PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="nc" id="L211">						Client.getClient().sendObject(data);</span>
+<span class="nc" id="L212">						StreetActions s = new StreetActions();</span>
+<span class="nc" id="L213">						s.action();</span>
+					}
+<span class="nc" id="L215">					setDiceEnable(false);</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">				} else if(isYourTurn)</span>
+				{
+<span class="nc" id="L218">					tossDice();</span>
+<span class="nc" id="L219">					diceMultipiedTen = (a + b) * 10;</span>
+				}
+
+<span class="nc" id="L222">				GUIManager.getDicePanel().revalidate();</span>
+<span class="nc" id="L223">				GUIManager.getDicePanel().repaint();</span>
+			}
+<span class="nc" id="L225">		}</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

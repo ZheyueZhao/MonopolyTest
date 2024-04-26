@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommunityChest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui.chancesAndCommunityChset</a> &gt; <span class="el_source">CommunityChest.java</span></div><h1>CommunityChest.java</h1><pre class="source lang-java linenums">package org.bihe.ui.chancesAndCommunityChset;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PersonDAO;
+import org.bihe.DAO.PlayerDAO;
+import org.bihe.model.Data;
+import org.bihe.model.Estate;
+import org.bihe.model.Person;
+import org.bihe.model.Street;
+import org.bihe.network.client.Client;
+import org.bihe.ui.GUIManager;
+import org.bihe.ui.GamePanel;
+
+public class CommunityChest
+{
+<span class="fc" id="L23">	private static ImageIcon imgIconM = new ImageIcon(resources.Resources.getImage(&quot;CommunityChest.png&quot;));</span>
+	private int location;
+	public CommunityChest()
+<span class="fc" id="L26">	{</span>
+
+<span class="fc" id="L28">	}</span>
+
+	public int makeRandom()
+	{
+<span class="fc" id="L32">		int a = (int) (Math.random() * 100);</span>
+<span class="fc bfc" id="L33" title="All 4 branches covered.">		while (a &gt; 15 || a == 0)</span>
+<span class="fc" id="L34">			a = (int) (Math.random() * 100);</span>
+
+<span class="fc" id="L36">		return a;</span>
+	}
+
+	public void communityChest()
+	{
+<span class="fc" id="L41">		int chanceNumber = makeRandom();</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">		if (chanceNumber == 1)</span>
+		{
+<span class="fc" id="L44">			JOptionPane.showMessageDialog(null, &quot;Advance to Go (Collect $200) &lt;Mr. M strides in 7-league boots&gt; &quot;,</span>
+					&quot;Community Chest&quot;, 1, imgIconM);
+<span class="fc" id="L46">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L47">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L48">			location = p.getLocation();</span>
+<span class="fc" id="L49">			p.setMoney(p.newMoney(200));</span>
+<span class="fc" id="L50">			GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L51">			gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(location, 0));</span>
+<span class="fc" id="L52">			p.setLocation(0);</span>
+<span class="fc" id="L53">			personDao.changePerson(p);</span>
+<span class="fc" id="L54">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L55">					EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L56">					PersonDAO.getPersonDAO().getThePerson().getPieceNumber(),  location,</span>
+<span class="fc" id="L57">					PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L58">			Client.getClient().sendObject(data);</span>
+
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		} else if (chanceNumber == 2)</span>
+		{
+<span class="fc" id="L62">			JOptionPane</span>
+<span class="fc" id="L63">					.showMessageDialog(null,</span>
+							&quot;Bank error in your favor Â– Collect $200 \n&lt;Mr. M falls back in astonishment as an arm presents&quot;
+									+ &quot; a sheaf of cash out of a bank teller's window&gt; &quot;,
+							&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L68">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L69">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L70">			p.setMoney(p.newMoney(200));</span>
+<span class="fc" id="L71">			personDao.changePerson(p);</span>
+
+<span class="fc bfc" id="L73" title="All 2 branches covered.">		} else if (chanceNumber == 3)</span>
+		{
+<span class="fc" id="L75">			JOptionPane.showMessageDialog(null,</span>
+					&quot; Doctor's fees {fee} Â– Pay $50 &lt;Mr. M angrily brandishes crutches as he stomps with a leg cast&gt;\n&quot;
+							+ &quot;From sale of stock you get $50 {$45}\n &lt;Mr. M, happily entangled in the tape of a stock ticker,&quot;
+							+ &quot; waves cash (with no $ sign this time)&gt; &quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L81">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L82">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L83">			p.setMoney(p.newMoney(-50));</span>
+<span class="fc" id="L84">			personDao.changePerson(p);</span>
+
+<span class="fc bfc" id="L86" title="All 2 branches covered.">		} else if (chanceNumber == 4)</span>
+		{
+<span class="fc" id="L88">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Get Out of Jail Free {Get out of Jail, Free} Â– This card may be kept until needed or sold \n&quot;
+							+ &quot;&lt;A winged Mr. M flutters out of a bird cage&gt;&quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L93">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L94">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L95">			p.setHaveJailCard(true);</span>
+<span class="fc" id="L96">			personDao.changePerson(p);</span>
+<span class="fc" id="L97">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="fc" id="L98">			Client.getClient().sendObject(data);</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		} else if (chanceNumber == 5)</span>
+		{
+<span class="fc" id="L102">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Go to Jail Â– Go directly to jail Â– Do not pass Go Â– Do not collect $200 \n&quot;
+							+ &quot;&lt;A truncheon-wielding policeman in a light-colored &quot;
+							+ &quot;uniform lifts a surprised Mr M by the collar&gt; &quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L108">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L109">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L110">			location = p.getLocation();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">			if (p.HaveJailCard())</span>
+			{
+<span class="fc" id="L113">				p.setHaveJailCard(false);</span>
+<span class="fc" id="L114">				JOptionPane.showMessageDialog(null, &quot;You've lost your Get Out of Jail Card!&quot;, &quot;Attention&quot;, 1);</span>
+			} else
+			{
+<span class="fc" id="L117">				p.goToJail();</span>
+<span class="fc" id="L118">				p.setLocation(10);</span>
+<span class="fc" id="L119">				GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L120">				gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(location, 10));</span>
+			}
+<span class="fc" id="L122">			personDao.changePerson(p);</span>
+<span class="fc" id="L123">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L124">					EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L125">					PersonDAO.getPersonDAO().getThePerson().getPieceNumber(),  location,</span>
+<span class="fc" id="L126">					PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L127">			Client.getClient().sendObject(data);</span>
+
+<span class="fc bfc" id="L129" title="All 2 branches covered.">		} else if (chanceNumber == 6)</span>
+		{
+<span class="fc" id="L131">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Grand Opera Night {Opening} Â– Collect $50 from every player for opening night seats\n &quot;
+							+ &quot;&lt;A wall sign near steps reads \&quot;Opera Tonite - 8 PM Sharp\&quot;;\n&quot;
+							+ &quot; Mr. M leans against it checking his pocket watch in annoyance&gt;&quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L137">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L138">			Person p = personDao.getThePerson();</span>
+			//
+<span class="fc" id="L140">			PlayerDAO playerDao = PlayerDAO.getPlayerDAO();</span>
+<span class="fc" id="L141">			HashMap&lt;String, Person&gt; playersMap = playerDao.getPlayers();</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">			for (Entry&lt;String, Person&gt; E : playersMap.entrySet())</span>
+			{
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">				if (E.getKey() != p.getUserName())</span>
+				{
+<span class="fc" id="L146">					E.getValue().setMoney(E.getValue().newMoney(-50));</span>
+<span class="fc" id="L147">					p.setMoney(p.newMoney(50));</span>
+				}
+<span class="fc" id="L149">			}</span>
+			//
+<span class="fc" id="L151">			playerDao.changePlayerDAO(playersMap);</span>
+<span class="fc" id="L152">			personDao.changePerson(p);</span>
+
+<span class="fc" id="L154">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="fc" id="L155">			Client.getClient().sendObject(data);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		} else if (chanceNumber == 7)</span>
+		{
+<span class="fc" id="L158">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Holiday {Xmas} Fund matures - Receive {Collect} $100 \n&quot;
+							+ &quot;&lt;Mr. M carries along a giant Xmas sock containing a sheaf of cash&gt;&quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L163">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L164">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L165">			p.setMoney(p.newMoney(100));</span>
+<span class="fc" id="L166">			personDao.changePerson(p);</span>
+
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		} else if (chanceNumber == 8)</span>
+		{
+<span class="fc" id="L170">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Income tax refund Â– Collect $20 \n&lt;Mr M faints back against a man displaying the Refund paper&gt; &quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L174">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L175">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L176">			p.setMoney(p.newMoney(20));</span>
+<span class="fc" id="L177">			personDao.changePerson(p);</span>
+
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		} else if (chanceNumber == 9)</span>
+		{
+<span class="fc" id="L181">			JOptionPane.showMessageDialog(null,</span>
+					&quot;It is your birthday \n- Collect $10 from each player {Not in the deck}&quot;, &quot;Community Chest&quot;, 1,
+					imgIconM);
+
+<span class="fc" id="L185">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L186">			Person p = personDao.getThePerson();</span>
+			//
+<span class="fc" id="L188">			PlayerDAO playerDao = PlayerDAO.getPlayerDAO();</span>
+<span class="fc" id="L189">			HashMap&lt;String, Person&gt; playersMap = playerDao.getPlayers();</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">			for (Entry&lt;String, Person&gt; E : playersMap.entrySet())</span>
+			{
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">				if (E.getKey() != p.getUserName())</span>
+				{
+<span class="fc" id="L194">					E.getValue().setMoney(E.getValue().newMoney(-10));</span>
+<span class="fc" id="L195">					p.setMoney(p.newMoney(10));</span>
+				}
+<span class="fc" id="L197">			}</span>
+			//
+<span class="fc" id="L199">			playerDao.changePlayerDAO(playersMap);</span>
+<span class="fc" id="L200">			personDao.changePerson(p);</span>
+<span class="fc" id="L201">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="fc" id="L202">			Client.getClient().sendObject(data);</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		} else if (chanceNumber == 10)</span>
+		{
+<span class="fc" id="L205">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Life insurance matures Â– Collect $100 \n&quot;
+							+ &quot;&lt;Below an I N S sign stands a bent Mr M, his long beard brushing the floor&gt;&quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L210">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L211">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L212">			p.setMoney(p.newMoney(100));</span>
+<span class="fc" id="L213">			personDao.changePerson(p);</span>
+
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		} else if (chanceNumber == 11)</span>
+		{
+<span class="fc" id="L217">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Pay hospital fees of $100 {Pay hospital $100} \n&quot; + &quot;&lt;A bored nurse holds out her hand for payment&quot;
+							+ &quot; while Mr. M holds 2 swaddled infants, one in each arm&gt; &quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L222">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L223">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L224">			p.setMoney(p.newMoney(-100));</span>
+<span class="fc" id="L225">			personDao.changePerson(p);</span>
+
+<span class="fc" id="L227">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="fc" id="L228">			Client.getClient().sendObject(data);</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">		} else if (chanceNumber == 12)</span>
+		{
+<span class="fc" id="L231">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Pay school fees {tax} of $150 \n&lt;A bespectacled schoolboy unhappily receives a head pat \nand a dime&quot;
+							+ &quot; ((Rockefeller style) from Mr. M.&gt;&quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L236">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L237">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L238">			p.setMoney(p.newMoney(-150));</span>
+<span class="fc" id="L239">			personDao.changePerson(p);</span>
+<span class="fc" id="L240">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="fc" id="L241">			Client.getClient().sendObject(data);</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">		} else if (chanceNumber == 13)</span>
+		{
+<span class="fc" id="L244">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Receive $25 consultancy fee {Receive for services $25}\n&quot;
+							+ &quot;&lt;As Justice of the Peace, a stern Mr. M holds out his hand\n&quot;
+							+ &quot;for fee from an embarrassed groom whose bride hold a bouquet behind him&gt; &quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L250">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L251">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L252">			p.setMoney(p.newMoney(25));</span>
+<span class="fc" id="L253">			personDao.changePerson(p);</span>
+
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		} else if (chanceNumber == 14)</span>
+		{
+<span class="fc" id="L257">			JOptionPane.showMessageDialog(null,</span>
+					&quot;You are assessed for street repairs Â– $40 per house Â– $115 per hotel \n&quot;
+							+ &quot;&lt;Mr. M., supported by his near-ubiquitous cane in his left hand,\n&quot;
+							+ &quot; holds a pick and shovel over his right shoulder&gt; &quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L263">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L264">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L265">			ArrayList&lt;Estate&gt; PersonEstates = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L266">			PersonEstates = p.getEstates();</span>
+<span class="fc" id="L267">			int cost = 0;</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">			if (!PersonEstates.isEmpty())</span>
+			{
+<span class="fc bfc" id="L270" title="All 2 branches covered.">				for (Estate E : PersonEstates)</span>
+				{
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">					if (E instanceof Street)</span>
+					{
+<span class="fc" id="L274">						cost = ((Street) E).getHouseCount() * 40;</span>
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">						if (((Street) E).isHotelExist())</span>
+<span class="fc" id="L276">							cost = cost + 115;</span>
+
+					}
+<span class="fc" id="L279">				}</span>
+<span class="fc" id="L280">				p.setMoney(p.newMoney(-cost));</span>
+<span class="fc" id="L281">				personDao.changePerson(p);</span>
+<span class="fc" id="L282">				Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="fc" id="L283">				Client.getClient().sendObject(data);</span>
+			}
+<span class="fc bfc" id="L285" title="All 2 branches covered.">		} else if (chanceNumber == 15)</span>
+		{
+<span class="fc" id="L287">			JOptionPane.showMessageDialog(null, &quot;You have won second prize in a beauty contest Â– Collect $10 \n&quot;</span>
+					+ &quot;&lt;Mr. M preens with a sash and large bouquet&gt; &quot;, &quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L290">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L291">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L292">			p.setMoney(p.newMoney(10));</span>
+<span class="fc" id="L293">			personDao.changePerson(p);</span>
+
+<span class="fc bfc" id="L295" title="All 2 branches covered.">		} else if (chanceNumber == 16)</span>
+		{
+<span class="fc" id="L297">			JOptionPane</span>
+<span class="fc" id="L298">					.showMessageDialog(null,</span>
+							&quot;You inherit $100 &lt;Mr M.\n holds his head as unseen people's hands offer brochures titled&quot;
+									+ &quot; \&quot;Buy Yacht\&quot;, \&quot;World Tour\&quot;, and \&quot;Rolls Royce\&quot;&gt; &quot;,
+							&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L303">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L304">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L305">			p.setMoney(p.newMoney(100));</span>
+<span class="fc" id="L306">			personDao.changePerson(p);</span>
+
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">		} else if (chanceNumber == 17)</span>
+		{
+<span class="fc" id="L310">			JOptionPane.showMessageDialog(null,</span>
+					&quot; From sale of stock you get $50 {$45} \n&lt;Mr. M, happily entangled in the &quot;
+							+ &quot;tape of a stock ticker,\nwaves cash (with no $ sign this time)&gt; &quot;,
+					&quot;Community Chest&quot;, 1, imgIconM);
+
+<span class="fc" id="L315">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L316">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L317">			p.setMoney(p.newMoney(50));</span>
+<span class="fc" id="L318">			personDao.changePerson(p);</span>
+
+		}
+<span class="fc" id="L321">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

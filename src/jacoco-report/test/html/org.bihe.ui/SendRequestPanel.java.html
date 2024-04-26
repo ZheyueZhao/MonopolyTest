@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SendRequestPanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui</a> &gt; <span class="el_source">SendRequestPanel.java</span></div><h1>SendRequestPanel.java</h1><pre class="source lang-java linenums">package org.bihe.ui;
+
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PersonDAO;
+import org.bihe.DAO.PlayerDAO;
+import org.bihe.model.Estate;
+import org.bihe.model.Person;
+import org.bihe.model.Request;
+import org.bihe.network.client.Client;
+
+public class SendRequestPanel extends JPanel
+{
+	private static final long serialVersionUID = 1L;
+	private DefaultListModel&lt;String&gt; model1;
+	private JList&lt;String&gt; offerList1;
+	private DefaultListModel&lt;String&gt; model2;
+	private JList&lt;String&gt; offerList2;
+	private JButton sendRequestButton;
+	private JButton cancelRequestButton;
+<span class="fc" id="L36">	private static final int WIDTH = (Toolkit.getDefaultToolkit().getScreenSize().width) / 2;</span>
+<span class="fc" id="L37">	private static final int HEIGHT = (Toolkit.getDefaultToolkit().getScreenSize().height - 55) * 2 / 3;</span>
+	private JTextField recieveMoneyField;
+	private JTextField giveMoneyField;
+	private int maxRecieveMoney;
+	private Person player;
+	private Person p;
+
+	public SendRequestPanel()
+<span class="fc" id="L45">	{</span>
+<span class="fc" id="L46">		this.setLayout(new FlowLayout());</span>
+<span class="fc" id="L47">		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));</span>
+		//
+<span class="fc" id="L49">		JLabel giveLabel = new JLabel(&quot;Give these things: &quot;);</span>
+<span class="fc" id="L50">		giveLabel.setPreferredSize(new Dimension(WIDTH * 2 / 5, 15));</span>
+<span class="fc" id="L51">		this.add(giveLabel);</span>
+<span class="fc" id="L52">		JLabel recieveLabel = new JLabel(&quot;Recieve these things: &quot;);</span>
+<span class="fc" id="L53">		recieveLabel.setPreferredSize(new Dimension(WIDTH * 2 / 5, 15));</span>
+<span class="fc" id="L54">		this.add(recieveLabel);</span>
+		//
+<span class="fc" id="L56">		model1 = new DefaultListModel&lt;&gt;();</span>
+<span class="fc" id="L57">		offerList1 = new JList&lt;&gt;(model1);</span>
+<span class="fc" id="L58">		offerList1.setPreferredSize(new Dimension(WIDTH * 2 / 5, WIDTH * 2 / 5));</span>
+
+<span class="fc" id="L60">		JScrollPane scrollPane1 = new JScrollPane();</span>
+<span class="fc" id="L61">		scrollPane1.setPreferredSize(new Dimension(WIDTH * 2 / 5, WIDTH * 2 / 5));</span>
+<span class="fc" id="L62">		scrollPane1.setViewportView(offerList1);</span>
+<span class="fc" id="L63">		this.add(scrollPane1);</span>
+		//
+<span class="fc" id="L65">		model2 = new DefaultListModel&lt;&gt;();</span>
+<span class="fc" id="L66">		offerList2 = new JList&lt;&gt;(model2);</span>
+<span class="fc" id="L67">		offerList2.setPreferredSize(new Dimension(WIDTH * 2 / 5, WIDTH * 2 / 5));</span>
+
+<span class="fc" id="L69">		JScrollPane scrollPane2 = new JScrollPane();</span>
+<span class="fc" id="L70">		scrollPane2.setPreferredSize(new Dimension(WIDTH * 2 / 5, WIDTH * 2 / 5));</span>
+<span class="fc" id="L71">		scrollPane2.setViewportView(offerList2);</span>
+<span class="fc" id="L72">		this.add(scrollPane2);</span>
+		//
+<span class="fc" id="L74">		giveMoneyField = new JTextField();</span>
+<span class="fc" id="L75">		giveMoneyField.setPreferredSize(new Dimension(WIDTH * 2 / 9, 30));</span>
+		//
+<span class="fc" id="L77">		JPanel giveMoneyPanel = new JPanel(new FlowLayout());</span>
+<span class="fc" id="L78">		giveMoneyPanel.setPreferredSize(new Dimension(WIDTH * 21 / 50, 35));</span>
+<span class="fc" id="L79">		giveMoneyPanel.add(new JLabel(&quot;Give money: &quot;));</span>
+<span class="fc" id="L80">		giveMoneyPanel.add(giveMoneyField);</span>
+<span class="fc" id="L81">		this.add(giveMoneyPanel);</span>
+		//
+<span class="fc" id="L83">		recieveMoneyField = new JTextField();</span>
+<span class="fc" id="L84">		recieveMoneyField.setPreferredSize(new Dimension(WIDTH * 2 / 9, 30));</span>
+		//
+<span class="fc" id="L86">		JPanel recieveMoneyPanel = new JPanel(new FlowLayout());</span>
+<span class="fc" id="L87">		recieveMoneyPanel.setPreferredSize(new Dimension(WIDTH * 21 / 50, 35));</span>
+<span class="fc" id="L88">		recieveMoneyPanel.add(new JLabel(&quot;Recieve money: &quot;));</span>
+<span class="fc" id="L89">		recieveMoneyPanel.add(recieveMoneyField);</span>
+<span class="fc" id="L90">		this.add(recieveMoneyPanel);</span>
+		//
+<span class="fc" id="L92">		JLabel adjustLabel2 = new JLabel();</span>
+<span class="fc" id="L93">		adjustLabel2.setPreferredSize(new Dimension(WIDTH * 1 / 15, 30));</span>
+<span class="fc" id="L94">		this.add(adjustLabel2);</span>
+
+<span class="fc" id="L96">		JLabel adjustLabel3 = new JLabel();</span>
+<span class="fc" id="L97">		adjustLabel3.setPreferredSize(new Dimension(WIDTH - 10, 20));</span>
+<span class="fc" id="L98">		this.add(adjustLabel3);</span>
+		//
+<span class="fc" id="L100">		sendRequestButton = new JButton(&quot;Send this request!&quot;);</span>
+<span class="fc" id="L101">		sendRequestButton.setPreferredSize(new Dimension(160, 30));</span>
+<span class="fc" id="L102">		sendRequestButton.addActionListener(new GetActions());</span>
+<span class="fc" id="L103">		this.add(sendRequestButton);</span>
+
+<span class="fc" id="L105">		cancelRequestButton = new JButton(&quot;Cancel&quot;);</span>
+<span class="fc" id="L106">		cancelRequestButton.setPreferredSize(new Dimension(125, 30));</span>
+<span class="fc" id="L107">		cancelRequestButton.addActionListener(new GetActions());</span>
+<span class="fc" id="L108">		this.add(cancelRequestButton);</span>
+
+<span class="fc" id="L110">		fillList();</span>
+<span class="fc" id="L111">	}</span>
+
+	public void fillList()
+	{
+<span class="fc" id="L115">		p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="fc" id="L116">		player = PlayerDAO.getPlayerDAO().getOnePlayer(GUIManager.getPlayerPanel().getPlayerUserName());</span>
+<span class="fc" id="L117">		model1.removeAllElements();</span>
+<span class="fc" id="L118">		model2.removeAllElements();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (p.getEstates() != null)</span>
+		{
+<span class="fc bfc" id="L121" title="All 2 branches covered.">			for (int i = 0; i &lt; p.getEstates().size(); i++)</span>
+			{
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">				if (!p.getEstates().get(i).isMortgage())</span>
+<span class="fc" id="L124">					model1.addElement(p.getEstates().get(i).getName());</span>
+			}
+		}
+
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (player.getEstates() != null)</span>
+		{
+<span class="fc bfc" id="L130" title="All 2 branches covered.">			for (int i = 0; i &lt; player.getEstates().size(); i++)</span>
+			{
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">				if (!player.getEstates().get(i).isMortgage())</span>
+<span class="fc" id="L133">					model2.addElement(player.getEstates().get(i).getName());</span>
+			}
+		}
+<span class="fc" id="L136">		maxRecieveMoney = player.getMoney();</span>
+<span class="fc" id="L137">	}</span>
+
+<span class="fc" id="L139">	private class GetActions implements ActionListener</span>
+	{
+		private ArrayList&lt;Estate&gt; giveEstates;
+		private ArrayList&lt;Estate&gt; recieveEstates;
+		private int recieveMoney;
+		private int giveMoney;
+
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+<span class="nc bnc" id="L149" title="All 2 branches missed.">			if (arg0.getSource().equals(sendRequestButton))</span>
+			{
+<span class="nc bnc" id="L151" title="All 2 branches missed.">				if (!giveMoneyField.getText().equals(&quot;&quot;))</span>
+				{
+<span class="nc bnc" id="L153" title="All 2 branches missed.">					if (p.getMoney() &lt; Integer.parseInt(giveMoneyField.getText()))</span>
+					{
+<span class="nc" id="L155">						JOptionPane.showMessageDialog(null, &quot;Your input (money) is more than your currency!&quot;, &quot;Error&quot;,</span>
+								JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L157">						giveMoneyField.setText(&quot;&quot;);</span>
+<span class="nc" id="L158">						return;</span>
+					}
+				}
+<span class="nc bnc" id="L161" title="All 2 branches missed.">				if(!recieveMoneyField.getText().equals(&quot;&quot;))</span>
+				{
+<span class="nc bnc" id="L163" title="All 2 branches missed.">					if(maxRecieveMoney &lt; Integer.parseInt(recieveMoneyField.getText()))</span>
+<span class="nc" id="L164">						JOptionPane.showMessageDialog(null, &quot;Your input (money) is more than the other player's currency!&quot;, &quot;Error&quot;,</span>
+								JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L166">						recieveMoneyField.setText(&quot;&quot;);</span>
+<span class="nc" id="L167">						return;</span>
+				}
+<span class="nc bnc" id="L169" title="All 2 branches missed.">				if (!offerList1.getSelectedValuesList().isEmpty())</span>
+				{
+<span class="nc" id="L171">					ArrayList&lt;String&gt; giveEstatesNames = (ArrayList&lt;String&gt;) offerList1.getSelectedValuesList();</span>
+<span class="nc" id="L172">					giveEstates = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">					for (String st : giveEstatesNames)</span>
+					{
+<span class="nc" id="L175">						giveEstates.add(EstateDAO.getEstateDAO().getOneEstateByName(st));</span>
+<span class="nc" id="L176">					}</span>
+<span class="nc" id="L177">				} else</span>
+				{
+<span class="nc" id="L179">					giveEstates = new ArrayList&lt;&gt;();</span>
+				}
+<span class="nc bnc" id="L181" title="All 2 branches missed.">				if (!offerList2.getSelectedValuesList().isEmpty())</span>
+				{
+<span class="nc" id="L183">					ArrayList&lt;String&gt; recieveEstatesNames = (ArrayList&lt;String&gt;) offerList2.getSelectedValuesList();</span>
+<span class="nc" id="L184">					recieveEstates = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">					for (String st : recieveEstatesNames)</span>
+					{
+<span class="nc" id="L187">						recieveEstates.add(EstateDAO.getEstateDAO().getOneEstateByName(st));</span>
+<span class="nc" id="L188">					}</span>
+<span class="nc" id="L189">				} else</span>
+				{
+<span class="nc" id="L191">					recieveEstates = new ArrayList&lt;&gt;();</span>
+				}
+<span class="nc bnc" id="L193" title="All 2 branches missed.">				if (!recieveMoneyField.getText().equals(&quot;&quot;))</span>
+				{
+<span class="nc" id="L195">					recieveMoney = Integer.parseInt(recieveMoneyField.getText());</span>
+				} else
+				{
+<span class="nc" id="L198">					recieveMoney = 0;</span>
+				}
+<span class="nc bnc" id="L200" title="All 2 branches missed.">				if (!giveMoneyField.getText().equals(&quot;&quot;))</span>
+				{
+<span class="nc" id="L202">					giveMoney = Integer.parseInt(giveMoneyField.getText());</span>
+				} else
+				{
+<span class="nc" id="L205">					giveMoney = 0;</span>
+				}
+<span class="nc" id="L207">				Request request = new Request(giveEstates, recieveEstates, giveMoney, recieveMoney, p.getUserName(),</span>
+<span class="nc" id="L208">						player.getUserName());</span>
+<span class="nc" id="L209">				Client.getClient().sendObject(request);</span>
+<span class="nc" id="L210">				GUIManager.getSendRequestFrame().setVisible(false);</span>
+<span class="nc" id="L211">				giveMoneyField.setText(&quot;&quot;);</span>
+<span class="nc" id="L212">				recieveMoneyField.setText(&quot;&quot;);</span>
+			}
+
+<span class="nc bnc" id="L215" title="All 2 branches missed.">			if (arg0.getSource().equals(cancelRequestButton))</span>
+			{
+<span class="nc" id="L217">				model1.removeAllElements();</span>
+<span class="nc" id="L218">				model2.removeAllElements();</span>
+<span class="nc" id="L219">				giveMoneyField.setText(&quot;&quot;);</span>
+<span class="nc" id="L220">				recieveMoneyField.setText(&quot;&quot;);</span>
+<span class="nc" id="L221">				GUIManager.getSendRequestFrame().setVisible(false);</span>
+			}
+<span class="nc" id="L223">		}</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

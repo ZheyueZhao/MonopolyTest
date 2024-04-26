@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionPanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui.actionPanel</a> &gt; <span class="el_source">ActionPanel.java</span></div><h1>ActionPanel.java</h1><pre class="source lang-java linenums">package org.bihe.ui.actionPanel;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import org.bihe.ui.GUIManager;
+
+
+public class ActionPanel extends JPanel
+{
+	private int HEIGHT;
+	private int WIDTH;
+	private static final long serialVersionUID = 1L;
+
+	public ActionPanel()
+<span class="fc" id="L19">	{</span>
+<span class="fc" id="L20">		this.setLayout(new GridLayout(3, 1));</span>
+<span class="fc" id="L21">		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();</span>
+<span class="fc" id="L22">		HEIGHT = (int) dimension.getHeight();</span>
+<span class="fc" id="L23">		WIDTH = (int) dimension.getWidth() * 10/46;</span>
+<span class="fc" id="L24">		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));</span>
+<span class="fc" id="L25">		this.setBackground(Color.white);</span>
+<span class="fc" id="L26">		this.setBounds(0, 0, WIDTH, HEIGHT-55);</span>
+		//
+<span class="fc" id="L28">		this.add(GUIManager.getPlayerPanel());</span>
+		//
+<span class="fc" id="L30">		this.add(GUIManager.getEstatePanel());</span>
+		//
+<span class="fc" id="L32">		JPanel diceAndBtnPanel = new JPanel(new GridLayout(1, 2));</span>
+<span class="fc" id="L33">		diceAndBtnPanel.add(GUIManager.getButtonPanel());</span>
+<span class="fc" id="L34">		diceAndBtnPanel.add(GUIManager.getDicePanel());</span>
+<span class="fc" id="L35">		this.add(diceAndBtnPanel);</span>
+<span class="fc" id="L36">	}</span>
+	public void addComponent(JPanel p)
+	{
+<span class="nc" id="L39">		this.add(p);</span>
+<span class="nc" id="L40">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Client.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.network.client</a> &gt; <span class="el_source">Client.java</span></div><h1>Client.java</h1><pre class="source lang-java linenums">package org.bihe.network.client;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+import javax.swing.JOptionPane;
+
+import org.bihe.DAO.PersonDAO;
+import org.bihe.model.Data;
+import org.bihe.model.Exit;
+import org.bihe.model.Request;
+import org.bihe.ui.GUIManager;
+
+public class Client
+{
+
+	private ObjectInputStream objIn;
+	private ObjectOutputStream objOut;
+	private static Client instance;
+<span class="fc" id="L22">	private boolean openGameFrame = true;</span>
+	private int clientNo;
+	private int numberOfPlayers;
+
+	public static Client getClient()
+	{
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		if (instance == null)</span>
+<span class="fc" id="L29">			instance = new Client();</span>
+<span class="fc" id="L30">		return instance;</span>
+	}
+
+	private Client()
+<span class="fc" id="L34">	{</span>
+<span class="fc" id="L35">	}</span>
+
+	public Socket getSocket(String ip, int port) throws IOException {
+<span class="fc" id="L38">		return new Socket(ip, port);</span>
+	}
+
+	public void runClient(int port, String ip)
+	{
+		{
+			try
+			{
+				// Socket s = new Socket(ip, port);
+<span class="fc" id="L47">				Socket s = getSocket(ip, port);</span>
+<span class="fc" id="L48">				objIn = new ObjectInputStream(s.getInputStream());</span>
+<span class="fc" id="L49">				objOut = new ObjectOutputStream(s.getOutputStream());</span>
+<span class="fc" id="L50">				sendObject(PersonDAO.getPersonDAO().getThePerson());</span>
+<span class="fc" id="L51">				clientNo = (int) objIn.readObject();</span>
+<span class="fc" id="L52">				numberOfPlayers = (int) objIn.readObject();</span>
+
+<span class="fc" id="L54">				Runnable checkForInput = new Runnable()</span>
+<span class="fc" id="L55">				{</span>
+
+					@Override
+					public void run()
+					{
+						while (true)
+						{
+							try
+							{
+<span class="fc" id="L64">								Thread.sleep(100);</span>
+
+<span class="fc" id="L66">								objOut.flush();</span>
+<span class="fc" id="L67">								objOut.reset();</span>
+<span class="fc" id="L68">								Object obj = objIn.readObject();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">								if (obj instanceof Request)</span>
+								{
+<span class="fc" id="L71">									Request request = (Request) obj;</span>
+<span class="fc" id="L72">									request.analyseRequest();</span>
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">								} else if (obj instanceof Data)</span>
+								{
+<span class="fc" id="L76">									Data data = (Data) obj;</span>
+<span class="fc" id="L77">									data.analysData();</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">									if (openGameFrame)</span>
+									{
+<span class="fc" id="L80">										GUIManager.getGameFrame();</span>
+<span class="fc" id="L81">										GUIManager.getMainFrame().setVisible(false);</span>
+<span class="fc" id="L82">										GUIManager.getPlayerPanel().fillPlayersList();</span>
+<span class="fc" id="L83">										openGameFrame = false;</span>
+									}
+									//
+<span class="fc" id="L86">									int myPieceNo = PersonDAO.getPersonDAO().getThePerson().getPieceNumber();</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">									if (myPieceNo != 1)</span>
+									{
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">										if (data.isPlayerMove())</span>
+										{
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">											if (data.getPieceNumber() == myPieceNo - 1)</span>
+											{
+<span class="nc" id="L93">												GUIManager.getDicePanel().setDiceEnable(true);</span>
+											}
+										}
+<span class="nc bnc" id="L96" title="All 2 branches missed.">									} else if (myPieceNo == 1)</span>
+									{
+<span class="nc bnc" id="L98" title="All 2 branches missed.">										if (data.isPlayerMove())</span>
+										{
+<span class="nc" id="L100">											int lastPlayer = GUIManager.getMakeNewGamePanel().getPlayerNo();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">											if (data.getPieceNumber() == lastPlayer)</span>
+											{
+<span class="nc" id="L103">												GUIManager.getDicePanel().setDiceEnable(true);</span>
+											}
+										}
+									}
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">								} else if (obj instanceof Exit)</span>
+								{
+<span class="fc" id="L110">									Exit exit = (Exit) obj;</span>
+<span class="fc" id="L111">									objIn.close();</span>
+<span class="fc" id="L112">									objOut.close();</span>
+<span class="fc" id="L113">									s.close();</span>
+<span class="pc" id="L114">									JOptionPane.showMessageDialog(null,</span>
+<span class="fc" id="L115">											exit.getUserName() + &quot; exited so game will be closed&quot;);</span>
+<span class="nc" id="L116">									Thread.sleep(5000);</span>
+<span class="nc" id="L117">									System.exit(0);</span>
+								}
+
+<span class="nc" id="L120">							} catch (ClassNotFoundException e)</span>
+							{
+<span class="nc" id="L122">								JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L123">							} catch (IOException e)</span>
+							{
+<span class="fc" id="L125">								JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L126">							} catch (InterruptedException e)</span>
+							{
+<span class="nc" id="L128">								JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="pc" id="L129">							}</span>
+						}
+
+					}
+				};
+<span class="fc" id="L134">				Thread t = new Thread(checkForInput);</span>
+<span class="fc" id="L135">				t.start();</span>
+
+<span class="fc" id="L137">			} catch (Exception e)</span>
+			{
+<span class="fc" id="L139">				JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L140">			}</span>
+
+		}
+
+<span class="fc" id="L144">	}</span>
+
+	public void sendObject(Object obj)
+	{
+		try
+		{
+<span class="fc" id="L150">			objOut.writeObject(obj);</span>
+<span class="fc" id="L151">			objOut.flush();</span>
+<span class="fc" id="L152">			objOut.reset();</span>
+<span class="nc" id="L153">		} catch (IOException e)</span>
+		{
+<span class="nc" id="L155">			JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="fc" id="L156">		}</span>
+<span class="fc" id="L157">	}</span>
+
+	public int getClientNo()
+	{
+<span class="fc" id="L161">		return clientNo;</span>
+	}
+
+	public void setClientNo(int clientNo)
+	{
+<span class="fc" id="L166">		this.clientNo = clientNo;</span>
+<span class="fc" id="L167">	}</span>
+
+	public int getNumberOfPlayers()
+	{
+<span class="fc" id="L171">		return numberOfPlayers;</span>
+	}
+
+	public void setNumberOfPlayers(int numberOfPlayers)
+	{
+<span class="fc" id="L176">		this.numberOfPlayers = numberOfPlayers;</span>
+<span class="fc" id="L177">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

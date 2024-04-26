@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MakeNewGamePanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui.mainFrame</a> &gt; <span class="el_source">MakeNewGamePanel.java</span></div><h1>MakeNewGamePanel.java</h1><pre class="source lang-java linenums">package org.bihe.ui.mainFrame;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PersonDAO;
+import org.bihe.DAO.PlayerDAO;
+import org.bihe.model.Data;
+import org.bihe.model.Person;
+import org.bihe.network.client.Client;
+import org.bihe.network.server.Server;
+import org.bihe.ui.GUIManager;
+
+public class MakeNewGamePanel extends JPanel
+{
+	private static final long serialVersionUID = 1L;
+	private Dimension dim;
+	private JTextField portField;
+	private JButton runServerButton;
+	private JLabel runningLabel;
+	private DefaultListModel&lt;String&gt; model;
+	private JButton startGameButton;
+	private JLabel portLabel;
+	private String portNo;
+	private JList&lt;String&gt; joinedPlayersList;
+	private JSpinner playerNoSpinner;
+	private JLabel playerNoLabel;
+	private int playerNo;
+
+	public MakeNewGamePanel()
+<span class="fc" id="L52">	{</span>
+<span class="fc" id="L53">		setBackground(Color.WHITE);</span>
+<span class="fc" id="L54">		dim = GUIManager.getMainFrame().getSize();</span>
+<span class="fc" id="L55">		setLayout(creatGbl());</span>
+<span class="fc" id="L56">		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.0d, 0.0d, GridBagConstraints.CENTER,</span>
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
+
+		//
+<span class="fc" id="L60">		gbc.gridy = 1;</span>
+<span class="fc" id="L61">		JLabel title = new JLabel(&quot;Monopoly&quot;);</span>
+<span class="fc" id="L62">		title.setFont(new Font(&quot;&quot;, Font.BOLD, 70));</span>
+<span class="fc" id="L63">		this.add(title, gbc);</span>
+		//
+<span class="fc" id="L65">		gbc.gridy = 2;</span>
+<span class="fc" id="L66">		JPanel ipPanel = new JPanel(new FlowLayout());</span>
+<span class="fc" id="L67">		JLabel ipLabel1 = new JLabel(&quot;Your local IP address is: &quot;);</span>
+<span class="fc" id="L68">		ipLabel1.setFont(new Font(&quot;&quot;, Font.BOLD, 12));</span>
+<span class="fc" id="L69">		ipPanel.add(ipLabel1);</span>
+		try
+		{
+<span class="fc" id="L72">			JLabel ipLabel2 = new JLabel((InetAddress.getLocalHost().getHostAddress()).trim());</span>
+<span class="fc" id="L73">			ipLabel2.setFont(new Font(&quot;&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L74">			ipPanel.add(ipLabel2);</span>
+<span class="nc" id="L75">		} catch (UnknownHostException e)</span>
+		{
+<span class="nc" id="L77">			JOptionPane.showMessageDialog(GUIManager.getMainFrame(), e.getMessage(), &quot;Error&quot;,</span>
+					JOptionPane.ERROR_MESSAGE);
+<span class="fc" id="L79">		}</span>
+<span class="fc" id="L80">		this.add(ipPanel, gbc);</span>
+		//
+<span class="fc" id="L82">		gbc.gridy = 3;</span>
+<span class="fc" id="L83">		JPanel portPanel = new JPanel(new FlowLayout());</span>
+<span class="fc" id="L84">		portPanel.setBackground(Color.WHITE);</span>
+<span class="fc" id="L85">		portPanel.setPreferredSize(new Dimension(dim.width / 2, 95));</span>
+		//
+<span class="fc" id="L87">		playerNoLabel = new JLabel(&quot;Players number: &quot;);</span>
+<span class="fc" id="L88">		playerNoLabel.setFont(new Font(&quot;&quot;, Font.BOLD, 12));</span>
+<span class="fc" id="L89">		portPanel.add(playerNoLabel);</span>
+		//
+<span class="fc" id="L91">		playerNoSpinner = new JSpinner(getModel());</span>
+<span class="fc" id="L92">		playerNoSpinner.setPreferredSize(new Dimension(dim.width / 7, 25));</span>
+<span class="fc" id="L93">		portPanel.add(playerNoSpinner);</span>
+		//
+<span class="fc" id="L95">		portLabel = new JLabel(&quot;port: &quot;);</span>
+<span class="fc" id="L96">		portLabel.setFont(new Font(&quot;&quot;, Font.BOLD, 12));</span>
+<span class="fc" id="L97">		portLabel.setPreferredSize(new Dimension(dim.width / 10, 25));</span>
+<span class="fc" id="L98">		portPanel.add(portLabel);</span>
+		//
+<span class="fc" id="L100">		portField = new JTextField();</span>
+<span class="fc" id="L101">		portField.setPreferredSize(new Dimension(dim.width * 9 / 30, 25));</span>
+<span class="fc" id="L102">		portPanel.add(portField);</span>
+		//
+<span class="fc" id="L104">		runServerButton = new JButton(&quot;Run Server&quot;);</span>
+<span class="fc" id="L105">		runServerButton.setPreferredSize(new Dimension(dim.width / 3, 30));</span>
+<span class="fc" id="L106">		runServerButton.addActionListener(new getActions());</span>
+<span class="fc" id="L107">		portPanel.add(runServerButton, gbc);</span>
+<span class="fc" id="L108">		this.add(portPanel, gbc);</span>
+		//
+<span class="fc" id="L110">		gbc.gridy = 4;</span>
+<span class="fc" id="L111">		runningLabel = new JLabel(&quot;Server is ready. Waiting for clients... &quot;);</span>
+<span class="fc" id="L112">		runningLabel.setVisible(false);</span>
+<span class="fc" id="L113">		this.add(runningLabel, gbc);</span>
+		//
+<span class="fc" id="L115">		gbc.gridy = 5;</span>
+<span class="fc" id="L116">		model = new DefaultListModel&lt;&gt;();</span>
+
+<span class="fc" id="L118">		joinedPlayersList = new JList&lt;&gt;(model);</span>
+<span class="fc" id="L119">		joinedPlayersList.setPreferredSize(new Dimension(dim.width * 3 / 7, 140));</span>
+<span class="fc" id="L120">		JScrollPane scrollPane = new JScrollPane();</span>
+<span class="fc" id="L121">		scrollPane.setPreferredSize(new Dimension(dim.width * 6 / 10, 150));</span>
+<span class="fc" id="L122">		scrollPane.setViewportView(joinedPlayersList);</span>
+<span class="fc" id="L123">		joinedPlayersList.setEnabled(false);</span>
+<span class="fc" id="L124">		this.add(scrollPane, gbc);</span>
+
+<span class="fc" id="L126">		gbc.gridy = 6;</span>
+<span class="fc" id="L127">		startGameButton = new JButton(&quot;Start Game&quot;);</span>
+<span class="fc" id="L128">		startGameButton.setPreferredSize(new Dimension(dim.width / 3, 30));</span>
+<span class="fc" id="L129">		startGameButton.addActionListener(new getActions());</span>
+<span class="fc" id="L130">		startGameButton.setEnabled(false);</span>
+<span class="fc" id="L131">		this.add(startGameButton, gbc);</span>
+
+<span class="fc" id="L133">	}</span>
+
+	public String getPortNo()
+	{
+<span class="nc" id="L137">		return this.portNo;</span>
+	}
+
+	public int getPlayerNo()
+	{
+<span class="nc" id="L142">		return this.playerNo;</span>
+	}
+
+	public void updateList(String input)
+	{
+<span class="fc" id="L147">		model.addElement(input);</span>
+<span class="fc" id="L148">	}</span>
+
+	private SpinnerModel getModel()
+	{
+<span class="fc" id="L152">		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(6),</span>
+<span class="fc" id="L153">				Integer.valueOf(1));</span>
+<span class="fc" id="L154">		return spinnerModel;</span>
+	}
+
+	private GridBagLayout creatGbl()
+	{
+
+<span class="fc" id="L160">		GridBagLayout gbl = new GridBagLayout();</span>
+<span class="fc" id="L161">		gbl.columnWidths = new int[] { 400 };</span>
+<span class="fc" id="L162">		gbl.rowHeights = new int[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };</span>
+<span class="fc" id="L163">		gbl.columnWeights = new double[] { 0 };</span>
+<span class="fc" id="L164">		return gbl;</span>
+
+	}
+
+<span class="fc" id="L168">	private class getActions implements ActionListener</span>
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+<span class="nc bnc" id="L174" title="All 2 branches missed.">			if (arg0.getSource().equals(runServerButton))</span>
+			{
+<span class="nc" id="L176">				portNo = portField.getText();</span>
+<span class="nc" id="L177">				playerNo = (int) playerNoSpinner.getValue();</span>
+
+<span class="nc" id="L179">				playerNoLabel.setEnabled(false);</span>
+<span class="nc" id="L180">				playerNoSpinner.setEnabled(false);</span>
+<span class="nc" id="L181">				portLabel.setEnabled(false);</span>
+<span class="nc" id="L182">				portField.setEnabled(false);</span>
+<span class="nc" id="L183">				runServerButton.setEnabled(false);</span>
+<span class="nc" id="L184">				runningLabel.setVisible(true);</span>
+<span class="nc" id="L185">				joinedPlayersList.setEnabled(true);</span>
+<span class="nc" id="L186">				startGameButton.setEnabled(true);</span>
+				// network
+<span class="nc" id="L188">				Runnable r = new Runnable()</span>
+<span class="nc" id="L189">				{</span>
+					@Override
+					public void run()
+					{
+<span class="nc" id="L193">						Server s = Server.getServer();</span>
+<span class="nc" id="L194">						s.runServer(Integer.parseInt(portField.getText()), playerNo);</span>
+						try
+						{
+<span class="nc" id="L197">							Thread.sleep(10);</span>
+<span class="nc" id="L198">						} catch (InterruptedException e)</span>
+						{
+<span class="nc" id="L200">							JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L201">						}</span>
+<span class="nc" id="L202">					}</span>
+				};
+<span class="nc" id="L204">				new Thread(r).start();</span>
+<span class="nc" id="L205">				Runnable r2 = new Runnable()</span>
+<span class="nc" id="L206">				{</span>
+
+					@Override
+					public void run()
+					{
+<span class="nc" id="L211">						Client client = Client.getClient();</span>
+<span class="nc" id="L212">						client.runClient(Integer.parseInt(portField.getText()), &quot;localhost&quot;);</span>
+						try
+						{
+<span class="nc" id="L215">							Thread.sleep(10);</span>
+<span class="nc" id="L216">						} catch (InterruptedException e)</span>
+						{
+<span class="nc" id="L218">							JOptionPane.showMessageDialog(null, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L219">						}</span>
+<span class="nc" id="L220">					}</span>
+				};
+<span class="nc" id="L222">				new Thread(r2).start();</span>
+
+<span class="nc bnc" id="L224" title="All 2 branches missed.">			} else if (arg0.getSource().equals(startGameButton))</span>
+			{
+<span class="nc" id="L226">				GUIManager.getMainFrame().setVisible(false);</span>
+
+<span class="nc" id="L228">				Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+
+<span class="nc" id="L230">				p.setPieceNumber(1);</span>
+<span class="nc" id="L231">				p.setYourTurn(true);</span>
+<span class="nc" id="L232">				p.setLocation(0);</span>
+<span class="nc" id="L233">				p.setMoney(1500);</span>
+<span class="nc" id="L234">				p.setHaveJailCard(false);</span>
+<span class="nc" id="L235">				p.setEstates(new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L236">				Server.getServer().sendClintNo();</span>
+<span class="nc" id="L237">				Server.getServer().sendObjectToAll(playerNo);</span>
+<span class="nc" id="L238">				PersonDAO.getPersonDAO().changePerson(p);</span>
+<span class="nc" id="L239">				PlayerDAO.getPlayerDAO().changeOnePlayer(p);</span>
+<span class="nc" id="L240">				Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="nc" id="L241">				Client.getClient().sendObject(data);</span>
+			}
+<span class="nc" id="L243">		}</span>
+
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

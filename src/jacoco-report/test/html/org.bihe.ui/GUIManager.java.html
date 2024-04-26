@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GUIManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui</a> &gt; <span class="el_source">GUIManager.java</span></div><h1>GUIManager.java</h1><pre class="source lang-java linenums">package org.bihe.ui;
+
+import org.bihe.ui.actionPanel.ActionPanel;
+import org.bihe.ui.actionPanel.ButtonPanel;
+import org.bihe.ui.actionPanel.DicePanel;
+import org.bihe.ui.actionPanel.PlayerPanel;
+import org.bihe.ui.actionPanel.EstatesPanel;
+import org.bihe.ui.mainFrame.EnterGamePanel;
+import org.bihe.ui.mainFrame.JoinGamePanel;
+import org.bihe.ui.mainFrame.LoginPanel;
+import org.bihe.ui.mainFrame.MainFrame;
+import org.bihe.ui.mainFrame.MakeNewGamePanel;
+import org.bihe.ui.mainFrame.SignInPanel;
+import org.bihe.ui.mainFrame.SignUpPanel;
+
+public class GUIManager
+{
+	private static GameFrame gameFrame;
+	private static GamePanel gamePanel;
+	private static JoinGamePanel joinGamePanel;
+	private static LoginPanel loginPanel;
+	private static MainFrame mainFrame;
+	private static SendRequestFrame sendRequestFrame;
+	private static SendRequestPanel sendRequestPanel;
+	private static SignInPanel signInPanel;
+	private static SignUpPanel signUpPanel;
+	private static ActionPanel actionPanel;
+	private static ButtonPanel buttonPanel;
+	private static DicePanel dicePanel;
+	private static PlayerPanel playerPanel;
+	private static EstatesPanel estatePanel;
+	private static BuyStreetDialog buyStreetDialog;
+	private static MakeNewGamePanel makeNewGamePanel;
+	private static EnterGamePanel enterGamePanel;
+	private static RequestDialog requestDialog;
+	private static GetOutOfJailDialog getOutOfJailDialog;
+
+	private GUIManager()
+	{
+	}
+
+	public static GameFrame getGameFrame()
+	{
+<span class="fc bfc" id="L44" title="All 2 branches covered.">		if (gameFrame == null)</span>
+<span class="fc" id="L45">			gameFrame = new GameFrame();</span>
+
+<span class="fc" id="L47">		return gameFrame;</span>
+	}
+
+	public static GamePanel getGamePanel()
+	{
+<span class="fc bfc" id="L52" title="All 2 branches covered.">		if (gamePanel == null)</span>
+<span class="fc" id="L53">			gamePanel = new GamePanel();</span>
+
+<span class="fc" id="L55">		return gamePanel;</span>
+	}
+
+	public static JoinGamePanel getJoinGamePanel()
+	{
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">		if (joinGamePanel == null)</span>
+<span class="fc" id="L61">			joinGamePanel = new JoinGamePanel();</span>
+
+<span class="fc" id="L63">		return joinGamePanel;</span>
+	}
+
+	public static LoginPanel getLoginPanel()
+	{
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">		if (loginPanel == null)</span>
+<span class="fc" id="L69">			loginPanel = new LoginPanel();</span>
+
+<span class="fc" id="L71">		return loginPanel;</span>
+	}
+
+	public static MainFrame getMainFrame()
+	{
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		if (mainFrame == null)</span>
+<span class="fc" id="L77">			mainFrame = new MainFrame();</span>
+
+<span class="fc" id="L79">		return mainFrame;</span>
+	}
+
+	public static SendRequestFrame getSendRequestFrame()
+	{
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (sendRequestFrame == null)</span>
+<span class="fc" id="L85">			sendRequestFrame = new SendRequestFrame();</span>
+
+<span class="fc" id="L87">		return sendRequestFrame;</span>
+	}
+
+	public static SendRequestPanel getSendRequestPanel()
+	{
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if (sendRequestPanel == null)</span>
+<span class="fc" id="L93">			sendRequestPanel = new SendRequestPanel();</span>
+
+<span class="fc" id="L95">		return sendRequestPanel;</span>
+	}
+
+	public static SignInPanel getSignInPanel()
+	{
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		if (signInPanel == null)</span>
+<span class="fc" id="L101">			signInPanel = new SignInPanel();</span>
+
+<span class="fc" id="L103">		return signInPanel;</span>
+	}
+
+	public static SignUpPanel getSignUpPanel()
+	{
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (signUpPanel == null)</span>
+<span class="fc" id="L109">			signUpPanel = new SignUpPanel();</span>
+
+<span class="fc" id="L111">		return signUpPanel;</span>
+	}
+
+	public static ActionPanel getActionPanel()
+	{
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		if (actionPanel == null)</span>
+<span class="fc" id="L117">			actionPanel = new ActionPanel();</span>
+
+<span class="fc" id="L119">		return actionPanel;</span>
+	}
+
+	public static ButtonPanel getButtonPanel()
+	{
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		if (buttonPanel == null)</span>
+<span class="fc" id="L125">			buttonPanel = new ButtonPanel();</span>
+
+<span class="fc" id="L127">		return buttonPanel;</span>
+	}
+
+	public static DicePanel getDicePanel()
+	{
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		if (dicePanel == null)</span>
+<span class="fc" id="L133">			dicePanel = new DicePanel();</span>
+
+<span class="fc" id="L135">		return dicePanel;</span>
+	}
+
+	public static PlayerPanel getPlayerPanel()
+	{
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		if (playerPanel == null)</span>
+<span class="fc" id="L141">			playerPanel = new PlayerPanel();</span>
+
+<span class="fc" id="L143">		return playerPanel;</span>
+	}
+
+	public static EstatesPanel getEstatePanel()
+	{
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		if (estatePanel == null)</span>
+<span class="fc" id="L149">			estatePanel = new EstatesPanel();</span>
+
+<span class="fc" id="L151">		return estatePanel;</span>
+	}
+
+	public static BuyStreetDialog getBuyStreetDialog()
+	{
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		if (buyStreetDialog == null)</span>
+<span class="fc" id="L157">			buyStreetDialog = new BuyStreetDialog();</span>
+
+<span class="fc" id="L159">		return buyStreetDialog;</span>
+	}
+
+	public static MakeNewGamePanel getMakeNewGamePanel()
+	{
+<span class="fc bfc" id="L164" title="All 2 branches covered.">		if (makeNewGamePanel == null)</span>
+<span class="fc" id="L165">			makeNewGamePanel = new MakeNewGamePanel();</span>
+
+<span class="fc" id="L167">		return makeNewGamePanel;</span>
+	}
+
+	public static EnterGamePanel getEnterGamePanel()
+	{
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if (enterGamePanel == null)</span>
+<span class="fc" id="L173">			enterGamePanel = new EnterGamePanel();</span>
+
+<span class="fc" id="L175">		return enterGamePanel;</span>
+	}
+
+	public static RequestDialog getRequestDialog()
+	{
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		if (requestDialog == null)</span>
+<span class="fc" id="L181">			requestDialog = new RequestDialog();</span>
+
+<span class="fc" id="L183">		return requestDialog;</span>
+	}
+
+	public static GetOutOfJailDialog getGetOutOfJailDialog()
+	{
+<span class="fc bfc" id="L188" title="All 2 branches covered.">		if (getOutOfJailDialog == null)</span>
+<span class="fc" id="L189">			getOutOfJailDialog = new GetOutOfJailDialog();</span>
+
+<span class="fc" id="L191">		return getOutOfJailDialog;</span>
+	}
+
+	// -----------------------GameFrame--------------------------
+	public static void addGamePaneltoGameFrame()
+	{
+<span class="nc" id="L197">		getGameFrame().addComponent(getGamePanel());</span>
+<span class="nc" id="L198">	}</span>
+
+	public static void addActionPaneltoGameFrame()
+	{
+<span class="nc" id="L202">		getGameFrame().addComponent(getActionPanel());</span>
+<span class="nc" id="L203">	}</span>
+
+	// ---------------------MainFrame---------------------------
+	public static void addLoginPaneltoMainFrame()
+	{
+<span class="nc" id="L208">		getMainFrame().addComponent(getLoginPanel());</span>
+<span class="nc" id="L209">	}</span>
+
+	public static void addJoinGamePaneltoMainFrame()
+	{
+<span class="nc" id="L213">		getMainFrame().addComponent(getJoinGamePanel());</span>
+<span class="nc" id="L214">	}</span>
+
+	public static void addSignInPaneltoMainFrame()
+	{
+<span class="nc" id="L218">		getMainFrame().addComponent(getSignInPanel());</span>
+<span class="nc" id="L219">	}</span>
+
+	public static void addSignUpPaneltoMainFrame()
+	{
+<span class="nc" id="L223">		getMainFrame().addComponent(getSignUpPanel());</span>
+<span class="nc" id="L224">	}</span>
+
+	public static void addMakeNewGamePaneltoMainFrame()
+	{
+<span class="nc" id="L228">		getMainFrame().addComponent(getMakeNewGamePanel());</span>
+<span class="nc" id="L229">	}</span>
+
+	public static void addEnterGamePaneltoMainFrame()
+	{
+<span class="nc" id="L233">		getMainFrame().addComponent(getEnterGamePanel());</span>
+<span class="nc" id="L234">	}</span>
+	// ---------------------SendRequestFrame-----------------------
+
+	// -----------------------ActionPanel---------------------------
+	public static void addButtonPaneltoActionPanel()
+	{
+<span class="nc" id="L240">		getActionPanel().addComponent(getButtonPanel());</span>
+<span class="nc" id="L241">	}</span>
+
+	public static void addDicePaneltoActionPanel()
+	{
+<span class="nc" id="L245">		getActionPanel().addComponent(getDicePanel());</span>
+<span class="nc" id="L246">	}</span>
+
+	public static void addPlayerPaneltoActionPanel()
+	{
+<span class="nc" id="L250">		getActionPanel().addComponent(getPlayerPanel());</span>
+<span class="nc" id="L251">	}</span>
+
+	public static void addEstatePaneltoActionPanel()
+	{
+<span class="nc" id="L255">		getActionPanel().addComponent(getEstatePanel());</span>
+<span class="nc" id="L256">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

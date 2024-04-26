@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Chance.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.ui.chancesAndCommunityChset</a> &gt; <span class="el_source">Chance.java</span></div><h1>Chance.java</h1><pre class="source lang-java linenums">package org.bihe.ui.chancesAndCommunityChset;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import org.bihe.DAO.EstateDAO;
+import org.bihe.DAO.PersonDAO;
+import org.bihe.DAO.PlayerDAO;
+import org.bihe.model.Data;
+import org.bihe.model.Estate;
+import org.bihe.model.Person;
+import org.bihe.model.Street;
+import org.bihe.model.StreetActions;
+import org.bihe.network.client.Client;
+import org.bihe.ui.GUIManager;
+import org.bihe.ui.GamePanel;
+import org.bihe.ui.actionPanel.DicePanel;
+
+public class Chance
+{
+	private int location;
+<span class="fc" id="L26">	private static ImageIcon imgIconC = new ImageIcon(resources.Resources.getImage(&quot;Chance.png&quot;));</span>
+
+	public Chance()
+<span class="fc" id="L29">	{</span>
+		
+<span class="fc" id="L31">	}</span>
+
+	public int makeRandom()
+	{
+<span class="fc" id="L35">		int a = (int) (Math.random() * 100);</span>
+<span class="fc bfc" id="L36" title="All 4 branches covered.">		while (a &gt; 15 || a == 0)</span>
+<span class="fc" id="L37">			a = (int) (Math.random() * 100);</span>
+
+<span class="fc" id="L39">		return a;</span>
+	}
+
+	public void chance()
+	{
+<span class="fc" id="L44">		int chanceNumber = makeRandom();</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">		if (chanceNumber == 1)</span>
+		{
+<span class="fc" id="L47">			JOptionPane.showMessageDialog(null, &quot;Advance to Go (Collect $200) (Mr. M hops on both feet.) &quot;, &quot;Chance&quot;, 1,</span>
+					imgIconC);
+
+<span class="fc" id="L50">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L51">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L52">			p.setMoney(p.newMoney(200));</span>
+<span class="fc" id="L53">			location = p.getLocation();</span>
+<span class="fc" id="L54">			GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L55">			gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(location, 0));</span>
+<span class="fc" id="L56">			p.setLocation(0);</span>
+<span class="fc" id="L57">			personDao.changePerson(p);</span>
+<span class="fc" id="L58">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L59">					EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L60">					PersonDAO.getPersonDAO().getThePerson().getPieceNumber(), location,</span>
+<span class="fc" id="L61">					PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L62">			Client.getClient().sendObject(data);</span>
+			
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		} else if (chanceNumber == 2)</span>
+		{
+<span class="fc" id="L66">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Advance to Illinois Ave. - If you pass Go, collect $200 {Second sentence omitted.}\n&quot;
+							+ &quot; (Mr. M has tied a cloth bundle onto his cane to make a bindle, carried over his right shoulder, and is smoking a cigar) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+			// Illinois Ave is 24th panel.
+<span class="fc" id="L72">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L73">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L74">			location = p.getLocation();</span>
+<span class="fc" id="L75">			GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L76">			gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(location, 24));</span>
+<span class="fc" id="L77">			p.setLocation(24);</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">			if (location - 24 &gt; 0)</span>
+			{
+<span class="fc" id="L80">				p.setMoney(p.newMoney(200));</span>
+			}
+<span class="fc" id="L82">			personDao.changePerson(p);</span>
+<span class="fc" id="L83">			StreetActions st = new StreetActions();</span>
+<span class="fc" id="L84">			st.action();</span>
+<span class="fc" id="L85">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L86">					EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L87">					PersonDAO.getPersonDAO().getThePerson().getPieceNumber(), location,</span>
+<span class="fc" id="L88">					PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L89">			Client.getClient().sendObject(data);</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		} else if (chanceNumber == 3)</span>
+		{
+<span class="fc" id="L93">			JOptionPane.showMessageDialog(null, &quot;Advance to St. Charles Place Ã‚Â– If you pass Go, collect $200 \n&quot;</span>
+					+ &quot;(Mr. M hurries along, hauling a little boy by the hand) &quot;, &quot;Chance&quot;, 1, imgIconC);
+
+			// St. Charles place is 11th panel.
+<span class="fc" id="L97">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L98">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L99">			location = p.getLocation();</span>
+<span class="fc" id="L100">			GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L101">			gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(location, 11));</span>
+<span class="fc" id="L102">			p.setLocation(11);</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">			if (location - 11 &gt; 0)</span>
+			{
+<span class="fc" id="L105">				p.setMoney(p.newMoney(200));</span>
+			}
+<span class="fc" id="L107">			personDao.changePerson(p);</span>
+<span class="fc" id="L108">			StreetActions st = new StreetActions();</span>
+<span class="fc" id="L109">			st.action();</span>
+<span class="fc" id="L110">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L111">					EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L112">					PersonDAO.getPersonDAO().getThePerson().getPieceNumber(),  location,</span>
+<span class="fc" id="L113">					PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L114">			Client.getClient().sendObject(data);</span>
+
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		} else if (chanceNumber == 4)</span>
+		{
+<span class="fc" id="L118">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Advance token to nearest Utility. If unowned, you may buy it from the Bank. \n&quot;
+							+ &quot;If owned, throw dice and pay owner a total ten times the amount thrown. \n&quot;
+							+ &quot;(Mr. M trudges along with a huge battleship token on his back) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L124">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L125">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L126">			location = p.getLocation();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">			if (location == 7)</span>
+			{
+<span class="fc" id="L129">				GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L130">				gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(7, 12));</span>
+<span class="fc" id="L131">				p.setLocation(12);</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">				if (EstateDAO.getEstateDAO().getOneEstate(12).isOwned())</span>
+				{
+<span class="fc" id="L134">					String utilityOwnerName = EstateDAO.getEstateDAO().getOneEstate(12).getOwner();</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">					if (!utilityOwnerName.equals(p.getUserName()))</span>
+					{
+<span class="fc" id="L137">						DicePanel.moveOnToss = false;</span>
+<span class="fc" id="L138">						int changeMoney = GUIManager.getDicePanel().getDiceMultipiedTen();</span>
+<span class="fc" id="L139">						p.setMoney(p.newMoney(-changeMoney));</span>
+						//
+<span class="fc" id="L141">						PlayerDAO playerDao = PlayerDAO.getPlayerDAO();</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">						if (playerDao.getOnePlayer(utilityOwnerName) != null)</span>
+						{
+<span class="fc" id="L144">							Person utilityOwner = playerDao.getOnePlayer(utilityOwnerName);</span>
+<span class="fc" id="L145">							utilityOwner.setMoney(utilityOwner.newMoney(changeMoney));</span>
+<span class="fc" id="L146">							playerDao.changeOnePlayer(utilityOwner);</span>
+							// playerDao.changeOnePlayer(p);
+						}
+						//
+<span class="fc" id="L150">						DicePanel.moveOnToss = true;</span>
+					}
+<span class="fc" id="L152">				} else</span>
+				{
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">					if (p.newMoney(-150) &gt; 0)</span>
+					{
+<span class="fc" id="L156">						p.setMoney(p.newMoney(-150));</span>
+<span class="fc" id="L157">						ArrayList&lt;Estate&gt; ar = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L158">						EstateDAO.getEstateDAO().getOneEstate(12).setOwner(p.getUserName());</span>
+<span class="fc" id="L159">						EstateDAO.getEstateDAO().getOneEstate(12).setOwned(true);</span>
+<span class="fc" id="L160">						p.setEstates(p.newEstates_add(ar));</span>
+
+					} 
+				}
+<span class="fc" id="L164">				EstateDAO.getEstateDAO().changeEstate(EstateDAO.getEstateDAO().getOneEstate(12));</span>
+<span class="fc" id="L165">				Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L166">						EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L167">						PersonDAO.getPersonDAO().getThePerson().getPieceNumber(), location,</span>
+<span class="fc" id="L168">						PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L169">				Client.getClient().sendObject(data);</span>
+				
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			} else if (location == 22)</span>
+			{
+<span class="fc" id="L173">				GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L174">				gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(22, 28));</span>
+<span class="fc" id="L175">				p.setLocation(28);</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">				if (EstateDAO.getEstateDAO().getOneEstate(28).isOwned())</span>
+				{
+<span class="fc" id="L178">					String utilityOwnerName = EstateDAO.getEstateDAO().getOneEstate(28).getOwner();</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">					if (!utilityOwnerName.equals(p.getUserName()))</span>
+					{
+<span class="fc" id="L181">						DicePanel.moveOnToss = false;</span>
+<span class="fc" id="L182">						int changeMoney = GUIManager.getDicePanel().getDiceMultipiedTen();</span>
+<span class="fc" id="L183">						p.setMoney(p.newMoney(-changeMoney));</span>
+						//
+<span class="fc" id="L185">						PlayerDAO playerDao = PlayerDAO.getPlayerDAO();</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">						if (playerDao.getOnePlayer(utilityOwnerName) != null)</span>
+						{
+<span class="fc" id="L188">							Person utilityOwner = playerDao.getOnePlayer(utilityOwnerName);</span>
+<span class="fc" id="L189">							utilityOwner.setMoney(utilityOwner.newMoney(changeMoney));</span>
+<span class="fc" id="L190">							playerDao.changeOnePlayer(utilityOwner);</span>
+						}
+						//
+<span class="fc" id="L193">						DicePanel.moveOnToss = true;</span>
+					}
+<span class="fc" id="L195">				} else</span>
+				{
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">					if (p.newMoney(-150) &gt; 0)</span>
+					{
+<span class="fc" id="L199">						p.setMoney(p.newMoney(-150));</span>
+<span class="fc" id="L200">						ArrayList&lt;Estate&gt; ar = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L201">						EstateDAO.getEstateDAO().getOneEstate(28).setOwner(p.getUserName());</span>
+<span class="fc" id="L202">						EstateDAO.getEstateDAO().getOneEstate(28).setOwned(true);</span>
+<span class="fc" id="L203">						p.setEstates(p.newEstates_add(ar));</span>
+
+					} 
+				}
+<span class="fc" id="L207">				EstateDAO.getEstateDAO().changeEstate(EstateDAO.getEstateDAO().getOneEstate(28));</span>
+<span class="fc" id="L208">				Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L209">						EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L210">						PersonDAO.getPersonDAO().getThePerson().getPieceNumber(),  location,</span>
+<span class="fc" id="L211">						PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L212">				Client.getClient().sendObject(data);</span>
+
+			}
+<span class="fc" id="L215">			personDao.changePerson(p);</span>
+
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		} else if (chanceNumber == 5)</span>
+		{
+<span class="fc" id="L219">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Advance token to the nearest Railroad and pay owner twice the rental to which he/she {he}&quot;
+							+ &quot; is otherwise entitled.\n If Railroad is unowned, you may buy it from the Bank. &quot;
+							+ &quot;(There are two of these.)\n (At lower left, Mr. M carries a large flatiron token with two hands;&quot;
+							+ &quot; at upper right a railroad crossing is seen) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L226">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L227">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L228">			location = p.getLocation();</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">			if (location == 7)</span>
+			{
+<span class="fc" id="L231">				GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L232">				gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(7, 15));</span>
+<span class="fc" id="L233">				p.setLocation(15);</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">				if (EstateDAO.getEstateDAO().getOneEstate(15).isOwned())</span>
+				{
+<span class="fc" id="L236">					String utilityOwnerName = EstateDAO.getEstateDAO().getOneEstate(15).getOwner();</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">					if (!utilityOwnerName.equals(p.getUserName()))</span>
+					{
+<span class="fc" id="L239">						int changeMoney = (EstateDAO.getEstateDAO().getOneEstate(15).getRent()) * 2;</span>
+<span class="fc" id="L240">						p.setMoney(p.newMoney(-changeMoney));</span>
+						//
+<span class="fc" id="L242">						PlayerDAO playerDao = PlayerDAO.getPlayerDAO();</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">						if (playerDao.getOnePlayer(utilityOwnerName) != null)</span>
+						{
+<span class="fc" id="L245">							Person utilityOwner = playerDao.getOnePlayer(utilityOwnerName);</span>
+<span class="fc" id="L246">							utilityOwner.setMoney(utilityOwner.newMoney(changeMoney));</span>
+<span class="fc" id="L247">							playerDao.changeOnePlayer(utilityOwner);</span>
+							// playerDao.changeOnePlayer(p);
+						}
+						//
+					}
+
+<span class="fc" id="L253">				} else</span>
+				{
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">					if (p.newMoney(-200) &gt; 0)</span>
+					{
+<span class="fc" id="L257">						p.setMoney(p.newMoney(-200));</span>
+<span class="fc" id="L258">						ArrayList&lt;Estate&gt; ar = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L259">						EstateDAO.getEstateDAO().getOneEstate(15).setOwner(p.getUserName());</span>
+<span class="fc" id="L260">						EstateDAO.getEstateDAO().getOneEstate(15).setOwned(true);</span>
+<span class="fc" id="L261">						p.setEstates(p.newEstates_add(ar));</span>
+
+					} else
+					{
+						// ÃµTODO don't have enough money.
+					}
+				}
+<span class="fc" id="L268">				EstateDAO.getEstateDAO().changeEstate(EstateDAO.getEstateDAO().getOneEstate(15));</span>
+<span class="fc" id="L269">				Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L270">						EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L271">						PersonDAO.getPersonDAO().getThePerson().getPieceNumber(),  location,</span>
+<span class="fc" id="L272">						PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L273">				Client.getClient().sendObject(data);</span>
+	
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">			} else if (location == 22)</span>
+			{
+<span class="fc" id="L277">				GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L278">				gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(22, 25));</span>
+<span class="fc" id="L279">				p.setLocation(25);</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">				if (EstateDAO.getEstateDAO().getOneEstate(25).isOwned())</span>
+				{
+<span class="fc" id="L282">					String utilityOwnerName = EstateDAO.getEstateDAO().getOneEstate(25).getOwner();</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">					if (!utilityOwnerName.equals(p.getUserName()))</span>
+					{
+<span class="fc" id="L285">						int changeMoney = (EstateDAO.getEstateDAO().getOneEstate(15).getRent()) * 2;</span>
+<span class="fc" id="L286">						p.setMoney(p.newMoney(-changeMoney));</span>
+						//
+<span class="fc" id="L288">						PlayerDAO playerDao = PlayerDAO.getPlayerDAO();</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">						if (playerDao.getOnePlayer(utilityOwnerName) != null)</span>
+						{
+<span class="fc" id="L291">							Person utilityOwner = playerDao.getOnePlayer(utilityOwnerName);</span>
+<span class="fc" id="L292">							utilityOwner.setMoney(utilityOwner.newMoney(changeMoney));</span>
+<span class="fc" id="L293">							playerDao.changeOnePlayer(utilityOwner);</span>
+							// playerDao.changeOnePlayer(p);
+						}
+						//
+					}
+
+<span class="fc" id="L299">				} else</span>
+				{
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">					if (p.newMoney(-200) &gt; 0)</span>
+					{
+<span class="fc" id="L303">						p.setMoney(p.newMoney(-200));</span>
+<span class="fc" id="L304">						ArrayList&lt;Estate&gt; ar = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L305">						EstateDAO.getEstateDAO().getOneEstate(25).setOwner(p.getUserName());</span>
+<span class="fc" id="L306">						EstateDAO.getEstateDAO().getOneEstate(25).setOwned(true);</span>
+<span class="fc" id="L307">						p.setEstates(p.newEstates_add(ar));</span>
+
+					} 
+				}
+<span class="fc" id="L311">				EstateDAO.getEstateDAO().changeEstate(EstateDAO.getEstateDAO().getOneEstate(25));</span>
+<span class="fc" id="L312">				Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L313">						EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L314">						PersonDAO.getPersonDAO().getThePerson().getPieceNumber(),  location,</span>
+<span class="fc" id="L315">						PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L316">				Client.getClient().sendObject(data);</span>
+
+			}
+<span class="fc" id="L319">			PersonDAO.getPersonDAO().changePerson(p);</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">		} else if (chanceNumber == 6)</span>
+		{
+<span class="fc" id="L322">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Bank pays you dividend of $50 (With his feet up on a telephone-bearing desk, \n&quot;
+							+ &quot;Mr. M leans back in an overstuffed chair, blowing cigar smoke rings) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L327">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L328">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L329">			p.setMoney(p.newMoney(50));</span>
+<span class="fc" id="L330">			personDao.changePerson(p);</span>
+			
+<span class="fc" id="L332">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="fc" id="L333">			Client.getClient().sendObject(data);</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">		} else if (chanceNumber == 7)</span>
+		{
+<span class="fc" id="L336">			JOptionPane.showMessageDialog(null,</span>
+					&quot; Get out of Jail Free Ã‚Â– This card may be kept until needed, or traded/sold \n&quot;
+							+ &quot;{This card may be kept until needed or sold - Get Out of Jail Free}\n&quot;
+							+ &quot;{The first sentence is much smaller than the second} \n&quot;
+							+ &quot;(Mr. M, in close-fitting one-piece prison stripes, is literally kicked out) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L343">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L344">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L345">			p.setHaveJailCard(true);</span>
+<span class="fc" id="L346">			personDao.changePerson(p);</span>
+			
+<span class="fc" id="L348">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="fc" id="L349">			Client.getClient().sendObject(data);</span>
+
+<span class="fc bfc" id="L351" title="All 2 branches covered.">		} else if (chanceNumber == 8)</span>
+		{
+<span class="fc" id="L353">			JOptionPane.showMessageDialog(null,</span>
+					&quot; Go Back 3 Spaces (Mr. M is hauled back by a cane hooked around his neck) \n&quot;
+							+ &quot;{Presumably an allusion to amateur nights at theaters} &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L358">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L359">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L360">			location = p.getLocation();</span>
+<span class="fc" id="L361">			GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L362">			gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(p.getLocation(), p.newLocation(-3)));</span>
+<span class="fc" id="L363">			p.setLocation(p.newLocation(-3));</span>
+<span class="fc" id="L364">			personDao.changePerson(p);</span>
+			//
+<span class="fc" id="L366">			PersonDAO.getPersonDAO().changePerson(p);		</span>
+<span class="fc" id="L367">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L368">					EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L369">					PersonDAO.getPersonDAO().getThePerson().getPieceNumber(), location,</span>
+<span class="fc" id="L370">					PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L371">			Client.getClient().sendObject(data);</span>
+<span class="fc" id="L372">			StreetActions st = new StreetActions();</span>
+<span class="fc" id="L373">			st.action();</span>
+<span class="fc bfc" id="L374" title="All 2 branches covered.">		} else if (chanceNumber == 9)</span>
+		{
+<span class="fc" id="L376">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Go to Jail Ã‚Â– Go directly to Jail Ã‚Â– Do not pass Go, do not collect $200 \n&quot;
+							+ &quot;(A truncheon-carrying policeman in a dark-colored uniform hauls a surprised Mr M along by the feet) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L381">			Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="fc" id="L382">			location = p.getLocation();</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">			if (p.HaveJailCard())</span>
+			{
+<span class="fc" id="L385">				p.setHaveJailCard(false);</span>
+<span class="fc" id="L386">				JOptionPane.showMessageDialog(null, &quot;You've lost your Get Out of Jail Card!&quot;, &quot;Attention&quot;, 1);</span>
+			} else
+			{
+<span class="fc" id="L389">				p.goToJail();</span>
+<span class="fc" id="L390">				p.setLocation(10);</span>
+<span class="fc" id="L391">				GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L392">				gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(location, 10));</span>
+			}
+<span class="fc" id="L394">			PersonDAO.getPersonDAO().changePerson(p);		</span>
+<span class="fc" id="L395">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(),</span>
+<span class="fc" id="L396">					EstateDAO.getEstateDAO().getEstates(),</span>
+<span class="fc" id="L397">					PersonDAO.getPersonDAO().getThePerson().getPieceNumber(),  location,</span>
+<span class="fc" id="L398">					PersonDAO.getPersonDAO().getThePerson().getLocation());</span>
+<span class="fc" id="L399">			Client.getClient().sendObject(data);</span>
+			
+<span class="fc bfc" id="L401" title="All 2 branches covered.">		} else if (chanceNumber == 10)</span>
+		{
+<span class="fc" id="L403">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Make general repairs on all your property Ã‚Â– For each house pay $25 Ã‚Â– For each hotel $100 \n&quot;
+							+ &quot;(Consulting a \&quot;How to Fix It\&quot; brochure, a hammer-wielding \n&quot;
+							+ &quot;Mr. M sits astride a house not much larger than he is; it buckles under his weight) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L409">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L410">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L411">			ArrayList&lt;Estate&gt; PersonEstates = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L412">			PersonEstates = p.getEstates();</span>
+<span class="fc" id="L413">			int cost = 0;</span>
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">			if (!PersonEstates.isEmpty())</span>
+			{
+<span class="fc bfc" id="L416" title="All 2 branches covered.">				for (Estate E : PersonEstates)</span>
+				{
+<span class="pc bpc" id="L418" title="1 of 2 branches missed.">					if (E instanceof Street)</span>
+					{
+<span class="fc" id="L420">						cost = ((Street) E).getHouseCount() * 25;</span>
+<span class="pc bpc" id="L421" title="1 of 2 branches missed.">						if (((Street) E).isHotelExist())</span>
+<span class="fc" id="L422">							cost = cost + 100;</span>
+
+					}
+<span class="fc" id="L425">				}</span>
+<span class="fc" id="L426">				p.setMoney(p.newMoney(-cost));</span>
+<span class="fc" id="L427">				personDao.changePerson(p);</span>
+			}
+<span class="fc bfc" id="L429" title="All 2 branches covered.">		} else if (chanceNumber == 11)</span>
+		{
+<span class="fc" id="L431">			JOptionPane</span>
+<span class="fc" id="L432">					.showMessageDialog(null,</span>
+							&quot;Pay poor tax of $15 (His trouser pockets pulled out to show them empty, Mr. M spreads his hands)\n&quot;
+									+ &quot; (The video game version replaces this with Speeding fine $15,)&quot;,
+							&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L437">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L438">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L439">			p.setMoney(p.newMoney(-15));</span>
+<span class="fc" id="L440">			personDao.changePerson(p);</span>
+<span class="fc bfc" id="L441" title="All 2 branches covered.">		} else if (chanceNumber == 12)</span>
+		{
+<span class="fc" id="L443">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Take a trip to Reading Railroad {Take a ride on the Reading} Ã‚Â– If you pass Go, collect $200\n&quot;
+							+ &quot; (Mr. M rides astride the TOOTing engine of a train) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+			// ReadingRailRoad is 5th panel;
+<span class="fc" id="L449">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L450">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L451">			int location = p.getLocation();</span>
+<span class="fc" id="L452">			GamePanel gamePanel = GUIManager.getGamePanel();</span>
+<span class="fc" id="L453">			gamePanel.movePieceOnePlace(p.getPieceNumber(), gamePanel.distance(location, 5));</span>
+<span class="fc" id="L454">			p.setLocation(5);</span>
+<span class="pc bpc" id="L455" title="1 of 2 branches missed.">			if (location - 5 &gt; 0)</span>
+			{
+<span class="nc" id="L457">				p.setMoney(p.newMoney(200));</span>
+			}
+<span class="fc" id="L459">			personDao.changePerson(p);</span>
+<span class="fc" id="L460">			StreetActions st = new StreetActions();</span>
+<span class="fc" id="L461">			st.action();</span>
+<span class="pc bpc" id="L462" title="1 of 2 branches missed.">		} else if (chanceNumber == 13)</span>
+		{
+<span class="nc" id="L464">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Take a walk on the Boardwalk Ã‚Â– Advance token to Boardwalk {Board Walk in both sentences}\n &quot;
+							+ &quot;(Mr. M, a smallish dog hung over one arm, with the other pushes a squalling baby in a small pram;\n&quot;
+							+ &quot; behind them, birds fly in the sky above a low fence) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+			// TODO what the fuck?!
+<span class="fc bfc" id="L470" title="All 2 branches covered.">		} else if (chanceNumber == 14)</span>
+		{
+<span class="fc" id="L472">			JOptionPane.showMessageDialog(null,</span>
+					&quot; You have been elected Chairman of the Board Ã‚Â– Pay each player $50 \n&quot;
+							+ &quot;(A newsboy shouts an Extra with Mr. M's headshot on its front page) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L477">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L478">			Person p = personDao.getThePerson();</span>
+			//
+<span class="fc" id="L480">			PlayerDAO playerDao = PlayerDAO.getPlayerDAO();</span>
+<span class="fc" id="L481">			HashMap&lt;String, Person&gt; playersMap = playerDao.getPlayers();</span>
+<span class="fc bfc" id="L482" title="All 2 branches covered.">			for (Entry&lt;String, Person&gt; E : playersMap.entrySet())</span>
+			{
+<span class="fc" id="L484">				p.setMoney(p.newMoney(-50));</span>
+<span class="fc bfc" id="L485" title="All 2 branches covered.">				if (E.getKey() != p.getUserName())</span>
+<span class="fc" id="L486">					E.getValue().setMoney(E.getValue().newMoney(50));</span>
+
+<span class="fc" id="L488">			}</span>
+<span class="fc" id="L489">			personDao.changePerson(p);</span>
+<span class="fc" id="L490">			playerDao.changePlayerDAO(playersMap);</span>
+			
+<span class="fc" id="L492">			Data data = new Data(PlayerDAO.getPlayerDAO().getPlayers(), EstateDAO.getEstateDAO().getEstates());</span>
+<span class="fc" id="L493">			Client.getClient().sendObject(data);</span>
+
+<span class="pc bpc" id="L495" title="1 of 2 branches missed.">		} else if (chanceNumber == 15)</span>
+		{
+<span class="fc" id="L497">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Your building {and} loan matures Ã‚Â– Collect $150 {Up until the 1980s a \&quot;building and loan\&quot;\n&quot;
+							+ &quot; was a financial institution.} (Mr. M joyfully embraces an apparent wife) &quot;,
+					&quot;Chance&quot;, 1, imgIconC);
+
+<span class="fc" id="L502">			PersonDAO personDao = PersonDAO.getPersonDAO();</span>
+<span class="fc" id="L503">			Person p = personDao.getThePerson();</span>
+<span class="fc" id="L504">			p.setMoney(p.newMoney(150));</span>
+<span class="fc" id="L505">			personDao.changePerson(p);</span>
+		}
+<span class="fc" id="L507">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

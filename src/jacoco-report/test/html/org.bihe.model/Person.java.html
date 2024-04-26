@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Person.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MonopolyTestProj</a> &gt; <a href="index.source.html" class="el_package">org.bihe.model</a> &gt; <span class="el_source">Person.java</span></div><h1>Person.java</h1><pre class="source lang-java linenums">package org.bihe.model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import org.bihe.DAO.PersonDAO;
+import org.bihe.ui.GUIManager;
+import org.bihe.ui.actionPanel.PlayerPanel;
+
+public class Person implements Serializable
+{
+	private static final long serialVersionUID = 1L;
+	// =============================Fields===============================
+	private String userName;
+	private String password;
+<span class="fc" id="L16">	private int location = 0;</span>
+	private ArrayList&lt;Estate&gt; estates;
+	private int money;
+	private int pieceNumber;
+<span class="fc" id="L20">	private int jail = 0;</span>
+	private boolean haveJailCard;
+	private boolean isYourTurn;
+<span class="fc" id="L23">	private boolean[] pair = new boolean[] { false, false, false };</span>
+
+	// ==========================Constructors============================
+
+	public Person(String userName, String password)
+	{
+<span class="fc" id="L29">		super();</span>
+<span class="fc" id="L30">		this.userName = userName;</span>
+<span class="fc" id="L31">		this.password = password;</span>
+<span class="fc" id="L32">	}</span>
+
+	public Person(String userName, String password, int location, int money)
+	{
+<span class="fc" id="L36">		super();</span>
+<span class="fc" id="L37">		this.userName = userName;</span>
+<span class="fc" id="L38">		this.password = password;</span>
+<span class="fc" id="L39">		this.location = location;</span>
+<span class="fc" id="L40">		this.money = money;</span>
+<span class="fc" id="L41">	}</span>
+
+
+    // =============================Methods===============================
+
+	public int newLocation(int change)
+	{
+<span class="fc" id="L48">		int result = this.location + change;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">		if (result &gt; 39)</span>
+		{
+<span class="fc" id="L51">			result -= 40;</span>
+<span class="fc" id="L52">			Person p = PersonDAO.getPersonDAO().getThePerson();</span>
+<span class="fc" id="L53">			p.setMoney(p.newMoney(200));</span>
+<span class="fc" id="L54">			PersonDAO.getPersonDAO().changePerson(p);</span>
+<span class="fc" id="L55">			GUIManager.getPlayerPanel().setPriceLabel(p.getMoney() + &quot; M &quot;);</span>
+		}
+
+<span class="fc bfc" id="L58" title="All 2 branches covered.">		if (result &lt; 0)</span>
+<span class="fc" id="L59">			result += 40;</span>
+
+<span class="fc" id="L61">		return result;</span>
+	}
+
+	public int newMoney(int change)
+	{
+<span class="fc" id="L66">		return (this.money + change);</span>
+	}
+
+	public ArrayList&lt;Estate&gt; newEstates_add(ArrayList&lt;Estate&gt; change)
+	{
+<span class="fc" id="L71">		ArrayList&lt;Estate&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L72">		result.addAll(change);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">		if (this.estates != null)</span>
+<span class="fc" id="L74">			result.addAll(this.estates);</span>
+
+<span class="fc" id="L76">		return result;</span>
+	}
+
+	public ArrayList&lt;Estate&gt; newEstates_remove(ArrayList&lt;Estate&gt; change)
+	{
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		for (int i = 0; i &lt; change.size(); i++)</span>
+		{
+<span class="fc bfc" id="L83" title="All 2 branches covered.">			for (int j = 0; j &lt; estates.size(); j++)</span>
+			{
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">				if (change.get(i).getPanelNo() == estates.get(j).getPanelNo())</span>
+				{
+<span class="fc" id="L87">					estates.remove(j);</span>
+				}
+			}
+		}
+
+<span class="fc" id="L92">		return estates;</span>
+	}
+
+	public boolean isThreePair()
+	{
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		if(this.pair[0])</span>
+		{
+<span class="fc bfc" id="L99" title="All 2 branches covered.">			if(this.pair[1])</span>
+			{
+<span class="fc" id="L101">				resetPair();</span>
+<span class="fc" id="L102">				return true;</span>
+			}else{
+<span class="fc" id="L104">				this.pair[1] = true;</span>
+<span class="fc" id="L105">				return false;</span>
+			}
+		}else{
+<span class="fc" id="L108">			this.pair[0] = true;</span>
+<span class="fc" id="L109">			return false;</span>
+		}
+	}
+	
+	public void resetPair()
+	{
+<span class="fc" id="L115">		this.pair = new boolean[] { false, false, false };</span>
+<span class="fc" id="L116">	}</span>
+	
+	
+	public void goToJail()
+	{
+<span class="fc" id="L121">		this.jail = 3;</span>
+<span class="fc" id="L122">	}</span>
+
+	public void outOfJail()
+	{
+<span class="fc" id="L126">		this.jail = 0;</span>
+<span class="fc" id="L127">	}</span>
+
+	public void oneRoundInJail()
+	{
+<span class="fc" id="L131">		this.jail -= 1;</span>
+<span class="fc" id="L132">	}</span>
+
+	private void brokeUp()
+	{
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		if (getMoney() &lt; 0)</span>
+		{
+<span class="fc" id="L138">			JOptionPane.showMessageDialog(null,</span>
+					&quot;Your monye is very low. do one of the followings:\n1- Sell house or hotel.&quot;
+							+ &quot;\n2- mortgage one of your streets.&quot;,
+					&quot;Attention&quot;, 1);
+
+<span class="fc" id="L143">			GUIManager.getDicePanel().isYourTurn = false;</span>
+		} else
+		{
+<span class="fc" id="L146">			GUIManager.getDicePanel().isYourTurn = true;</span>
+		}
+<span class="fc" id="L148">	}</span>
+
+	// =======================Getters and Setters=========================
+	public String getUserName()
+	{
+<span class="fc" id="L153">		return userName;</span>
+	}
+
+	public void setUserName(String userName)
+	{
+<span class="fc" id="L158">		this.userName = userName;</span>
+<span class="fc" id="L159">	}</span>
+
+	public String getPassword()
+	{
+<span class="fc" id="L163">		return password;</span>
+	}
+
+	public void setPassword(String password)
+	{
+<span class="fc" id="L168">		this.password = password;</span>
+<span class="fc" id="L169">	}</span>
+
+	public int getLocation()
+	{
+<span class="fc" id="L173">		return location;</span>
+	}
+
+	public void setLocation(int location)
+	{
+<span class="fc" id="L178">		this.location = location;</span>
+<span class="fc" id="L179">	}</span>
+
+	public ArrayList&lt;Estate&gt; getEstates()
+	{
+<span class="fc" id="L183">		return estates;</span>
+	}
+
+	public void setEstates(ArrayList&lt;Estate&gt; streets)
+	{
+<span class="fc" id="L188">		this.estates = streets;</span>
+<span class="fc" id="L189">		GUIManager.getEstatePanel().updateEstates();</span>
+<span class="fc" id="L190">	}</span>
+
+	public int getMoney()
+	{
+<span class="fc" id="L194">		return money;</span>
+	}
+
+	public void setMoney(int money)
+	{
+<span class="fc" id="L199">		GUIManager.getPlayerPanel().setPriceLabel(money + &quot; M &quot;);</span>
+<span class="fc" id="L200">		this.money = money;</span>
+<span class="fc" id="L201">		brokeUp();</span>
+<span class="fc" id="L202">	}</span>
+
+	public int getPieceNumber()
+	{
+<span class="fc" id="L206">		return pieceNumber;</span>
+	}
+
+	public void setPieceNumber(int pieceNumber)
+	{
+<span class="fc" id="L211">		this.pieceNumber = pieceNumber;</span>
+<span class="fc" id="L212">	}</span>
+
+	public int getJail()
+	{
+<span class="fc" id="L216">		return this.jail;</span>
+	}
+
+	public boolean HaveJailCard()
+	{
+<span class="fc" id="L221">		return haveJailCard;</span>
+	}
+
+	public void setHaveJailCard(boolean haveJailCard)
+	{
+<span class="fc" id="L226">		this.haveJailCard = haveJailCard;</span>
+<span class="fc" id="L227">	}</span>
+
+	public boolean isYourTurn()
+	{
+<span class="fc" id="L231">		return isYourTurn;</span>
+	}
+
+	public void setYourTurn(boolean isYourTurn)
+	{
+<span class="fc" id="L236">		GUIManager.getDicePanel().setDiceEnable(isYourTurn);</span>
+<span class="fc" id="L237">		this.isYourTurn = isYourTurn;</span>
+<span class="fc" id="L238">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
