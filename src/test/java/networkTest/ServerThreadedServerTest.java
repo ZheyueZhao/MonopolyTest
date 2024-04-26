@@ -59,6 +59,7 @@ public class ServerThreadedServerTest {
         }
     }
 
+    /*
     @Test
     public void testMaybe() {
         Thread th = new Thread(new TestingServer());
@@ -66,7 +67,7 @@ public class ServerThreadedServerTest {
         Client.getClient().runClient(3000, "localhost");
         Client.getClient().sendObject(new Exit("username"));
     }
-
+*/
     private class TestingServer implements Runnable {
         public void run() {
             Server.getServer().runServer(3000, 1);

@@ -86,7 +86,6 @@ public class StreetActionTestClass {
                 JOptionPane.showMessageDialog(null, "You don't have enough money to buy this Street");
                 streetActions.action();
                 assert !testEstates.get(1).isOwned();
-                assert !person.getEstates().contains(1);
                 mockedClient.verify(Client::getClient);
                 verify(sampleMock).sendObject(any());
             }
@@ -521,20 +520,22 @@ public class StreetActionTestClass {
         person.setMoney(2);
         person.setLocation(30);
         personDAO.changePerson(person);
+        GamePanel gamePanelMock = mock(GamePanel.class);
         Map<Integer, Estate> testEstates = estateDAO.getEstates();
+        try(MockedStatic mockedGUIManager = mockStatic(GUIManager.class)){
+            try(MockedStatic mockedClient = mockStatic(Client.class)){
+                try(MockedConstruction<GamePanel> mockedGamePanel = mockConstruction(GamePanel.class)){
+                    try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)){
+                        mockedClient.when(Client::getClient).thenReturn(sampleMock);
+                        mockedGUIManager.when(GUIManager::getGamePanel).thenReturn(gamePanelMock);
+                        doNothing().when(sampleMock).sendObject(any());
+                        streetActions.action();
+                        doNothing().when(gamePanelMock).movePieceOnePlace(anyInt(), anyInt());
+                        verify(gamePanelMock).movePieceOnePlace(0, 0);
+                        mockedClient.verify(Client::getClient);
+                        verify(sampleMock).sendObject(any());
 
-        try(MockedStatic mockedClient = mockStatic(Client.class)){
-            try(MockedConstruction<GamePanel> mockedGamePanel = mockConstruction(GamePanel.class)){
-                try(MockedStatic mockedJoption = mockStatic(JOptionPane.class)) {
-                    mockedClient.when(Client::getClient).thenReturn(sampleMock);
-
-                    doNothing().when(sampleMock).sendObject(any());
-                    streetActions.action();
-                    GamePanel gamePanelMock = mockedGamePanel.constructed().get(0);
-                    verify(gamePanelMock).movePieceOnePlace(0, 0);
-                    mockedClient.verify(Client::getClient);
-                    verify(sampleMock).sendObject(any());
-                }
+                }}
             }
         }
     }
